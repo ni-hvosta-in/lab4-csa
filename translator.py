@@ -1,7 +1,7 @@
 from Opcode import Opcode
-from typing import Dict, List, Tuple
-
-
+from typing import Dict, List, Tuple, Union
+from enum import Enum
+import re
 class Instruction:
     def __init__(self, opcode: Opcode, args: List[str], label: str = None, addr: int = None):
         self.opcode = opcode
@@ -14,13 +14,15 @@ class Instruction:
 
 class Variable:
     
-    def __init__(self, label: str, value: List[str], addr: int = None):
+    def __init__(self, label: str, value, addr: int = None, varType: VarType = None):
         self.label = label
         self.value = value
         self.addr = addr
-        
+        self.type = varType
+
     def __repr__(self):
-        return f"{self.label} {' '.join(self.value)} {"addr = " + str(self.addr) if self.addr else ''}"
+        return f"{self.label} {self.value} addr = {self.addr}"
+
 
 def name_to_opcode() -> Dict[str, Opcode]:
     """Отображение операторов исходного кода в коды операций."""
@@ -93,7 +95,7 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
         if not(line):
             continue
         
-        tokens = line.split()
+        tokens = re.findall(r'"[^"]*"|\S+', line)
         tokens = list(map(lambda x: x.strip(" ,"), tokens))
         key = tokens[0]
         if (curr_section is None):
@@ -166,7 +168,7 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
 
 
 def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction], Dict[str, int]]:
-
+    """присвоение каждой инструкции своего адресса"""
     instruction_addr = 0
     
     used_addr = set();
@@ -192,7 +194,7 @@ def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction],
 
 
 def arrange_variables(segments_data: List[tuple]) -> Dict[str, Variable]:
-
+    """присвоение каждой переменной своего адресса"""
     variables_addr = dict()
     variable_addr = 0
 
@@ -208,14 +210,106 @@ def arrange_variables(segments_data: List[tuple]) -> Dict[str, Variable]:
             variables_addr[label] = variable
 
             if len(variable.value) == 1:
-                if '"' in variable.value[0]:
-                    variable_addr += len(variable.value[0].strip('"')) + 1
+
+                arg = variable.value[0]
+                if is_valid_string(arg):
+                    assert is_valid_string(arg), f"variable should be number {arg}"
+
+                    arg = arg.strip('"')
+                    variable_addr += len(arg) + 1
+                    variable.value = arg
+                    variable.type = VarType.STRING
                 else:
+                    assert is_valid_number(arg), f"variable should be number {arg}"
                     variable_addr += 4
+                    variable.value = int(arg)
+                    variable.type = VarType.INT
+
             else:
-                variable_addr += 4 * len(variable.value)
+                variable.type = VarType.ARRAY
+                new_array = []
+                for arg in variable.value:
+                    assert is_valid_number(arg)
+                    new_array.append(int(arg))
+
+                variable.value = new_array
+                variable_addr += 4 * len(new_array)
+
     
     return variables_addr
+
+
+def is_number(s: str) -> bool:
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+def is_valid_number(s: str):
+
+    if is_number(s):
+        n = int(s)
+        return - 2 ** 32 <= n <= 2 ** 32 - 1
+
+    return False
+
+def is_valid_number_param(s: str) -> bool:
+    if is_number(s):
+        n = int(s)
+        return - 2 ** 24 <= n <= 2 ** 24 - 1
+
+    return False
+
+def is_valid_string(s: str):
+    s2 = s.strip('"')
+    return len(s) >= 2 and s[0] == '"' and s[-1] == '"' and '"' not in s2
+
+
+def instruction_to_bin (instructions_with_addr: List[Instruction], instruction_labels_addr: Dict[str, int], variable_addr: Dict[str, Variable]) -> bytearray:
+    instruction_mem = bytearray(2000)
+    logs = []
+    for instruction in instructions_with_addr:
+
+        addr = instruction.addr
+        opcode = instruction.opcode.code
+        args = instruction.args
+        int_val = 0
+        
+        assert len(args) == 1 or len(args) == 0, f"Invalid number of arguments {len(args)}"
+
+        if len(instruction.args) == 1:
+
+            arg = args[0]
+
+            if not(is_number(arg)):
+
+                assert arg in instruction_labels_addr or arg in variable_addr, f"Incorrect label {arg}"
+
+                if arg in instruction_labels_addr:
+                    int_val = instruction_labels_addr[arg]
+                else:
+                    int_val = variable_addr[arg].addr
+
+            else:
+
+                assert is_valid_number_param(arg), f"Invalid argument {arg}"
+                int_val = int(arg)
+
+        opcode = bytes([opcode])
+        byte_val = int_val.to_bytes(3, byteorder='big', signed = True)
+        full = opcode + byte_val
+        hex_code = (opcode + byte_val).hex()
+        instruction_mem[addr: addr + 4] = full
+        logs.append(f"{addr} - {hex_code} - {instruction.opcode.name} { int_val if instruction.args else ""} \n")
+
+    with open("instruction_logs.txt", "w") as f:
+        f.writelines(logs)
+
+
+    return instruction_mem
+
+
 
 def main(source: str, instruction_memory: str, data_memory: str):
     
@@ -223,10 +317,13 @@ def main(source: str, instruction_memory: str, data_memory: str):
         lines = f.readlines()
 
     segments_text, segments_data = parse_instruction_and_variables(lines)
+    instructions_with_addr, instruction_labels_addr = arrange_instructions(segments_text)
+    variables_addr = arrange_variables(segments_data)
+    instruction_mem = instruction_to_bin(instructions_with_addr, instruction_labels_addr, variables_addr)
 
-    print(arrange_instructions(segments_text))
-    print(arrange_variables(segments_data))
+    with open(instruction_memory, 'wb') as f:
+        f.write(instruction_mem)
 
 
 if __name__ == "__main__":
-    main("code.s", "instruction_memory.txt", "data_memory.txt")
+    main("code.s", "instruction_memory.bin", "data_memory.txt")

@@ -1,11 +1,11 @@
 .data
-.org 100
-arr: 5, 12, 3, 99, 7, 42
+.org 10
+arr: 5, -12, 3, 99, 7, 42
 len: 6
-ans: res 1
-
+ans: 0
+hello: "hello world"
 .text
-.org 200
+.org 10
 _start:
     push arr
     dup
@@ -14,7 +14,7 @@ _start:
     fetchA              ; первый элемент → max
     push len
     fetchA
-    pushi 1
+    pushi 100
     sub            ; осталось n-1
 
 while:
@@ -50,7 +50,6 @@ cont:
     jump while
 
 .text
-.org 500
 return:
     drop           ; убрать n
     push ans
