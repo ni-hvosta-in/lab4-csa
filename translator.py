@@ -23,6 +23,11 @@ class Variable:
     def __repr__(self):
         return f"{self.label} {self.value} addr = {self.addr}"
 
+class VarType(Enum):
+    INT = 1
+    STRING = 2
+    ARRAY = 3
+
 
 def name_to_opcode() -> Dict[str, Opcode]:
     """Отображение операторов исходного кода в коды операций."""
@@ -309,7 +314,38 @@ def instruction_to_bin (instructions_with_addr: List[Instruction], instruction_l
 
     return instruction_mem
 
+def data_to_bin (variables_addr: Dict[str, Variable]) -> bytearray:
 
+    variable_mem = bytearray(2000)
+    logs = []
+    for variable in variables_addr.values():
+        addr = variable.addr
+
+        if variable.type == VarType.INT:
+
+            num = variable.value
+            variable_mem[addr: addr + 4] = num.to_bytes(4, byteorder='big', signed = True)
+            logs.append(f"{addr} - {variable.label} - {num}\n")
+
+        elif variable.type == VarType.STRING:
+            string = variable.value
+
+            for i, byte in enumerate((string + "\0").encode()):
+                variable_mem[addr + i] = byte
+                logs.append(f"{addr + i} - string: {variable.label}[{i}] - {hex(byte)}\n")
+
+        elif variable.type == VarType.ARRAY:
+            array = variable.value
+            for i, arg in enumerate(array):
+                num = int(arg)
+                variable_mem[addr: addr + 4] = num.to_bytes(4, byteorder='big', signed=True)
+                logs.append(f"{addr} - array: {variable.label}[{i}] - {num}\n")
+                addr += 4
+
+    with open("variable_logs.txt", "w") as f:
+        f.writelines(logs)
+
+    return variable_mem
 
 def main(source: str, instruction_memory: str, data_memory: str):
     
@@ -319,11 +355,15 @@ def main(source: str, instruction_memory: str, data_memory: str):
     segments_text, segments_data = parse_instruction_and_variables(lines)
     instructions_with_addr, instruction_labels_addr = arrange_instructions(segments_text)
     variables_addr = arrange_variables(segments_data)
+
     instruction_mem = instruction_to_bin(instructions_with_addr, instruction_labels_addr, variables_addr)
+    data_mem = data_to_bin(variables_addr)
 
     with open(instruction_memory, 'wb') as f:
         f.write(instruction_mem)
 
+    with open(data_memory, 'wb') as f:
+        f.write(data_mem)
 
 if __name__ == "__main__":
-    main("code.s", "instruction_memory.bin", "data_memory.txt")
+    main("code.s", "instruction_memory.bin", "data_memory.bin")
