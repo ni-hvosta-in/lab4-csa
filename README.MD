@@ -59,7 +59,6 @@
 
 #### Работа с данными
 
-- `res n` - резервирует `n` ячеек памяти данных.
 - `push addr` - помещает значение `mem[addr]` на вершину стека.
 В силу гарвардской архитектуры `addr` может указывать только на данные (Data Memory).
 - `pushi value` - помещает значение `value` на вершину стека.
@@ -155,3 +154,40 @@ foo:
   - Память команд - 32 бит.
 - Адресации:
   - Прямая абсолютная (например, `push label`)
+
+**Набор инструкций:**
+| Номер  | Название команды   | Сигналы                                                                     |
+|--------|--------------------|-----------------------------------------------------------------------------|
+| 0      | Instruction Fetch  | sel_mpc_opcode, latch_mPC                                                   |
+| 1      | push addr | sel_AR_CU, latch_AR, sel_SP_next, latch_SP, sel_mpc_next, latch_mpc |
+| 2      |           | write_st, sel_S_top, sel_T_mem, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC | 
+| 3      | pushi val | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc | 
+| 4      |           | write_st, sel_S_top, sel_T_imm, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC| 
+| 5      | store addr| sel_AR_CU, latch_AR, sel_mpc_next, latch_mpc |
+| 6      |           | write_dm, sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 7      | fetchA    | sel_AR_A, latch_AR, sel_SP_next, latch_SP,sel_mpc_next, latch_mpc |
+| 8      |           | write_st,  sel_S_top, sel_T_mem, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC | 
+| 9      | incA      | sel_A_inc, latch_A, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 10      | storeA    | sel_AR_A, latch_AR, sel_mpc_next, latch_mpc |
+| 11     |           | write_dm, sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 12     | setA      | sel_A_T, sel_T_second, sel_S_stack, sel_SP_prev, latch_A, latch_S, latch_T, latch_SP, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 13     | getA      | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc |
+| 14     |           | write_st, sel_S_top, sel_T_A, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC| 
+| 15     | drop      | sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 16     | dup       | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc |
+| 17     |           | write_st, sel_S_top, latch_S, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 18     | swap      | sel_T_second, sel_S_top, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 19     | over      | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc |
+| 20     |           | write_st, sel_T_second, sel_S_top, latch_T, latch_S, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 21     | add       | sel_S_stack, sel_SP_prev, alu_add, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 22    | sub       | sel_S_stack, sel_SP_prev, alu_sub, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 23     | mul       | sel_S_stack, sel_SP_prev, alu_mul, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 24     | div       | sel_S_stack, sel_SP_prev, alu_div, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 25     | and       | sel_S_stack, sel_SP_prev, alu_and, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 26     | or        | sel_S_stack, sel_SP_prev, alu_or, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 27     | jump      | sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
+| 28     | jz        | jump_type_Z, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
+| 29     | jn        | jump_type_N, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
+| 30     | call      | sel_R_next, latch_R, sel_mpc_next, latch_mpc|
+| 31     |           | write_ret, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
+| 32     | ret       | sel_PC_ret, sel_R_prev, latch_R, latch_PC, sel_mpc_fetch, latch_mpc |
