@@ -1,6 +1,8 @@
 from enum import Enum
 
 from enum import Enum
+from typing import List
+
 
 class Opcode(Enum):
 
@@ -79,7 +81,7 @@ class VarType(Enum):
 
 binary_to_opcode = {op.code: op for op in Opcode}
 
-def from_bytes_instruction(binary_instruction):
+def from_bytes_instruction(binary_instruction: bytearray) -> List[Instruction]:
 
     instructions: List[Instruction] = list()
 
@@ -124,5 +126,14 @@ def from_bytes_instruction(binary_instruction):
 
     return instructions
 
+def from_bytes_data(binary_data: bytearray) -> List[int]:
 
+    memory: List[int] = list()
 
+    for i in range(0, len(binary_data), 4):
+        word = (binary_data[i] << 24) | (binary_data[i + 1] << 16) | (binary_data[i + 2] << 8) | \
+               binary_data[i + 3]
+
+        memory.append(hex(word))
+
+    return memory
