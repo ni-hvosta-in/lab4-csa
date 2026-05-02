@@ -291,7 +291,7 @@ def instruction_to_bin (instructions_with_addr: List[Instruction], instruction_l
 
 def data_to_bin (variables_addr: Dict[str, Variable]) -> bytearray:
 
-    variable_mem = bytearray(2000)
+    variable_mem = bytearray(2000 * 4)
     logs = []
     for variable in variables_addr.values():
         addr = variable.addr
@@ -306,8 +306,9 @@ def data_to_bin (variables_addr: Dict[str, Variable]) -> bytearray:
             string = variable.value
 
             for i, byte in enumerate((string + "\0").encode()):
-                variable_mem[mem_addr + i * 4] = byte
+                variable_mem[mem_addr: mem_addr + 4] = byte.to_bytes(4, 'big', signed=True)
                 logs.append(f"{addr + i} - string: {variable.label}[{i}] - {hex(byte)}\n")
+                mem_addr += 4
 
         elif variable.type == VarType.ARRAY:
             array = variable.value
