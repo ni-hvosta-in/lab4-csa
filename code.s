@@ -50,6 +50,7 @@ cont:
     jump while
 
 .text
+.org 200;
 return:
     drop           ; убрать n
     push ans
