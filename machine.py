@@ -1,4 +1,4 @@
-from AppData.Local.Programs.Python.Python312.Lib import random
+from AppData.Local.Programs.Python.Python312.Lib.test.test_print import dispatch
 from isa import from_bytes_instruction, from_bytes_data, Instruction, Opcode
 from typing import List
 from enum import Enum, auto
@@ -57,6 +57,7 @@ class Signal(Enum):
     LATCH_R = auto()
     LATCH_PC = auto()
     LATCH_MPC = auto()
+    LATCH_IR = auto()
 
     WRITE_MEM = auto()
     WRITE_ST = auto()
@@ -163,7 +164,8 @@ class DataPath:
         elif sel == Mux_Signal.SEL_T_ALU:
             self.top_buff = self.alu_res
         elif sel == Mux_Signal.SEL_T_IMM:
-            self.top_buff = random.randint(0, 5)     # test value
+            print(self.controlUnit.ir.arg)
+            self.top_buff = self.controlUnit.ir.arg
         elif sel == Mux_Signal.SEL_T_A:
             self.top_buff = self.reg_A
         elif sel == Mux_Signal.SEL_T_MEM:
@@ -181,7 +183,7 @@ class DataPath:
         if (sel == Mux_Signal.SEL_AR_A):
             self.ar_buff = self.reg_A
         elif (sel == Mux_Signal.SEL_AR_CU):
-            self.ar_buff = self.controlUnit.curr_instruction.arg
+            self.ar_buff = self.controlUnit.ir.arg
             assert self.ar_buff != None, f"wrong selector latch_AR {sel}"
 
     def signal_latch_A(self, sel: Mux_Signal):
@@ -250,27 +252,39 @@ class ControlUnit:
     mpc = None
     reg_R = None
     return_stack = None
-
+    ir: Instruction = None
     _tick = None
-
-    curr_instruction: Instruction = None
 
     next_micro = MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_NEXT)
     next_sp = MicroInstr(Signal.LATCH_SP, Mux_Signal.SEL_SP_NEXT)
     prev_sp = MicroInstr(Signal.LATCH_SP, Mux_Signal.SEL_SP_PREV)
     s_from_top = MicroInstr(Signal.LATCH_S, Mux_Signal.SEL_S_TOP)
-
+    fetch = MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_FETCH)
+    write_st = MicroInstr(Signal.WRITE_ST)
     next_pc = MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_NEXT)
     _microprogram = [
-        #(Instructin Fetch)'''
-        #(0)'''
+        #(Instructin Fetch)
+        #(0)
+        [MicroInstr(Signal.LATCH_IR), next_micro],
+        #(1)
         [MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_OPCODE)],
-        #(push addr)'''
-        #(1)'''
+        #(push addr)
+        #(2)
         [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), next_micro, next_sp],
-        #(2)'''
-        [MicroInstr(Signal.WRITE_ST), s_from_top, MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_MEM), next_pc]
+        #(3)
+        [write_st, s_from_top, MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_MEM), next_pc, fetch],
+        #(pushi val)
+        #(4)
+        [next_sp, next_micro],
+        #(5)
+        [write_st, s_from_top, MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_IMM), next_pc, fetch]
+
     ]
+
+    mpc_of_opcode = {
+        Opcode.PUSH : 2,
+        Opcode.PUSHI : 4
+    }
 
     def __init__(self, dataPath: DataPath, program: List[Instruction], start):
         self.dataPath = dataPath
@@ -280,6 +294,11 @@ class ControlUnit:
         self.reg_R = 0
         self.return_stack = [0] * 100
         self.mpc = 0
+
+    def signal_latch_IR(self):
+        assert self.pc < len(self.program), f"pc = {self.pc} out of range"
+
+        self.ir = self.program[self.pc]
 
     def signal_latch_R(self, sel: Mux_Signal):
 
@@ -305,8 +324,8 @@ class ControlUnit:
         elif (sel == Mux_Signal.SEL_MPC_FETCH):
             self.mpc = 0
         elif (sel == Mux_Signal.SEL_MPC_OPCODE):
-            self.mpc = 1
-            self.curr_instruction = self.program[self.pc]
+            self.mpc = self.mpc_of_opcode.get(self.ir.opcode)
+            print(self.mpc, self.ir)
 
     def signal_latch_PC(self, sel: Mux_Signal):
 
@@ -346,6 +365,9 @@ class ControlUnit:
         elif (microinstr.latch == Signal.LATCH_MPC):
             self.signal_latch_mPC(sel)
 
+        elif (microinstr.latch == Signal.LATCH_IR):
+            self.signal_latch_IR()
+
         elif (microinstr.latch == Signal.LATCH_AR):
             self.dataPath.signal_latch_AR(sel)
 
@@ -364,6 +386,21 @@ class ControlUnit:
         else:
             assert False, f"unknown latch: {microinstr.latch}"
 
+    def sumulate(self):
+        while self.ir == None or self.ir.opcode != Opcode.HALT:
+            print(self.mpc)
+            curr_tick = self._microprogram[self.mpc]
+            self.dataPath.start_cycle()
+            for m in curr_tick:
+                self.dispatch(m)
+
+            print(self)
+            print(self.dataPath)
+            self.dataPath.update()
+
+
+    def __str__(self):
+        return f"pc = {self.pc}, mpc = {self.mpc}"
 
 def main(code_file, mem_file, input_file):
     with open(code_file, 'rb') as f:
@@ -375,22 +412,17 @@ def main(code_file, mem_file, input_file):
         binary_memory = f.read()
 
     data = from_bytes_data(binary_memory)
-    instructions = [Instruction(Opcode.PUSH, arg=16, addr = 0)]
+    instructions = [Instruction(Opcode.PUSH, arg=16, addr = 0),
+                    Instruction(Opcode.PUSH, arg=18, addr = 1),
+                    Instruction(Opcode.PUSH, arg=19, addr = 1),
+                    Instruction(Opcode.PUSHI, arg = 255, addr = 2),
+                    Instruction(Opcode.HALT, addr = 2)]
 
     dp: DataPath = DataPath(10, data)
     cu: ControlUnit = ControlUnit(dp, instructions, start= 0)
     dp.controlUnit = cu
-    code = cu._microprogram
+    cu.sumulate()
 
-    for tick in code:
-
-        dp.start_cycle()
-        for m in tick:
-            print(m)
-            print(dp)
-            cu.dispatch(m)
-        dp.update()
-    print(dp)
 
 if __name__ == "__main__":
     main("instruction_memory.bin", "data_memory.bin", ".")
