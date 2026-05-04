@@ -89,7 +89,8 @@ def from_bytes_instruction(binary_instruction: bytearray) -> List[Instruction]:
     while index < len(binary_instruction):
 
         while binary_instruction[index] == 0x00:
-            index += 1
+            index += 4
+            instructions.append(None)
             if index == len(binary_instruction):
                 return instructions
 
