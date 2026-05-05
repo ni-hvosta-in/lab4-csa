@@ -1,5 +1,5 @@
 from isa import from_bytes_instruction, from_bytes_data, Instruction, Opcode
-from typing import List
+from typing import List, Union
 from enum import Enum, auto
 
 class Mux_Signal(Enum):
@@ -39,12 +39,12 @@ class Mux_Signal(Enum):
 
 class ALU_Signal(Enum):
 
-    ALU_ADD = auto()
-    ALU_SUB = auto()
-    ALU_MUL = auto()
-    ALU_DIV = auto()
-    ALU_AND = auto()
-    ALU_OR = auto()
+    ADD = auto()
+    SUB = auto()
+    MUL = auto()
+    DIV = auto()
+    AND = auto()
+    OR = auto()
 
 class Signal(Enum):
 
@@ -63,6 +63,8 @@ class Signal(Enum):
     WRITE_RET = auto()
     OUTPUT = auto()
     INPUT = auto()
+
+    ALU = auto()
 
 
 class DataPath:
@@ -130,7 +132,7 @@ class DataPath:
         elif sel == Mux_Signal.SEL_SP_PREV:
             self.sp_buff = self.sp - 1
 
-        assert 0 <= self.sp_buff < len(self.stack), f"index out of range stack: {self.sp_buff}"
+        assert -1 <= self.sp_buff < len(self.stack), f"index out of range stack: {self.sp_buff}"
 
     def signal_latch_S(self, sel: Mux_Signal):
 
@@ -216,17 +218,17 @@ class DataPath:
 
         assert sel in ALU_Signal, f"internal error, alu incorrect selector: {sel}"
 
-        if (sel == ALU_Signal.ALU_ADD):
+        if (sel == ALU_Signal.ADD):
             self.alu_res = self.top + self.second
-        elif (sel == ALU_Signal.ALU_SUB):
+        elif (sel == ALU_Signal.SUB):
             self.alu_res = self.second - self.top
-        elif (sel == ALU_Signal.ALU_MUL):
+        elif (sel == ALU_Signal.MUL):
             self.alu_res = self.second * self.top
-        elif (sel == ALU_Signal.ALU_DIV):
+        elif (sel == ALU_Signal.DIV):
             self.alu_res = self.second // self.top
-        elif (sel == ALU_Signal.ALU_AND):
+        elif (sel == ALU_Signal.AND):
             self.alu_res = self.second & self.top
-        elif (sel == ALU_Signal.ALU_OR):
+        elif (sel == ALU_Signal.OR):
             self.alu_res = self.second | self.top
 
     def __str__(self):
@@ -237,7 +239,7 @@ class MicroInstr:
     latch = None
     sel = None
 
-    def __init__(self, latch: Signal, sel: Mux_Signal = None):
+    def __init__(self, latch: Signal, sel: Union[Mux_Signal, ALU_Signal] = None):
         self.latch = latch
         self.sel = sel
 
@@ -275,43 +277,236 @@ class ControlUnit:
 
 
     _microprogram = [
+
         #(Instructin Fetch)
         #(0)
         [MicroInstr(Signal.LATCH_IR), mpc_next],
         #(1)
         [MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_OPCODE)],
+
         #(push addr)
         #(2)
         [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), sp_next, mpc_next],
         #(3)
-        [write_st, s_from_top, MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_MEM), pc_next, fetch],
+        [
+            write_st,
+            s_from_top,
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
+            pc_next,
+            fetch
+        ],
+
         #(pushi val)
         #(4)
         [sp_next, mpc_next],
         #(5)
-        [write_st, s_from_top, MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_IMM), pc_next, fetch],
+        [
+            write_st,
+            s_from_top,
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_IMM),
+            pc_next,
+            fetch
+        ],
+
         #(store addr)
         #(6)
         [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), mpc_next],
         #(7)
         [write_dm, t_from_second, s_from_stack, sp_prev, pc_next, fetch],
+
         #(fetchA)
         #(8)
         [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), sp_next, mpc_next],
         #(9)
-        [write_st, s_from_top, MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_MEM), pc_next, fetch],
+        [
+            write_st,
+            s_from_top,
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
+            pc_next,
+            fetch
+        ],
+
         #(incA)
         #(10)
         [MicroInstr(Signal.LATCH_A, Mux_Signal.SEL_A_INC), pc_next, fetch],
-        
+
+        #(storeA)
+        #(11)
+        [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), mpc_next],
+        #(12)
+        [
+            write_dm,
+            t_from_second,
+            s_from_stack,
+            sp_prev,
+            pc_next,
+            fetch
+        ],
+
+        #(setA)
+        #(13)
+        [
+            MicroInstr(Signal.LATCH_A, Mux_Signal.SEL_A_T),
+            t_from_second,
+            s_from_stack,
+            sp_prev,
+            pc_next,
+            fetch
+        ],
+
+        #(getA)
+        #(14)
+        [sp_next, mpc_next],
+        #(15)
+        [
+            write_st,
+            s_from_top,
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_A),
+            pc_next,
+            fetch
+        ],
+
+        #(drop)
+        #(16)
+        [
+            t_from_second,
+            s_from_stack,
+            sp_prev,
+            pc_next,
+            fetch
+        ],
+
+        #(dup)
+        #(17)
+        [sp_next, mpc_next],
+        #(18)
+        [
+            write_st,
+            s_from_top,
+            pc_next,
+            fetch
+        ],
+
+        #(swap)
+        #(19)
+        [s_from_top, t_from_second, pc_next, fetch],
+
+        #(over)
+        #(20)
+        [sp_next, mpc_next],
+        #(21)
+        [
+            write_st,
+            t_from_second,
+            s_from_top,
+            pc_next,
+            fetch
+        ],
+
+        #(add)
+        #(22)
+        [
+            s_from_stack,
+            sp_prev,
+            MicroInstr(Signal.ALU, ALU_Signal.ADD),
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            pc_next,
+            fetch
+        ],
+
+        # (sub)
+        # (23)
+        [
+            s_from_stack,
+            sp_prev,
+            MicroInstr(Signal.ALU, ALU_Signal.SUB),
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            pc_next,
+            fetch
+        ],
+
+        # (mul)
+        # (24)
+        [
+            s_from_stack,
+            sp_prev,
+            MicroInstr(Signal.ALU, ALU_Signal.MUL),
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            pc_next,
+            fetch
+        ],
+
+        # (div)
+        # (25)
+        [
+            s_from_stack,
+            sp_prev,
+            MicroInstr(Signal.ALU, ALU_Signal.DIV),
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            pc_next,
+            fetch
+        ],
+
+        # (and)
+        # (26)
+        [
+            s_from_stack,
+            sp_prev,
+            MicroInstr(Signal.ALU, ALU_Signal.AND),
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            pc_next,
+            fetch
+        ],
+
+        # (or)
+        # (27)
+        [
+            s_from_stack,
+            sp_prev,
+            MicroInstr(Signal.ALU, ALU_Signal.OR),
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            pc_next,
+            fetch
+        ],
+
+        # (jump)
+        # (28)
+        [MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR), fetch],
+
+        # (jz)
+        # (29)
+        [MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JZ), fetch],
+
+        # (jn)
+        # (30)
+        [MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JN), fetch],
+
     ]
 
     mpc_of_opcode = {
+
         Opcode.PUSH : 2,
         Opcode.PUSHI : 4,
         Opcode.STORE : 6,
         Opcode.FETCH_A : 8,
         Opcode.INCA : 10,
+        Opcode.STORE_A: 11,
+        Opcode.SET_A : 13,
+        Opcode.GET_A : 14,
+        Opcode.DROP : 16,
+        Opcode.DUP: 17,
+        Opcode.SWAP: 19,
+        Opcode.OVER: 20,
+        Opcode.ADD: 22,
+        Opcode.SUB: 23,
+        Opcode.MUL: 24,
+        Opcode.DIV: 25,
+        Opcode.AND: 26,
+        Opcode.OR: 27,
+        Opcode.JUMP: 28,
+        Opcode.JZ: 29,
+        Opcode.JN: 30,
+
     }
 
     def __init__(self, dataPath: DataPath, program: List[Instruction], start):
@@ -367,11 +562,11 @@ class ControlUnit:
         if (sel == Mux_Signal.SEL_PC_NEXT):
             self.pc += 1
         elif (sel == Mux_Signal.SEL_PC_ADDR):
-            self.pc = self.arg
+            self.pc = self.ir.arg
         elif (sel == Mux_Signal.SEL_PC_JN):
-            self.pc = self.arg if self.dataPath.top < 0 else self.pc + 1
+            self.pc = self.ir.arg if self.dataPath.top < 0 else self.pc + 1
         elif (sel == Mux_Signal.SEL_PC_JZ):
-            self.pc = self.arg if self.dataPath.top == 0 else self.pc + 1
+            self.pc = self.ir.arg if self.dataPath.top == 0 else self.pc + 1
         elif (sel == Mux_Signal.SEL_PC_RET):
 
             assert self.reg_R >= 0, f"return stack is empty"
@@ -417,6 +612,9 @@ class ControlUnit:
         elif (latch == Signal.WRITE_MEM):
             self.dataPath.signal_write_dm()
 
+        elif (latch == Signal.ALU):
+            self.dataPath.alu(sel)
+
         else:
             assert False, f"unknown latch: {microinstr.latch}"
 
@@ -452,6 +650,7 @@ def main(code_file, mem_file, input_file):
     cu: ControlUnit = ControlUnit(dp, instructions, start= 10)
     dp.controlUnit = cu
     cu.sumulate()
+    print(dp.data_memory[17])
 
 
 if __name__ == "__main__":
