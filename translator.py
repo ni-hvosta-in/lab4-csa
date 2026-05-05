@@ -62,11 +62,29 @@ def preprocess(lines: List[str]) -> List[str]:
             defines[name] = value
             continue
 
+        if key == "if":
+            assert len(tokens) == 2, f"Invalid ifdef directive at line {idx + 1}"
+
+            name = tokens[1]
+            skip_stack.append(name not in defines)
+            continue
+
+        if key == "endif":
+            assert len(skip_stack) > 0, f"Invalid endif directive at line {idx + 1}"
+
+            skip_stack.pop()
+            continue
+
+        if any(skip_stack):
+            continue
+
         for i, token in enumerate(tokens):
             if token in defines:
                 tokens[i] = defines[token]
 
         result.append(" ".join(tokens))
+
+    assert len(skip_stack) == 0, f"block if not closed"
 
     return result
 
