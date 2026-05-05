@@ -1,8 +1,9 @@
 from isa import Opcode, Instruction, Variable, VarType
+from utils import is_number, is_valid_number, is_valid_number_param, is_valid_string
 from typing import Dict, List, Tuple, Union
 from enum import Enum
 import re
-
+import sys
 
 
 name_to_opcode_dict: Dict[str, Opcode] = {
@@ -338,34 +339,6 @@ def arrange_variables(segments_data: List[tuple]) -> Dict[str, Variable]:
     
     return variables_addr
 
-
-def is_number(s: str) -> bool:
-    try:
-        int(s)
-        return True
-    except ValueError:
-        return False
-
-def is_valid_number(s: str):
-
-    if is_number(s):
-        n = int(s)
-        return - 2 ** 32 <= n <= 2 ** 32 - 1
-
-    return False
-
-def is_valid_number_param(s: str) -> bool:
-    if is_number(s):
-        n = int(s)
-        return - 2 ** 24 <= n <= 2 ** 24 - 1
-
-    return False
-
-def is_valid_string(s: str):
-    s2 = s.strip('"')
-    return len(s) >= 2 and s[0] == '"' and s[-1] == '"' and '"' not in s2
-
-
 def instruction_to_bin (instructions_with_addr: List[Instruction], instruction_labels_addr: Dict[str, int], variable_addr: Dict[str, Variable]) -> bytearray:
     instruction_mem = bytearray(2000 * 4)
     logs = []
@@ -440,23 +413,28 @@ def data_to_bin (variables_addr: Dict[str, Variable]) -> bytearray:
 
     return variable_mem
 
-def main(source: str, instruction_memory: str, data_memory: str):
+def main(source: str, target_instruction_file: str, target_data_file: str):
     
     with open(source, 'r') as f:
         lines = f.readlines()
 
     segments_text, segments_data = parse_instruction_and_variables(lines)
+
     instructions_with_addr, instruction_labels_addr = arrange_instructions(segments_text)
     variables_addr = arrange_variables(segments_data)
 
     instruction_mem = instruction_to_bin(instructions_with_addr, instruction_labels_addr, variables_addr)
     data_mem = data_to_bin(variables_addr)
 
-    with open(instruction_memory, 'wb') as f:
+    with open(target_instruction_file, 'wb') as f:
         f.write(instruction_mem)
 
-    with open(data_memory, 'wb') as f:
+    with open(target_data_file, 'wb') as f:
         f.write(data_mem)
 
+    print("source LoC:", len(lines), "code instr:", len(instructions_with_addr))
+
 if __name__ == "__main__":
-    main("code.s", "instruction_memory.bin", "data_memory.bin")
+    assert len(sys.argv) == 4, "Wrong arguments: translator.py <input_file> <target_instruction_file> <target_data_file> "
+    _, source_file, target_instruction_file, target_data_file = sys.argv
+    main(source_file, target_instruction_file, target_data_file)

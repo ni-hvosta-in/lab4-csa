@@ -121,6 +121,8 @@ def from_bytes_instruction(binary_instruction: bytearray) -> List[Instruction]:
                     instruction.arg = arg
                 else:
 
+                    print(instruction.arg)
+                    print(arg)
                     assert arg == 0, f"arg {arg} should be 0 in instruction {opcode.name}"
                     instruction.arg = None
 

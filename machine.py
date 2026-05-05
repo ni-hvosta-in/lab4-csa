@@ -1,6 +1,8 @@
 from isa import from_bytes_instruction, from_bytes_data, Instruction, Opcode
+from utils import parse_input
 from typing import List, Union, Dict
 from enum import Enum, auto
+import sys
 
 class Mux_Signal(Enum):
 
@@ -699,6 +701,7 @@ class ControlUnit:
     def sumulate(self):
         while self.ir == None or self.ir.opcode != Opcode.HALT:
             print(f"{self.ir.opcode} {self.ir.arg}"if self.ir != None else "")
+            self._tick += 1
             curr_tick = self._microprogram[self.mpc]
             self.dataPath.start_cycle()
             for m in curr_tick:
@@ -712,20 +715,21 @@ class ControlUnit:
     def __str__(self):
         return f"pc = {self.pc}, mpc = {self.mpc} return_stack = {self.return_stack} reg_R = {self.reg_R}"
 
-def main(code_file, mem_file, input_file):
+def main(code_file, data_file, input_file):
+
     with open(code_file, 'rb') as f:
         binary_instruction = f.read()
 
-    print(binary_instruction)
-
-    with open(mem_file, 'rb') as f:
+    with open(data_file, 'rb') as f:
         binary_memory = f.read()
 
-    data = from_bytes_data(binary_memory)
+    io_ports = parse_input(input_file)
+    print(io_ports)
+
     instructions = from_bytes_instruction(binary_instruction)
-    io_ports = {
-        1 : []
-    }
+    data = from_bytes_data(binary_memory)
+
+
 
     dp: DataPath = DataPath(10, data, io_ports)
     cu: ControlUnit = ControlUnit(dp, instructions, start= 10)
@@ -735,4 +739,6 @@ def main(code_file, mem_file, input_file):
 
 
 if __name__ == "__main__":
-    main("instruction_memory.bin", "data_memory.bin", ".")
+    assert len(sys.argv) == 4, "Wrong arguments: machine.py <code_file> data_file> <input_file>"
+    _, code_file, data_file, input_file = sys.argv
+    main(code_file, data_file, input_file)
