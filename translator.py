@@ -88,6 +88,71 @@ def preprocess(lines: List[str]) -> List[str]:
 
     return result
 
+def apply_macro(lines: List[str]) -> List[str]:
+
+    macros = {}
+    result = []
+
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if not line:
+            i += 1
+            continue
+
+        tokens = get_tokens(line)
+
+        key = tokens[0]
+
+        if key == "macro":
+            assert len(tokens) >= 2, f"Invalid macro directive at line {i + 1}"
+
+            name = tokens[1]
+            params = tokens[2:]
+
+            body = []
+            i += 1
+
+            while not lines[i].startswith("endmacro"):
+                body.append(lines[i])
+                i += 1
+                assert i < len(lines), f"block macro not closed"
+
+            macros[name] = (params, body)
+            i += 1
+
+            continue
+
+        if key in macros:
+
+            params, body = macros[key]
+            args = tokens[1:]
+            assert len(args) == len(params), f"Invalid macro directive at line {i + 1}"
+
+            for line_macro in body:
+                macro_tokens = get_tokens(line_macro)
+
+                for j, tok in enumerate(macro_tokens):
+                    for p, a in zip(params, args):
+                        if tok == p:
+                            macro_tokens[j] = a
+
+                result.append(" ".join(macro_tokens))
+
+            i += 1
+            continue
+
+        result.append(line)
+        i += 1
+
+    return result
+
+def get_tokens(line: str) -> List[str]:
+
+    tokens = re.findall(r'"[^"]*"|\S+', line)
+    tokens = list(map(lambda x: x.strip(" ,"), tokens))
+    return tokens
+
 def name_to_opcode(name: str) -> Opcode:
     """Отображение операторов исходного кода в коды операций."""
     return name_to_opcode_dict[name]
@@ -126,14 +191,11 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
     curr_instruction_label = None
 
     lines = preprocess(lines)
+    lines = apply_macro(lines)
 
     for idx, line in enumerate(lines):
-        line = strip_comments(line)
-        if not(line):
-            continue
         
-        tokens = re.findall(r'"[^"]*"|\S+', line)
-        tokens = list(map(lambda x: x.strip(" ,"), tokens))
+        tokens = get_tokens(line)
         key = tokens[0]
         if (curr_section is None):
             assert key in special_directives() and key != ".org", f"Expected section directive at line {idx+1}"
@@ -218,7 +280,6 @@ def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction],
             assert instruction_addr not in used_addr, f"Memory address {instruction_addr} already occupied by another instruction"
             
             if instruction.label:
-                print(instruction.label)
                 assert instruction.label not in instruction_labels_addr, f"Duplicate label {instruction.label}"
                 
                 instruction_labels_addr[instruction.label] = instruction_addr
