@@ -36,6 +36,40 @@ name_to_opcode_dict: Dict[str, Opcode] = {
 
 }
 
+def preprocess(lines: List[str]) -> List[str]:
+    """Работа с макросами, условными компиляциями и константами"""
+    defines = dict()
+    result = []
+
+    skip_stack = []
+
+    for idx, line in enumerate(lines):
+        line = strip_comments(line)
+        if not line:
+            continue
+
+        tokens = line.split()
+        key = tokens[0]
+
+        if key == "#define":
+            assert len(tokens) == 3, f"Invalid #define directive at line {idx + 1}"
+
+            name = tokens[1]
+            value = tokens[2]
+
+            assert name not in defines, f"Duplicate #define {name} at line {idx + 1}"
+
+            defines[name] = value
+            continue
+
+        for i, token in enumerate(tokens):
+            if token in defines:
+                tokens[i] = defines[token]
+
+        result.append(" ".join(tokens))
+
+    return result
+
 def name_to_opcode(name: str) -> Opcode:
     """Отображение операторов исходного кода в коды операций."""
     return name_to_opcode_dict[name]
@@ -72,6 +106,8 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
     curr_data_org = 0
     curr_section = None
     curr_instruction_label = None
+
+    lines = preprocess(lines)
 
     for idx, line in enumerate(lines):
         line = strip_comments(line)
@@ -164,6 +200,7 @@ def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction],
             assert instruction_addr not in used_addr, f"Memory address {instruction_addr} already occupied by another instruction"
             
             if instruction.label:
+                print(instruction.label)
                 assert instruction.label not in instruction_labels_addr, f"Duplicate label {instruction.label}"
                 
                 instruction_labels_addr[instruction.label] = instruction_addr
