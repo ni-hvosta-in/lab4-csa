@@ -1,5 +1,5 @@
 from isa import from_bytes_instruction, from_bytes_data, Instruction, Opcode
-from typing import List, Union
+from typing import List, Union, Dict
 from enum import Enum, auto
 
 class Mux_Signal(Enum):
@@ -61,8 +61,8 @@ class Signal(Enum):
     WRITE_MEM = auto()
     WRITE_ST = auto()
     WRITE_RET = auto()
-    OUTPUT = auto()
-    INPUT = auto()
+
+    WRITE_IO = auto()
 
     ALU = auto()
 
@@ -90,7 +90,9 @@ class DataPath:
 
     controlUnit: ControlUnit = None
 
-    def __init__(self, stack_size, data_memory: List[int], controlUnit: ControlUnit = None):
+    io_ports: Dict[int, List[int]] = None
+
+    def __init__(self, stack_size, data_memory: List[int], io_ports: Dict[int, List[int]], controlUnit: ControlUnit = None ):
 
         self.stack_size = stack_size
         self.data_memory_size = len(data_memory)
@@ -105,6 +107,7 @@ class DataPath:
         self.second = 0
         self.top = 0
         self.alu_res = 0
+        self.io_ports = io_ports
 
     def start_cycle(self):
         self.sp_buff = self.sp
@@ -172,7 +175,12 @@ class DataPath:
         elif sel == Mux_Signal.SEL_T_MEM:
             self.top_buff = self.data_memory[self.ar]
         elif sel == Mux_Signal.SEL_T_INPUT:
-            pass
+
+            port = self.controlUnit.ir.arg
+            assert port in self.io_ports, f"wrong io port {port}"
+            assert len(self.io_ports[port]) > 0, f"io buffer is empty"
+
+            self.top_buff = self.io_ports[port].pop(0)
 
     def signal_latch_AR(self, sel: Mux_Signal):
 
@@ -210,9 +218,17 @@ class DataPath:
 
     def signal_write_dm(self):
 
-        assert -1 <= self.ar <= self.data_memory_size, f"incorrect ar = {self.ar}"
+        assert 0 <= self.ar < self.data_memory_size, f"incorrect ar = {self.ar}"
 
         self.data_memory[self.ar] = self.top
+
+    def signal_write_io(self):
+
+        port = int(self.controlUnit.ir.arg)
+        assert port in self.io_ports, f"wrong io port {port}"
+
+        self.io_ports[port].append(self.top)
+
 
     def alu(self, sel: ALU_Signal):
 
@@ -481,6 +497,47 @@ class ControlUnit:
         # (30)
         [MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JN), fetch],
 
+        # (call)
+        # (31)
+        [MicroInstr(Signal.LATCH_R, Mux_Signal.SEL_R_NEXT), mpc_next],
+        # (32)
+        [
+            MicroInstr(Signal.WRITE_RET),
+            MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR),
+            fetch
+        ],
+
+        # (ret)
+        # (33)
+        [
+            MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_RET),
+            MicroInstr(Signal.LATCH_R, Mux_Signal.SEL_R_PREV),
+            fetch
+        ],
+
+        # (input n)
+        # (34)
+        [sp_next, mpc_next],
+        # (35)
+        [
+            write_st,
+            s_from_top,
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_INPUT),
+            pc_next,
+            fetch
+        ],
+
+        # (output n)
+        # (36)
+        [
+            MicroInstr(Signal.WRITE_IO),
+            t_from_second,
+            s_from_stack,
+            sp_prev,
+            pc_next,
+            fetch
+        ]
+
     ]
 
     mpc_of_opcode = {
@@ -506,6 +563,10 @@ class ControlUnit:
         Opcode.JUMP: 28,
         Opcode.JZ: 29,
         Opcode.JN: 30,
+        Opcode.CALL: 31,
+        Opcode.RET: 33,
+        Opcode.INPUT: 34,
+        Opcode.OUTPUT: 36
 
     }
 
@@ -515,7 +576,7 @@ class ControlUnit:
         self.pc = start
         self._tick = 0
         self.reg_R = 0
-        self.return_stack = [0] * 100
+        self.return_stack = [0] * 10
         self.mpc = 0
 
     def signal_latch_IR(self):
@@ -561,23 +622,34 @@ class ControlUnit:
 
         if (sel == Mux_Signal.SEL_PC_NEXT):
             self.pc += 1
+
         elif (sel == Mux_Signal.SEL_PC_ADDR):
             self.pc = self.ir.arg
+
         elif (sel == Mux_Signal.SEL_PC_JN):
             self.pc = self.ir.arg if self.dataPath.top < 0 else self.pc + 1
+
         elif (sel == Mux_Signal.SEL_PC_JZ):
             self.pc = self.ir.arg if self.dataPath.top == 0 else self.pc + 1
+
         elif (sel == Mux_Signal.SEL_PC_RET):
-
+            print(self.reg_R)
             assert self.reg_R >= 0, f"return stack is empty"
-
             self.pc = self.return_stack[self.reg_R]
+
+    def signal_write_ret(self):
+
+        assert self.reg_R > -1, f"return stack is empty"
+
+        self.return_stack[self.reg_R] = self.pc + 1
 
     def dispatch(self, microinstr: MicroInstr):
 
         assert microinstr.latch in Signal, f"wrong latch: {microinstr.latch}"
+
         sel: Mux_Signal = microinstr.sel
         latch: Signal = microinstr.latch
+
         if (latch == Signal.LATCH_PC):
             self.signal_latch_PC(sel)
 
@@ -589,6 +661,9 @@ class ControlUnit:
 
         elif (latch == Signal.LATCH_IR):
             self.signal_latch_IR()
+
+        elif (latch == Signal.WRITE_RET):
+            self.signal_write_ret()
 
         elif (latch == Signal.LATCH_AR):
             self.dataPath.signal_latch_AR(sel)
@@ -615,6 +690,9 @@ class ControlUnit:
         elif (latch == Signal.ALU):
             self.dataPath.alu(sel)
 
+        elif (latch == Signal.WRITE_IO):
+            self.dataPath.signal_write_io()
+
         else:
             assert False, f"unknown latch: {microinstr.latch}"
 
@@ -632,7 +710,7 @@ class ControlUnit:
 
 
     def __str__(self):
-        return f"pc = {self.pc}, mpc = {self.mpc}"
+        return f"pc = {self.pc}, mpc = {self.mpc} return_stack = {self.return_stack} reg_R = {self.reg_R}"
 
 def main(code_file, mem_file, input_file):
     with open(code_file, 'rb') as f:
@@ -645,12 +723,15 @@ def main(code_file, mem_file, input_file):
 
     data = from_bytes_data(binary_memory)
     instructions = from_bytes_instruction(binary_instruction)
+    io_ports = {
+        1 : []
+    }
 
-    dp: DataPath = DataPath(10, data)
+    dp: DataPath = DataPath(10, data, io_ports)
     cu: ControlUnit = ControlUnit(dp, instructions, start= 10)
     dp.controlUnit = cu
     cu.sumulate()
-    print(dp.data_memory[17])
+    print(io_ports)
 
 
 if __name__ == "__main__":

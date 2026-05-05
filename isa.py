@@ -50,7 +50,7 @@ class Opcode(Enum):
 
 class Instruction:
 
-    def __init__(self, opcode: Opcode = None, arg: str = None, label: str = None, addr: int = None):
+    def __init__(self, opcode: Opcode = None, arg = None, label: str = None, addr: int = None):
         self.opcode = opcode
         self.arg = arg
         self.label = label

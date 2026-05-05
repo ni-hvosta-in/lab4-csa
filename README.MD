@@ -185,9 +185,12 @@ foo:
 | 24     | div       | sel_S_stack, sel_SP_prev, alu_div, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
 | 25     | and       | sel_S_stack, sel_SP_prev, alu_and, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
 | 26     | or        | sel_S_stack, sel_SP_prev, alu_or, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
-| 27     | jump      | sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
-| 28     | jz        | jump_type_Z, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
-| 29     | jn        | jump_type_N, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
-| 30     | call      | sel_R_next, latch_R, sel_mpc_next, latch_mpc|
+| 27     | jump   label   | sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
+| 28     | jz   label     | jump_type_Z, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
+| 29     | jn   label     | jump_type_N, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
+| 30     | call   label   | sel_R_next, latch_R, sel_mpc_next, latch_mpc|
 | 31     |           | write_ret, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc |
 | 32     | ret       | sel_PC_ret, sel_R_prev, latch_R, latch_PC, sel_mpc_fetch, latch_mpc |
+| 33     | input n   | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc   |
+| 34     |           | write_st, sel_S_top, sel_T_input, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC | 
+| 35     | output n  | write_io, sel_T_second, sel_S_stack, sel_SP_prev, latch_A, latch_S, latch_T, latch_SP, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
