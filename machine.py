@@ -736,7 +736,7 @@ class ControlUnit:
             f"return_stack: {self.return_stack}"
         )
 
-def simulation(instructions, data_memory, io_ports, start_addr, limit=1000):
+def simulation(instructions, data_memory, io_ports, start_addr, limit=10000):
 
     data_path = DataPath(10, data_memory, io_ports)
     controlUnit = ControlUnit(data_path, instructions, start_addr)
