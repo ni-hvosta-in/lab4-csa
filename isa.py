@@ -50,10 +50,10 @@ class Opcode(Enum):
 
 class Instruction:
 
-    def __init__(self, opcode: Opcode = None, arg = None, label: str = None, addr: int = None):
+    def __init__(self, opcode: Opcode = None, arg = None, labels: List[str] | None = None, addr: int = None):
         self.opcode = opcode
         self.arg = arg
-        self.label = label
+        self.labels = labels if labels is not None else []
         self.addr = addr
 
     def __repr__(self):

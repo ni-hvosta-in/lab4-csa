@@ -57,7 +57,7 @@ def parse_input(file):
             if is_number(token):
                 assert is_valid_number(token), f"Invalid number format: {token}"
 
-                parsed.append(token)
+                parsed.append(int(token))
             else:
 
                 for char in token:

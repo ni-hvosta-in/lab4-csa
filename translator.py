@@ -178,7 +178,7 @@ def strip_comments(line: str) -> str:
 def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List[Tuple]]:
     """Парсинг исходного кода на инструкции и переменные"""
 
-    intructions: List[Instruction] = []
+    instructions: List[Instruction] = []
 
     variables: List[Variable] = []
 
@@ -189,7 +189,7 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
     curr_text_org = 0
     curr_data_org = 0
     curr_section = None
-    curr_instruction_label = None
+    curr_instruction_labels = []
 
     lines = preprocess(lines)
     lines = apply_macro(lines)
@@ -209,9 +209,9 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
                 assert start_section, f".org directive must be at the beginning of a section at line {idx+1}"
                 
                 if curr_section == ".text":
-                    if (len(intructions) > 0):
-                        segments_text.append((curr_text_org, intructions))
-                        intructions = []
+                    if (len(instructions) > 0):
+                        segments_text.append((curr_text_org, instructions))
+                        instructions = []
 
                     curr_text_org = int(tokens[1])
 
@@ -237,9 +237,9 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
             assert len(tokens) == 1 + opcode.arg_count, f"Invalid number of arguments for {key} at line {idx+1}"
 
             arg = None if opcode.arg_count == 0 else tokens[1]
-            instruction = Instruction(name_to_opcode(key), arg, curr_instruction_label)
+            instruction = Instruction(name_to_opcode(key), arg, curr_instruction_labels.copy())
 
-            intructions.append(instruction)
+            instructions.append(instruction)
         
         else:
             assert is_label(key), f"Invalid token {key} at line {idx+1}"
@@ -255,13 +255,13 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
             else:
                 assert curr_section == ".text", f"Instruction labels must be in .text section at line {idx+1}"
                 
-                curr_instruction_label = key.strip(':')
+                curr_instruction_labels.append(key.strip(':'))
                 continue
 
-        curr_instruction_label = None
+        curr_instruction_labels.clear()
         start_section = False
 
-    segments_text.append((curr_text_org, intructions))
+    segments_text.append((curr_text_org, instructions))
     segments_data.append((curr_data_org, variables))
 
     return segments_text, segments_data
@@ -279,14 +279,15 @@ def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction],
         instruction_addr = addr
         for instruction in instructions:
             assert instruction_addr not in used_addr, f"Memory address {instruction_addr} already occupied by another instruction"
-            
-            if instruction.label:
-                assert instruction.label not in instruction_labels_addr, f"Duplicate label {instruction.label}"
 
-                if instruction.label == "_start":
+            for label in instruction.labels:
+
+                assert label not in instruction_labels_addr, f"Duplicate label {label}"
+
+                if label == "_start":
                     start_addr = instruction_addr
 
-                instruction_labels_addr[instruction.label] = instruction_addr
+                instruction_labels_addr[label] = instruction_addr
 
             used_addr.add(instruction_addr)    
             instruction.addr = instruction_addr
