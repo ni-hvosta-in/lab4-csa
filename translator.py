@@ -186,7 +186,7 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
 
     segments_text: List[Tuple[int, List[Instruction]]] = []
     segments_data: List[Tuple[int, List[Variable]]] = []
-    
+
     global_variables = set()
     curr_text_org = 0
     curr_data_org = 0
@@ -197,19 +197,19 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
     lines = apply_macro(lines)
 
     for idx, line in enumerate(lines):
-        
+
         tokens = get_tokens(line)
         key = tokens[0]
         if (curr_section is None):
             assert key in special_directives() and key != ".org", f"Expected section directive at line {idx+1}"
 
-        if key in special_directives():         
+        if key in special_directives():
 
             if key == ".org":
                 assert len(tokens) == 2, f"Invalid .org directive at line {idx+1}"
 
                 assert start_section, f".org directive must be at the beginning of a section at line {idx+1}"
-                
+
                 if curr_section == ".text":
                     if (len(instructions) > 0):
                         segments_text.append((curr_text_org, instructions))
@@ -234,7 +234,7 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
 
         elif key in names_instructions():
             assert curr_section == ".text", f"Instructions must be in .text section at line {idx+1}"
-            
+
             opcode = name_to_opcode(key)
             assert len(tokens) == 1 + opcode.arg_count, f"Invalid number of arguments for {key} at line {idx+1}"
 
@@ -242,7 +242,7 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
             instruction = Instruction(name_to_opcode(key), arg, curr_instruction_labels.copy())
 
             instructions.append(instruction)
-        
+
         else:
             assert is_label(key), f"Invalid token {key} at line {idx+1}"
 
@@ -253,10 +253,10 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
                 assert label not in global_variables, f"Duplicate label {label} at line {idx+1}"
                 variables.append(Variable(label, tokens[1:]))
                 global_variables.add(label)
-            
+
             else:
                 assert curr_section == ".text", f"Instruction labels must be in .text section at line {idx+1}"
-                
+
                 curr_instruction_labels.append(key.strip(':'))
                 continue
 
@@ -272,7 +272,7 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
 def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction], Dict[str, int], int]:
     """присвоение каждой инструкции своего адресса"""
     instruction_addr = 0
-    
+
     used_addr = set();
     instructions_with_addr: List[Instruction] = []
     instruction_labels_addr: Dict[str, int] = dict()
@@ -291,7 +291,7 @@ def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction],
 
                 instruction_labels_addr[label] = instruction_addr
 
-            used_addr.add(instruction_addr)    
+            used_addr.add(instruction_addr)
             instruction.addr = instruction_addr
             instructions_with_addr.append(instruction)
             instruction_addr += 1
@@ -310,7 +310,7 @@ def arrange_variables(segments_data: List[tuple]) -> Dict[str, Variable]:
         variable_addr = addr
         for variable in variables:
             assert variable_addr not in variables_addr.values(), f"Memory address {variable_addr} already occupied by another variable"
-            
+
             label = variable.label
 
             assert label not in variables_addr, f"Duplicate label {label}"
@@ -344,11 +344,11 @@ def arrange_variables(segments_data: List[tuple]) -> Dict[str, Variable]:
                 variable.value = new_array
                 variable_addr += len(new_array)
 
-    
+
     return variables_addr
 
 def instruction_to_bin (instructions_with_addr: List[Instruction], instruction_labels_addr: Dict[str, int], variable_addr: Dict[str, Variable]) -> bytearray:
-    instruction_mem = bytearray(2000 * 4)
+    instruction_mem = bytearray(200 * 4)
     logs = []
     for instruction in instructions_with_addr:
 
@@ -388,7 +388,7 @@ def instruction_to_bin (instructions_with_addr: List[Instruction], instruction_l
 
 def data_to_bin (variables_addr: Dict[str, Variable]) -> bytearray:
 
-    variable_mem = bytearray(2000 * 4)
+    variable_mem = bytearray(50 * 4)
     logs = []
     for variable in variables_addr.values():
         addr = variable.addr
@@ -422,7 +422,7 @@ def data_to_bin (variables_addr: Dict[str, Variable]) -> bytearray:
     return variable_mem
 
 def main(source: str, target_instruction_file: str, target_data_file: str):
-    
+
     with open(source, 'r') as f:
         lines = f.readlines()
 

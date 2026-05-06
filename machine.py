@@ -318,7 +318,6 @@ class DataPath:
 
         elif sel == ALU_Signal.ADDC:
             carry = self.flag_C
-            print(carry)
             res = a + b + carry
 
             self.flag_C = int(res > MASK32)
@@ -828,28 +827,30 @@ class ControlUnit:
 
     def __repr__(self):
         instr = self.ir
-
         instr_str = f"{instr.opcode.name} {instr.arg}" if instr else "None"
 
         return (
             f"PC: {self.pc:4} | "
-            f" MPC: {self.mpc:3} | "
+            f"MPC: {self.mpc:3} | "
             f"IR: {instr_str:12} | "
-            f"R: {self.reg_R:4} | "
+            f"R: {self.reg_R:3} | "
             f"SP: {self.dataPath.sp:3} | "
             f"T: {self.dataPath.top:5} | "
             f"S: {self.dataPath.second:5} | "
             f"A: {self.dataPath.reg_A:5} | "
             f"AR: {self.dataPath.ar:5} | "
-            f"N: {self.dataPath.flag_N} | "
-            f"Z: {self.dataPath.flag_Z} | "
-            f"V: {self.dataPath.flag_V} | "
-            f"C: {self.dataPath.flag_C} | "
-            f"stack: {self.dataPath.stack} | "
-            f"ret: {self.return_stack}"
+            f"N:{self.dataPath.flag_N} "
+            f"Z:{self.dataPath.flag_Z} "
+            f"V:{self.dataPath.flag_V} "
+            f"C:{self.dataPath.flag_C}\n"
+
+            f"STACK: {self.dataPath.stack}\n"
+            f"RETURN_STACK:   {self.return_stack}\n"
+
+            f"IO: {self.dataPath.io_ports}"
         )
 
-def simulation(instructions, data_memory, io_ports, start_addr, limit=10000):
+def simulation(instructions, data_memory, io_ports, start_addr, limit=1000000000, debug=True):
 
     data_path = DataPath(10, data_memory, io_ports)
     controlUnit = ControlUnit(data_path, instructions, start_addr)
@@ -864,32 +865,37 @@ def simulation(instructions, data_memory, io_ports, start_addr, limit=10000):
             curr_tick = controlUnit._microprogram[controlUnit.mpc]
 
             controlUnit.dataPath.start_cycle()
-            log_file.write(f"\n=== TICK {controlUnit._tick} ===\n")
-            log_file.write(f"\n--- MICROINSTRUCTIONS ---\n")
+            if debug:
+                log_file.write(f"\n=== TICK {controlUnit._tick} ===\n")
+                log_file.write(f"\n--- MICROINSTRUCTIONS ---\n")
 
             for m in curr_tick:
-                log_file.write(f"   {m}\n")
+                if debug:
+                    log_file.write(f"   {m}\n")
                 controlUnit.dispatch(m)
 
             if controlUnit.last_io:
-                log_file.write(controlUnit.last_io + "\n")
+                if debug:
+                    log_file.write(controlUnit.last_io + "\n")
                 controlUnit.last_io = None
 
-            log_file.write(repr(controlUnit)+"\n")
-            print(controlUnit)
-            log_file.write("-" * 60)
+            if debug:
+                log_file.write(repr(controlUnit) + "\n")
+                log_file.write("-" * 60)
 
             controlUnit.dataPath.update()
 
             if controlUnit.ir.opcode == Opcode.HALT:
-                log_file.write("HALT\n")
+                log_file.write("\nHALT\n")
                 break
         else:
-            log_file.write("LIMIT REACHED\n")
+            log_file.write("\nLIMIT REACHED\n")
 
+        log_file.write(f"\nTOTAL TICK : {controlUnit._tick}\n")
+        log_file.write(f"\nFINAL io-ports {controlUnit.dataPath.io_ports}\n")
     return io_ports, controlUnit._tick
 
-def main(code_file, data_file, input_file):
+def main(code_file, data_file, input_file, debug = False):
 
     with open(code_file, 'rb') as f:
         binary_instruction = f.read()
@@ -901,12 +907,10 @@ def main(code_file, data_file, input_file):
         binary_memory = f.read()
 
     io_ports = parse_input(input_file)
-    print(io_ports)
 
     instructions = from_bytes_instruction(binary_instruction)
     data = from_bytes_data(binary_memory)
-    simulation(instructions, data, io_ports, start_addr)
-    print(io_ports)
+    simulation(instructions, data, io_ports, start_addr, debug= debug)
 
 if __name__ == "__main__":
     assert len(sys.argv) == 4, "Wrong arguments: machine.py <code_file> data_file> <input_file>"

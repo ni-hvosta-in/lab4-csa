@@ -1,0 +1,228 @@
+in_source: |-
+  .data
+  ans: 0
+
+  .text
+
+  _start:
+
+      pushi 110
+
+  while_i:
+
+      dup
+      pushi 1000
+      sub
+      jn continue_i
+
+      jump finish
+
+  continue_i:
+
+      pushi 100
+
+  while_j:
+
+      dup
+      pushi 1000
+      sub
+      jn continue_j
+
+      jump next_i
+
+  continue_j:
+
+      over
+      over
+      mul
+
+      dup
+
+      dup
+      call reverse_number
+
+      sub
+      jz palindrome
+
+  not_palindrome:
+
+      drop
+
+  next_j:
+
+      pushi 1
+      add
+
+      jump while_j
+
+  palindrome:
+
+      dup
+      push ans
+      sub
+      jn skip_store
+
+      dup
+      store ans
+
+  skip_store:
+
+      drop
+
+      jump next_j
+
+  next_i:
+
+      drop
+
+      pushi 11
+      add
+
+      jump while_i
+
+  finish:
+
+      push ans
+      output 1
+      halt
+
+
+  reverse_number:
+
+      pushi 0
+
+  reverse_loop:
+
+      over
+      jz reverse_done
+
+      over
+      pushi 10
+      call mod
+
+      swap
+      pushi 10
+      mul
+      add
+
+      swap
+      pushi 10
+      div
+      swap
+
+      jump reverse_loop
+
+  reverse_done:
+
+      swap
+      drop
+
+      ret
+
+  mod:
+
+      over
+      over
+
+      div
+      mul
+      sub
+
+      ret
+
+in_stdin: |-
+  []
+out_machine_log: |2
+
+  HALT
+
+  TOTAL TICK : 34454102
+
+  FINAL io-ports {1: [906609]}
+out_variable_log: |
+  0 - ans - 0
+out_instruction_log: |
+  0 - 0200006e - PUSHI 110 
+  1 - 11000000 - DUP  
+  2 - 020003e8 - PUSHI 1000 
+  3 - 21000000 - SUB  
+  4 - 42000006 - JN 6 
+  5 - 40000024 - JUMP 36 
+  6 - 02000064 - PUSHI 100 
+  7 - 11000000 - DUP  
+  8 - 020003e8 - PUSHI 1000 
+  9 - 21000000 - SUB  
+  10 - 4200000c - JN 12 
+  11 - 40000020 - JUMP 32 
+  12 - 13000000 - OVER  
+  13 - 13000000 - OVER  
+  14 - 22000000 - MUL  
+  15 - 11000000 - DUP  
+  16 - 11000000 - DUP  
+  17 - 43000027 - CALL 39 
+  18 - 21000000 - SUB  
+  19 - 41000018 - JZ 24 
+  20 - 10000000 - DROP  
+  21 - 02000001 - PUSHI 1 
+  22 - 20000000 - ADD  
+  23 - 40000007 - JUMP 7 
+  24 - 11000000 - DUP  
+  25 - 01000000 - PUSH 0 
+  26 - 21000000 - SUB  
+  27 - 4200001e - JN 30 
+  28 - 11000000 - DUP  
+  29 - 03000000 - STORE 0 
+  30 - 10000000 - DROP  
+  31 - 40000015 - JUMP 21 
+  32 - 10000000 - DROP  
+  33 - 0200000b - PUSHI 11 
+  34 - 20000000 - ADD  
+  35 - 40000001 - JUMP 1 
+  36 - 01000000 - PUSH 0 
+  37 - 51000001 - OUTPUT 1 
+  38 - ff000000 - HALT  
+  39 - 02000000 - PUSHI 0 
+  40 - 13000000 - OVER  
+  41 - 41000036 - JZ 54 
+  42 - 13000000 - OVER  
+  43 - 0200000a - PUSHI 10 
+  44 - 43000039 - CALL 57 
+  45 - 12000000 - SWAP  
+  46 - 0200000a - PUSHI 10 
+  47 - 22000000 - MUL  
+  48 - 20000000 - ADD  
+  49 - 12000000 - SWAP  
+  50 - 0200000a - PUSHI 10 
+  51 - 23000000 - DIV  
+  52 - 12000000 - SWAP  
+  53 - 40000028 - JUMP 40 
+  54 - 12000000 - SWAP  
+  55 - 10000000 - DROP  
+  56 - 44000000 - RET  
+  57 - 13000000 - OVER  
+  58 - 13000000 - OVER  
+  59 - 23000000 - DIV  
+  60 - 22000000 - MUL  
+  61 - 21000000 - SUB  
+  62 - 44000000 - RET  
+out_data: !!binary |
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+out_code: !!binary |
+  AAAAAAIAAG4RAAAAAgAD6CEAAABCAAAGQAAAJAIAAGQRAAAAAgAD6CEAAABCAAAMQAAAIBMAAAAT
+  AAAAIgAAABEAAAARAAAAQwAAJyEAAABBAAAYEAAAAAIAAAEgAAAAQAAABxEAAAABAAAAIQAAAEIA
+  AB4RAAAAAwAAABAAAABAAAAVEAAAAAIAAAsgAAAAQAAAAQEAAABRAAAB/wAAAAIAAAATAAAAQQAA
+  NhMAAAACAAAKQwAAORIAAAACAAAKIgAAACAAAAASAAAAAgAACiMAAAASAAAAQAAAKBIAAAAQAAAA
+  RAAAABMAAAATAAAAIwAAACIAAAAhAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAA

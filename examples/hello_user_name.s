@@ -1,9 +1,10 @@
 .data
     start_mess: "What is your name?"
-    hello: "Hello, "
-    buff: ""
+    hello:     "Hello, "
+    buff:      ""
 
 .text
+
 _start:
     pushi start_mess
     call print
@@ -17,6 +18,7 @@ _start:
     call print
 
     halt
+
 
 print:
     setA
@@ -33,6 +35,7 @@ print_loop:
 print_end:
     drop
     ret
+
 
 input_name:
     pushi buff

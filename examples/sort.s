@@ -1,11 +1,11 @@
 .data
-size: 0
-i: 0
-j: 0
-tmp1: 0
-tmp2: 0
+    size: 0
+    i:    0
+    j:    0
+    tmp1: 0
+    tmp2: 0
 
-array: 0 0 0 0 0 0 0 0 0 0
+    array: 0 0 0 0 0 0 0 0 0 0
 
 .text
 
@@ -15,7 +15,9 @@ _start:
     call print_array
     halt
 
+
 ; =====================================
+
 
 read_array:
     pushi array
@@ -41,7 +43,9 @@ read_loop:
 read_end:
     ret
 
+
 ; =====================================
+
 
 bubble_sort:
 
@@ -51,7 +55,6 @@ bubble_sort:
     store i
 
 outer_loop:
-
     push size
     push i
     sub
@@ -63,10 +66,10 @@ outer_loop:
     store j
 
 inner_loop:
-
     push size
     push j
     sub
+
     pushi 1
     sub
     jz next_outer
@@ -95,7 +98,7 @@ addr_done:
     fetchA
     store tmp1
 
-    ; tmp2 = array[j+1]
+    ; tmp2 = array[j + 1]
 
     incA
     fetchA
@@ -132,7 +135,7 @@ swap_addr_done:
     push tmp2
     storeA
 
-    ; array[j+1] = tmp1
+    ; array[j + 1] = tmp1
 
     incA
 
@@ -169,7 +172,9 @@ next_outer:
 sort_end:
     ret
 
+
 ; =====================================
+
 
 print_array:
 
@@ -179,7 +184,6 @@ print_array:
     store i
 
 print_loop:
-
     push size
     push i
     sub

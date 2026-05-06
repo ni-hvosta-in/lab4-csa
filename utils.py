@@ -1,6 +1,6 @@
 def is_number(s: str) -> bool:
     try:
-        int(s)
+        int(s, 0)
         return True
     except ValueError:
         return False
@@ -8,14 +8,14 @@ def is_number(s: str) -> bool:
 def is_valid_number(s: str):
 
     if is_number(s):
-        n = int(s)
+        n = int(s, 0)
         return - 2 ** 32 <= n <= 2 ** 32 - 1
 
     return False
 
 def is_valid_number_param(s: str) -> bool:
     if is_number(s):
-        n = int(s)
+        n = int(s, 0)
         return - 2 ** 24 <= n <= 2 ** 24 - 1
 
     return False
@@ -57,7 +57,7 @@ def parse_input(file):
             if is_number(token):
                 assert is_valid_number(token), f"Invalid number format: {token}"
 
-                parsed.append(int(token))
+                parsed.append(int(token, 0))
             else:
 
                 for char in token:
