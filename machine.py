@@ -4,6 +4,9 @@ from typing import List, Union, Dict
 from enum import Enum, auto
 import sys
 
+MASK32 = 0xFFFFFFFF
+SIGN32 = 0x80000000
+
 class Mux_Signal(Enum):
 
     SEL_SP_NEXT = auto()
@@ -45,8 +48,10 @@ class ALU_Signal(Enum):
     SUB = auto()
     MUL = auto()
     DIV = auto()
+    ADDC = auto()
     AND = auto()
     OR = auto()
+    NOT = auto()
 
 class Signal(Enum):
 
@@ -68,6 +73,10 @@ class Signal(Enum):
 
     ALU = auto()
 
+    LATCH_N = auto()
+    LATCH_Z = auto()
+    LATCH_V = auto()
+    LATCH_C = auto()
 
 class DataPath:
 
@@ -109,6 +118,10 @@ class DataPath:
         self.second = 0
         self.top = 0
         self.alu_res = 0
+        self.flag_N = 0
+        self.flag_Z = 1
+        self.flag_V = 0
+        self.flag_C = 0
         self.io_ports = io_ports
 
     def start_cycle(self):
@@ -135,6 +148,7 @@ class DataPath:
         if sel == Mux_Signal.SEL_SP_NEXT:
             self.sp_buff = self.sp + 1
         elif sel == Mux_Signal.SEL_SP_PREV:
+            self.stack[self.sp] = 0
             self.sp_buff = self.sp - 1
 
         assert -1 <= self.sp_buff < len(self.stack), f"index out of range stack: {self.sp_buff}"
@@ -167,14 +181,20 @@ class DataPath:
 
         if sel == Mux_Signal.SEL_T_SECOND:
             self.top_buff = self.second
+
         elif sel == Mux_Signal.SEL_T_ALU:
             self.top_buff = self.alu_res
+            return
+
         elif sel == Mux_Signal.SEL_T_IMM:
             self.top_buff = self.controlUnit.ir.arg
+
         elif sel == Mux_Signal.SEL_T_A:
             self.top_buff = self.reg_A
+
         elif sel == Mux_Signal.SEL_T_MEM:
             self.top_buff = self.data_memory[self.ar]
+
         elif sel == Mux_Signal.SEL_T_INPUT:
 
             port = self.controlUnit.ir.arg
@@ -183,6 +203,11 @@ class DataPath:
 
             self.top_buff = self.io_ports[port].pop(0)
             self.controlUnit.last_io = f"INPUT[{port}] -> {self.top_buff}"
+
+        value = self.top_buff & MASK32
+
+        self.flag_Z = int(value == 0)
+        self.flag_N = int((value & SIGN32) != 0)
 
     def signal_latch_AR(self, sel: Mux_Signal):
 
@@ -237,18 +262,80 @@ class DataPath:
 
         assert sel in ALU_Signal, f"internal error, alu incorrect selector: {sel}"
 
-        if (sel == ALU_Signal.ADD):
-            self.alu_res = self.top + self.second
-        elif (sel == ALU_Signal.SUB):
-            self.alu_res = self.second - self.top
-        elif (sel == ALU_Signal.MUL):
-            self.alu_res = self.second * self.top
-        elif (sel == ALU_Signal.DIV):
-            self.alu_res = self.second // self.top
-        elif (sel == ALU_Signal.AND):
-            self.alu_res = self.second & self.top
-        elif (sel == ALU_Signal.OR):
-            self.alu_res = self.second | self.top
+        a = self.second & MASK32
+        b = self.top & MASK32
+
+        if sel == ALU_Signal.ADD:
+
+            res = a + b
+
+            self.flag_C = int(res > MASK32)
+            self.alu_res = res & MASK32
+
+            sign_a = (a & SIGN32) != 0
+            sign_b = (b & SIGN32) != 0
+            sign_r = (self.alu_res & SIGN32) != 0
+
+            self.flag_V = int((sign_a == sign_b) and (sign_a != sign_r))
+
+        elif sel == ALU_Signal.SUB:
+
+            res = a - b
+
+            self.flag_C = int(a < b)
+            self.alu_res = res & MASK32
+
+            sign_a = (a & SIGN32) != 0
+            sign_b = (b & SIGN32) != 0
+            sign_r = (self.alu_res & SIGN32) != 0
+
+            self.flag_V = int((sign_a != sign_b) and (sign_a != sign_r))
+
+        elif sel == ALU_Signal.MUL:
+            res = a * b
+            self.alu_res = res & MASK32
+            self.flag_C = int(res > MASK32)
+            self.flag_V = 0
+
+        elif sel == ALU_Signal.DIV:
+            assert b != 0, "division by zero"
+
+            self.alu_res = (a // b) & MASK32
+            self.flag_C = 0
+            self.flag_V = 0
+
+        elif sel == ALU_Signal.AND:
+            self.alu_res = (a & b) & MASK32
+            self.flag_C = 0
+            self.flag_V = 0
+
+        elif sel == ALU_Signal.OR:
+            self.alu_res = (a | b) & MASK32
+            self.flag_C = 0
+            self.flag_V = 0
+        elif sel == ALU_Signal.NOT:
+            self.alu_res = (~b) & MASK32
+
+        elif sel == ALU_Signal.ADDC:
+            carry = self.flag_C
+            print(carry)
+            res = a + b + carry
+
+            self.flag_C = int(res > MASK32)
+            self.alu_res = res & MASK32
+
+            sign_a = (a & SIGN32) != 0
+            sign_b = (b & SIGN32) != 0
+            sign_r = (self.alu_res & SIGN32) != 0
+
+            self.flag_V = int( (sign_a == sign_b) and (sign_a != sign_r))
+
+
+        value = self.alu_res
+
+        self.flag_Z = int(value == 0)
+        self.flag_N = int((value & SIGN32) != 0)
+
 
     def __str__(self):
         return f"stack: {self.stack}, sp: {self.sp}, top: {self.top}, second: {self.second}, ar: {self.ar} reg_A: {self.reg_A}"
@@ -553,7 +640,27 @@ class ControlUnit:
             sp_prev,
             pc_next,
             fetch
-        ]
+        ],
+
+        # (addc)
+        # (37)
+        [
+            s_from_stack,
+            sp_prev,
+            MicroInstr(Signal.ALU, ALU_Signal.ADDC),
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            pc_next,
+            fetch
+        ],
+
+        # (not)
+        # (37)
+        [
+            MicroInstr(Signal.ALU, ALU_Signal.NOT),
+            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            pc_next,
+            fetch
+        ],
 
     ]
 
@@ -583,8 +690,9 @@ class ControlUnit:
         Opcode.CALL: 31,
         Opcode.RET: 33,
         Opcode.INPUT: 34,
-        Opcode.OUTPUT: 36
-
+        Opcode.OUTPUT: 36,
+        Opcode.ADDC: 37,
+        Opcode.NOT: 38
     }
 
     def __init__(self, dataPath: DataPath, program: List[Instruction], start):
@@ -612,6 +720,7 @@ class ControlUnit:
         if (sel == Mux_Signal.SEL_R_NEXT):
             self.reg_R += 1
         elif (sel == Mux_Signal.SEL_R_PREV):
+            self.return_stack[self.reg_R] = 0
             self.reg_R -= 1
 
         assert -1 <= self.reg_R < len(self.return_stack), f"index out of range returnStack: {self.reg_R}"
@@ -650,10 +759,10 @@ class ControlUnit:
             self.pc = self.ir.arg
 
         elif (sel == Mux_Signal.SEL_PC_JN):
-            self.pc = self.ir.arg if self.dataPath.top < 0 else self.pc + 1
+            self.pc = self.ir.arg if self.dataPath.flag_N else self.pc + 1
 
         elif (sel == Mux_Signal.SEL_PC_JZ):
-            self.pc = self.ir.arg if self.dataPath.top == 0 else self.pc + 1
+            self.pc = self.ir.arg if self.dataPath.flag_Z else self.pc + 1
 
         elif (sel == Mux_Signal.SEL_PC_RET):
             assert self.reg_R >= 0, f"return stack is empty"
@@ -725,15 +834,19 @@ class ControlUnit:
         return (
             f"PC: {self.pc:4} | "
             f" MPC: {self.mpc:3} | "
-            f"IR: {instr_str:15} | "
+            f"IR: {instr_str:12} | "
             f"R: {self.reg_R:4} | "
             f"SP: {self.dataPath.sp:3} | "
             f"T: {self.dataPath.top:5} | "
             f"S: {self.dataPath.second:5} | "
             f"A: {self.dataPath.reg_A:5} | "
             f"AR: {self.dataPath.ar:5} | "
+            f"N: {self.dataPath.flag_N} | "
+            f"Z: {self.dataPath.flag_Z} | "
+            f"V: {self.dataPath.flag_V} | "
+            f"C: {self.dataPath.flag_C} | "
             f"stack: {self.dataPath.stack} | "
-            f"return_stack: {self.return_stack}"
+            f"ret: {self.return_stack}"
         )
 
 def simulation(instructions, data_memory, io_ports, start_addr, limit=10000):
@@ -792,7 +905,6 @@ def main(code_file, data_file, input_file):
 
     instructions = from_bytes_instruction(binary_instruction)
     data = from_bytes_data(binary_memory)
-    print(start_addr)
     simulation(instructions, data, io_ports, start_addr)
     print(io_ports)
 

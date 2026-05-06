@@ -25,10 +25,12 @@ class Opcode(Enum):
     SUB = (0x21, 0)
     MUL = (0x22, 0)
     DIV = (0x23, 0)
+    ADDC  = (0x24, 0)
 
     AND = (0x30, 0)
     OR  = (0x31, 0)
-
+    NOT = (0x32, 0)
+    
     JUMP = (0x40, 1)
     JZ   = (0x41, 1)
     JN   = (0x42, 1)
@@ -57,7 +59,7 @@ class Instruction:
         self.addr = addr
 
     def __repr__(self):
-        return f"{self.opcode} {self.arg} {"label = " + self.label if self.label else ''} {"addr = " + str(self.addr) if self.addr else ''}"
+        return f"{self.opcode} {self.arg} {"label = " + self.label if self.labels else ''} {"addr = " + str(self.addr) if self.addr else ''}"
 
 
 class Variable:
