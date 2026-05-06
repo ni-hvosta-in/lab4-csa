@@ -170,7 +170,6 @@ class DataPath:
         elif sel == Mux_Signal.SEL_T_ALU:
             self.top_buff = self.alu_res
         elif sel == Mux_Signal.SEL_T_IMM:
-            print(self.controlUnit.ir.arg)
             self.top_buff = self.controlUnit.ir.arg
         elif sel == Mux_Signal.SEL_T_A:
             self.top_buff = self.reg_A
@@ -183,6 +182,7 @@ class DataPath:
             assert len(self.io_ports[port]) > 0, f"io buffer is empty"
 
             self.top_buff = self.io_ports[port].pop(0)
+            self.controlUnit.last_io = f"INPUT[{port}] -> {self.top_buff}"
 
     def signal_latch_AR(self, sel: Mux_Signal):
 
@@ -209,7 +209,6 @@ class DataPath:
             self.reg_A_buff = self.top
 
         elif (sel == Mux_Signal.SEL_A_INC):
-            print(self.reg_A)
             self.reg_A_buff = self.reg_A + 1
 
     def signal_write_st(self):
@@ -230,6 +229,8 @@ class DataPath:
         assert port in self.io_ports, f"wrong io port {port}"
 
         self.io_ports[port].append(self.top)
+
+        self.controlUnit.last_io = f"OUTPUT[{port}] <- {self.top}"
 
 
     def alu(self, sel: ALU_Signal):
@@ -276,6 +277,8 @@ class ControlUnit:
     return_stack = None
     ir: Instruction = None
     _tick = None
+
+    last_io = None
 
     mpc_next = MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_NEXT)
     fetch = MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_FETCH)
@@ -577,14 +580,18 @@ class ControlUnit:
         self.program = program
         self.pc = start
         self._tick = 0
-        self.reg_R = 0
+        self.reg_R = -1
         self.return_stack = [0] * 10
         self.mpc = 0
+
+    def tick(self):
+        self._tick += 1
 
     def signal_latch_IR(self):
         assert self.pc < len(self.program), f"pc = {self.pc} out of range"
 
         self.ir = self.program[self.pc]
+        assert self.ir != None, f"instruction equals NONE"
 
     def signal_latch_R(self, sel: Mux_Signal):
 
@@ -595,7 +602,7 @@ class ControlUnit:
         elif (sel == Mux_Signal.SEL_R_PREV):
             self.reg_R -= 1
 
-        assert 0 <= self.reg_R < len(self.return_stack), f"index out of range returnStack: {self.reg_R}"
+        assert -1 <= self.reg_R < len(self.return_stack), f"index out of range returnStack: {self.reg_R}"
 
     def signal_latch_mPC(self, sel: Mux_Signal):
 
@@ -610,7 +617,9 @@ class ControlUnit:
         elif (sel == Mux_Signal.SEL_MPC_FETCH):
             self.mpc = 0
         elif (sel == Mux_Signal.SEL_MPC_OPCODE):
+
             self.mpc = self.mpc_of_opcode.get(self.ir.opcode)
+            assert self.mpc != None, f"wrong instruction {self.ir}"
 
     def signal_latch_PC(self, sel: Mux_Signal):
 
@@ -635,7 +644,6 @@ class ControlUnit:
             self.pc = self.ir.arg if self.dataPath.top == 0 else self.pc + 1
 
         elif (sel == Mux_Signal.SEL_PC_RET):
-            print(self.reg_R)
             assert self.reg_R >= 0, f"return stack is empty"
             self.pc = self.return_stack[self.reg_R]
 
@@ -683,7 +691,6 @@ class ControlUnit:
             self.dataPath.signal_write_st()
             
         elif (latch == Signal.LATCH_A):
-            print(sel)
             self.dataPath.signal_latch_A(sel)
 
         elif (latch == Signal.WRITE_MEM):
@@ -698,27 +705,72 @@ class ControlUnit:
         else:
             assert False, f"unknown latch: {microinstr.latch}"
 
-    def sumulate(self):
-        while self.ir == None or self.ir.opcode != Opcode.HALT:
-            print(f"{self.ir.opcode} {self.ir.arg}"if self.ir != None else "")
-            self._tick += 1
-            curr_tick = self._microprogram[self.mpc]
-            self.dataPath.start_cycle()
+    def __repr__(self):
+        instr = self.ir
+
+        instr_str = f"{instr.opcode.name} {instr.arg}" if instr else "None"
+
+        return (
+            f"PC: {self.pc:4} | "
+            f" MPC: {self.mpc:3} | "
+            f"IR: {instr_str:15} | "
+            f"R: {self.reg_R:4} | "
+            f"SP: {self.dataPath.sp:3} | "
+            f"T: {self.dataPath.top:5} | "
+            f"S: {self.dataPath.second:5} | "
+            f"A: {self.dataPath.reg_A:5} | "
+            f"AR: {self.dataPath.ar:5} | "
+            f"stack: {self.dataPath.stack} | "
+            f"return_stack: {self.return_stack}"
+        )
+
+def simulation(instructions, data_memory, io_ports, start_addr, limit=1000):
+
+    data_path = DataPath(10, data_memory, io_ports)
+    controlUnit = ControlUnit(data_path, instructions, start_addr)
+    data_path.controlUnit = controlUnit
+
+    with open("machine.log", "w") as log_file:
+
+        while controlUnit._tick < limit:
+
+            controlUnit.tick()
+
+            curr_tick = controlUnit._microprogram[controlUnit.mpc]
+
+            controlUnit.dataPath.start_cycle()
+            log_file.write(f"\n=== TICK {controlUnit._tick} ===\n")
+            log_file.write(f"\n--- MICROINSTRUCTIONS ---\n")
+
             for m in curr_tick:
-                self.dispatch(m)
+                log_file.write(f"   {m}\n")
+                controlUnit.dispatch(m)
 
-            print(self)
-            print(self.dataPath)
-            self.dataPath.update()
+            if controlUnit.last_io:
+                log_file.write(controlUnit.last_io + "\n")
+                controlUnit.last_io = None
 
+            log_file.write(repr(controlUnit)+"\n")
+            print(controlUnit)
+            log_file.write("-" * 60)
 
-    def __str__(self):
-        return f"pc = {self.pc}, mpc = {self.mpc} return_stack = {self.return_stack} reg_R = {self.reg_R}"
+            controlUnit.dataPath.update()
+
+            if controlUnit.ir.opcode == Opcode.HALT:
+                log_file.write("HALT\n")
+                break
+        else:
+            log_file.write("LIMIT REACHED\n")
+
+    return io_ports, controlUnit._tick
 
 def main(code_file, data_file, input_file):
 
     with open(code_file, 'rb') as f:
         binary_instruction = f.read()
+
+    start_addr = int.from_bytes(binary_instruction[:4], "big")
+    binary_instruction = binary_instruction[4:]
 
     with open(data_file, 'rb') as f:
         binary_memory = f.read()
@@ -728,15 +780,9 @@ def main(code_file, data_file, input_file):
 
     instructions = from_bytes_instruction(binary_instruction)
     data = from_bytes_data(binary_memory)
-
-
-
-    dp: DataPath = DataPath(10, data, io_ports)
-    cu: ControlUnit = ControlUnit(dp, instructions, start= 10)
-    dp.controlUnit = cu
-    cu.sumulate()
+    print(start_addr)
+    simulation(instructions, data, io_ports, start_addr)
     print(io_ports)
-
 
 if __name__ == "__main__":
     assert len(sys.argv) == 4, "Wrong arguments: machine.py <code_file> data_file> <input_file>"

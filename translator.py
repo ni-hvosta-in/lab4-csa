@@ -267,14 +267,14 @@ def parse_instruction_and_variables(lines: List[str]) -> Tuple[List[Tuple], List
     return segments_text, segments_data
 
 
-def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction], Dict[str, int]]:
+def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction], Dict[str, int], int]:
     """присвоение каждой инструкции своего адресса"""
     instruction_addr = 0
     
     used_addr = set();
     instructions_with_addr: List[Instruction] = []
     instruction_labels_addr: Dict[str, int] = dict()
-    
+    start_addr = None
     for addr, instructions in segments_text:
         instruction_addr = addr
         for instruction in instructions:
@@ -282,15 +282,20 @@ def arrange_instructions(segments_text: List[tuple]) -> Tuple[List[Instruction],
             
             if instruction.label:
                 assert instruction.label not in instruction_labels_addr, f"Duplicate label {instruction.label}"
-                
+
+                if instruction.label == "_start":
+                    start_addr = instruction_addr
+
                 instruction_labels_addr[instruction.label] = instruction_addr
 
             used_addr.add(instruction_addr)    
             instruction.addr = instruction_addr
             instructions_with_addr.append(instruction)
             instruction_addr += 1
-    
-    return instructions_with_addr, instruction_labels_addr
+
+    assert start_addr != None, f"no label _start"
+
+    return instructions_with_addr, instruction_labels_addr, start_addr
 
 
 def arrange_variables(segments_data: List[tuple]) -> Dict[str, Variable]:
@@ -420,13 +425,14 @@ def main(source: str, target_instruction_file: str, target_data_file: str):
 
     segments_text, segments_data = parse_instruction_and_variables(lines)
 
-    instructions_with_addr, instruction_labels_addr = arrange_instructions(segments_text)
+    instructions_with_addr, instruction_labels_addr, start_addr = arrange_instructions(segments_text)
     variables_addr = arrange_variables(segments_data)
 
     instruction_mem = instruction_to_bin(instructions_with_addr, instruction_labels_addr, variables_addr)
     data_mem = data_to_bin(variables_addr)
 
     with open(target_instruction_file, 'wb') as f:
+        f.write(start_addr.to_bytes(4, "big"))
         f.write(instruction_mem)
 
     with open(target_data_file, 'wb') as f:
