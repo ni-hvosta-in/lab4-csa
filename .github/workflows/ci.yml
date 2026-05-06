@@ -18,7 +18,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install Poetry
-        run: pip install poetry
+        run: pip install poetry==1.8.3
 
       - name: Install dependencies
         run: poetry install
@@ -29,5 +29,11 @@ jobs:
       - name: MyPy
         run: poetry run mypy .
 
-      - name: Pytest
-        run: poetry run pytest
+      - name: Run Pytest
+        run: poetry run pytest --junitxml=pytest.xml
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: always()
+        with:
+          report_paths: pytest.xml
