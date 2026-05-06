@@ -496,11 +496,23 @@ class ControlUnit:
 
         # (jz)
         # (29)
-        [MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JZ), fetch],
+        [
+            MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JZ),
+            s_from_stack,
+            t_from_second,
+            sp_prev,
+            fetch
+        ],
 
         # (jn)
         # (30)
-        [MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JN), fetch],
+        [
+            MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JN),
+            s_from_stack,
+            t_from_second,
+            sp_prev,
+            fetch
+        ],
 
         # (call)
         # (31)
