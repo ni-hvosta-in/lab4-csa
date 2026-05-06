@@ -1,14 +1,16 @@
-from isa import from_bytes_instruction, from_bytes_data, Instruction, Opcode
-from utils import parse_input
-from typing import List, Union, Dict
-from enum import Enum, auto
+from __future__ import annotations
+
 import sys
+from enum import Enum, auto
+
+from isa import Instruction, Opcode, from_bytes_data, from_bytes_instruction
+from utils import parse_input
 
 MASK32 = 0xFFFFFFFF
 SIGN32 = 0x80000000
 
-class Mux_Signal(Enum):
 
+class Mux_Signal(Enum):
     SEL_SP_NEXT = auto()
     SEL_SP_PREV = auto()
 
@@ -43,7 +45,6 @@ class Mux_Signal(Enum):
 
 
 class ALU_Signal(Enum):
-
     ADD = auto()
     SUB = auto()
     MUL = auto()
@@ -53,8 +54,8 @@ class ALU_Signal(Enum):
     OR = auto()
     NOT = auto()
 
-class Signal(Enum):
 
+class Signal(Enum):
     LATCH_SP = auto()
     LATCH_AR = auto()
     LATCH_S = auto()
@@ -78,36 +79,35 @@ class Signal(Enum):
     LATCH_V = auto()
     LATCH_C = auto()
 
+
 class DataPath:
+    sp: int
+    stack_size: int
+    stack: list[int]
 
-    sp = None
-    stack_size = None
-    stack = None
+    data_memory_size: int
+    data_memory: list[int]
 
-    data_memory_size = None
-    data_memory = None
+    second: int
+    top: int
+    ar: int
+    reg_A: int
+    alu_res: int
 
-    second = None
-    top = None
-    ar = None
-    reg_A = None
-    alu_res = None
+    top_buff: int
+    second_buff: int
+    sp_buff: int
+    ar_buff: int
+    reg_A_buff: int
 
-    top_buff = None
-    second_buff = None
-    sp_buff = None
-    ar_buff = None
-    reg_A_buff = None
+    controlUnit: ControlUnit
 
-    controlUnit: ControlUnit = None
+    io_ports: dict[int, list[int]]
 
-    io_ports: Dict[int, List[int]] = None
-
-    def __init__(self, stack_size, data_memory: List[int], io_ports: Dict[int, List[int]], controlUnit: ControlUnit = None ):
+    def __init__(self, stack_size: int, data_memory: list[int], io_ports: dict[int, list[int]]):
 
         self.stack_size = stack_size
         self.data_memory_size = len(data_memory)
-        self.controlUnit = controlUnit
 
         self.stack = [0] * self.stack_size
         self.data_memory = data_memory
@@ -124,26 +124,25 @@ class DataPath:
         self.flag_C = 0
         self.io_ports = io_ports
 
-    def start_cycle(self):
+    def start_cycle(self) -> None:
         self.sp_buff = self.sp
         self.ar_buff = self.ar
         self.reg_A_buff = self.reg_A
         self.second_buff = self.second
         self.top_buff = self.top
 
-    def update(self):
+    def update(self) -> None:
         self.sp = self.sp_buff
         self.ar = self.ar_buff
         self.reg_A = self.reg_A_buff
         self.second = self.second_buff
         self.top = self.top_buff
 
-    def signal_latch_SP(self, sel: Mux_Signal):
+    def signal_latch_SP(self, sel: Mux_Signal) -> None:
 
-        assert sel in {
-            Mux_Signal.SEL_SP_NEXT,
-            Mux_Signal.SEL_SP_PREV
-        }, f"internal error, latch_SP incorrect selector: {sel}"
+        assert sel in {Mux_Signal.SEL_SP_NEXT, Mux_Signal.SEL_SP_PREV}, (
+            f"internal error, latch_SP incorrect selector: {sel}"
+        )
 
         if sel == Mux_Signal.SEL_SP_NEXT:
             self.sp_buff = self.sp + 1
@@ -153,22 +152,20 @@ class DataPath:
 
         assert -1 <= self.sp_buff < len(self.stack), f"index out of range stack: {self.sp_buff}"
 
-    def signal_latch_S(self, sel: Mux_Signal):
+    def signal_latch_S(self, sel: Mux_Signal) -> None:
 
-        assert sel in {
-            Mux_Signal.SEL_S_TOP,
-            Mux_Signal.SEL_S_STACK
-        }, f"internal error, latch_S incorrect selector: {sel}"
+        assert sel in {Mux_Signal.SEL_S_TOP, Mux_Signal.SEL_S_STACK}, (
+            f"internal error, latch_S incorrect selector: {sel}"
+        )
 
         if sel == Mux_Signal.SEL_S_TOP:
             self.second_buff = self.top
         elif sel == Mux_Signal.SEL_S_STACK:
-
-            assert self.sp > -1, f"stack is empty"
+            assert self.sp > -1, "stack is empty"
 
             self.second_buff = self.stack[self.sp]
 
-    def signal_latch_T(self, sel: Mux_Signal):
+    def signal_latch_T(self, sel: Mux_Signal) -> None:
 
         assert sel in {
             Mux_Signal.SEL_T_SECOND,
@@ -176,7 +173,7 @@ class DataPath:
             Mux_Signal.SEL_T_IMM,
             Mux_Signal.SEL_T_A,
             Mux_Signal.SEL_T_MEM,
-            Mux_Signal.SEL_T_INPUT
+            Mux_Signal.SEL_T_INPUT,
         }, f"internal error, latch_T incorrect selector: {sel}"
 
         if sel == Mux_Signal.SEL_T_SECOND:
@@ -196,10 +193,9 @@ class DataPath:
             self.top_buff = self.data_memory[self.ar]
 
         elif sel == Mux_Signal.SEL_T_INPUT:
-
             port = self.controlUnit.ir.arg
             assert port in self.io_ports, f"wrong io port {port}"
-            assert len(self.io_ports[port]) > 0, f"io buffer is empty"
+            assert len(self.io_ports[port]) > 0, "io buffer is empty"
 
             self.top_buff = self.io_ports[port].pop(0)
             self.controlUnit.last_io = f"INPUT[{port}] -> {self.top_buff}"
@@ -209,46 +205,40 @@ class DataPath:
         self.flag_Z = int(value == 0)
         self.flag_N = int((value & SIGN32) != 0)
 
-    def signal_latch_AR(self, sel: Mux_Signal):
+    def signal_latch_AR(self, sel: Mux_Signal) -> None:
 
-        assert sel in {
-            Mux_Signal.SEL_AR_A,
-            Mux_Signal.SEL_AR_CU
-        }, f"internal error, latch_AR incorrect selector: {sel}"
+        assert sel in {Mux_Signal.SEL_AR_A, Mux_Signal.SEL_AR_CU}, f"internal error, latch_AR incorrect selector: {sel}"
 
-        if (sel == Mux_Signal.SEL_AR_A):
+        if sel == Mux_Signal.SEL_AR_A:
             self.ar_buff = self.reg_A
 
-        elif (sel == Mux_Signal.SEL_AR_CU):
+        elif sel == Mux_Signal.SEL_AR_CU:
             self.ar_buff = self.controlUnit.ir.arg
-            assert self.ar_buff != None, f"wrong selector latch_AR {sel}"
+            assert self.ar_buff is not None, f"wrong selector latch_AR {sel}"
 
-    def signal_latch_A(self, sel: Mux_Signal):
+    def signal_latch_A(self, sel: Mux_Signal) -> None:
 
-        assert sel in {
-            Mux_Signal.SEL_A_T,
-            Mux_Signal.SEL_A_INC
-        }, f"internal error, latch_A incorrect selector: {sel}"
+        assert sel in {Mux_Signal.SEL_A_T, Mux_Signal.SEL_A_INC}, f"internal error, latch_A incorrect selector: {sel}"
 
-        if (sel == Mux_Signal.SEL_A_T):
+        if sel == Mux_Signal.SEL_A_T:
             self.reg_A_buff = self.top
 
-        elif (sel == Mux_Signal.SEL_A_INC):
+        elif sel == Mux_Signal.SEL_A_INC:
             self.reg_A_buff = self.reg_A + 1
 
-    def signal_write_st(self):
+    def signal_write_st(self) -> None:
 
-        assert self.sp > -1, f"stack is empty"
+        assert self.sp > -1, "stack is empty"
 
         self.stack[self.sp] = self.second
 
-    def signal_write_dm(self):
+    def signal_write_dm(self) -> None:
 
         assert 0 <= self.ar < self.data_memory_size, f"incorrect ar = {self.ar}"
 
         self.data_memory[self.ar] = self.top
 
-    def signal_write_io(self):
+    def signal_write_io(self) -> None:
 
         port = int(self.controlUnit.ir.arg)
         assert port in self.io_ports, f"wrong io port {port}"
@@ -257,8 +247,7 @@ class DataPath:
 
         self.controlUnit.last_io = f"OUTPUT[{port}] <- {self.top}"
 
-
-    def alu(self, sel: ALU_Signal):
+    def alu(self, sel: ALU_Signal) -> None:
 
         assert sel in ALU_Signal, f"internal error, alu incorrect selector: {sel}"
 
@@ -266,7 +255,6 @@ class DataPath:
         b = self.top & MASK32
 
         if sel == ALU_Signal.ADD:
-
             res = a + b
 
             self.flag_C = int(res > MASK32)
@@ -279,7 +267,6 @@ class DataPath:
             self.flag_V = int((sign_a == sign_b) and (sign_a != sign_r))
 
         elif sel == ALU_Signal.SUB:
-
             res = a - b
 
             self.flag_C = int(a < b)
@@ -327,44 +314,49 @@ class DataPath:
             sign_b = (b & SIGN32) != 0
             sign_r = (self.alu_res & SIGN32) != 0
 
-            self.flag_V = int( (sign_a == sign_b) and (sign_a != sign_r))
-
+            self.flag_V = int((sign_a == sign_b) and (sign_a != sign_r))
 
         value = self.alu_res
 
         self.flag_Z = int(value == 0)
         self.flag_N = int((value & SIGN32) != 0)
 
-
-    def __str__(self):
-        return f"stack: {self.stack}, sp: {self.sp}, top: {self.top}, second: {self.second}, ar: {self.ar} reg_A: {self.reg_A}"
+    def __str__(self) -> str:
+        return (
+            f"stack: {self.stack}, "
+            f"sp: {self.sp}, "
+            f"top: {self.top}, "
+            f"second: {self.second}, "
+            f"ar: {self.ar}, "
+            f"reg_A: {self.reg_A}"
+        )
 
 class MicroInstr:
-
     latch = None
     sel = None
 
-    def __init__(self, latch: Signal, sel: Union[Mux_Signal, ALU_Signal] = None):
+    def __init__(self, latch: Signal, sel: Mux_Signal | ALU_Signal | None = None):
         self.latch = latch
         self.sel = sel
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"latch: {self.latch}, sel: {self.sel}"
 
 
 class ControlUnit:
+    program: list[Instruction]
+    pc: int
+    dataPath: DataPath
 
-    program: List[Instruction] = None
-    pc = None
-    dataPath: DataPath = None
+    mpc: int
+    reg_R: int
+    return_stack: list[int]
 
-    mpc = None
-    reg_R = None
-    return_stack = None
-    ir: Instruction = None
-    _tick = None
+    ir: Instruction
 
-    last_io = None
+    _tick: int
+
+    last_io: str | None = None
 
     mpc_next = MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_NEXT)
     fetch = MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_FETCH)
@@ -381,7 +373,6 @@ class ControlUnit:
     write_dm = MicroInstr(Signal.WRITE_MEM)
 
     pc_next = MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_NEXT)
-
 
     _microprogram = [
 
@@ -518,7 +509,7 @@ class ControlUnit:
             MicroInstr(Signal.ALU, ALU_Signal.ADD),
             MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
-            fetch
+            fetch,
         ],
 
         # (sub)
@@ -529,7 +520,7 @@ class ControlUnit:
             MicroInstr(Signal.ALU, ALU_Signal.SUB),
             MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
-            fetch
+            fetch,
         ],
 
         # (mul)
@@ -540,7 +531,7 @@ class ControlUnit:
             MicroInstr(Signal.ALU, ALU_Signal.MUL),
             MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
-            fetch
+            fetch,
         ],
 
         # (div)
@@ -551,7 +542,7 @@ class ControlUnit:
             MicroInstr(Signal.ALU, ALU_Signal.DIV),
             MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
-            fetch
+            fetch,
         ],
 
         # (and)
@@ -664,16 +655,15 @@ class ControlUnit:
     ]
 
     mpc_of_opcode = {
-
-        Opcode.PUSH : 2,
-        Opcode.PUSHI : 4,
-        Opcode.STORE : 6,
-        Opcode.FETCH_A : 8,
-        Opcode.INCA : 10,
+        Opcode.PUSH: 2,
+        Opcode.PUSHI: 4,
+        Opcode.STORE: 6,
+        Opcode.FETCH_A: 8,
+        Opcode.INCA: 10,
         Opcode.STORE_A: 11,
-        Opcode.SET_A : 13,
-        Opcode.GET_A : 14,
-        Opcode.DROP : 16,
+        Opcode.SET_A: 13,
+        Opcode.GET_A: 14,
+        Opcode.DROP: 16,
         Opcode.DUP: 17,
         Opcode.SWAP: 19,
         Opcode.OVER: 20,
@@ -691,10 +681,10 @@ class ControlUnit:
         Opcode.INPUT: 34,
         Opcode.OUTPUT: 36,
         Opcode.ADDC: 37,
-        Opcode.NOT: 38
+        Opcode.NOT: 38,
     }
 
-    def __init__(self, dataPath: DataPath, program: List[Instruction], start):
+    def __init__(self, dataPath: DataPath, program: list[Instruction], start: int) -> None:
         self.dataPath = dataPath
         self.program = program
         self.pc = start
@@ -703,129 +693,141 @@ class ControlUnit:
         self.return_stack = [0] * 10
         self.mpc = 0
 
-    def tick(self):
+    def tick(self) -> None:
         self._tick += 1
 
-    def signal_latch_IR(self):
+    def signal_latch_IR(self) -> None:
         assert self.pc < len(self.program), f"pc = {self.pc} out of range"
 
         self.ir = self.program[self.pc]
-        assert self.ir != None, f"instruction equals NONE"
+        assert self.ir is not None, "instruction equals NONE"
 
-    def signal_latch_R(self, sel: Mux_Signal):
+    def signal_latch_R(self, sel: Mux_Signal) -> None:
 
-        assert sel in {Mux_Signal.SEL_R_NEXT, Mux_Signal.SEL_R_PREV}, f"internal error, latch_R incorrect selector: {sel}"
+        assert sel in {Mux_Signal.SEL_R_NEXT, Mux_Signal.SEL_R_PREV}, (
+            f"internal error, latch_R incorrect selector: {sel}"
+        )
 
-        if (sel == Mux_Signal.SEL_R_NEXT):
+        if sel == Mux_Signal.SEL_R_NEXT:
             self.reg_R += 1
-        elif (sel == Mux_Signal.SEL_R_PREV):
+        elif sel == Mux_Signal.SEL_R_PREV:
             self.return_stack[self.reg_R] = 0
             self.reg_R -= 1
 
         assert -1 <= self.reg_R < len(self.return_stack), f"index out of range returnStack: {self.reg_R}"
 
-    def signal_latch_mPC(self, sel: Mux_Signal):
+    def signal_latch_mPC(self, sel: Mux_Signal) -> None:
 
-        assert sel in {
-            Mux_Signal.SEL_MPC_NEXT,
-            Mux_Signal.SEL_MPC_OPCODE,
-            Mux_Signal.SEL_MPC_FETCH
-        }, f"internal error, latch_mPC incorrect selector: {sel}"
+        assert sel in {Mux_Signal.SEL_MPC_NEXT, Mux_Signal.SEL_MPC_OPCODE, Mux_Signal.SEL_MPC_FETCH}, (
+            f"internal error, latch_mPC incorrect selector: {sel}"
+        )
 
-        if (sel == Mux_Signal.SEL_MPC_NEXT):
+        if sel == Mux_Signal.SEL_MPC_NEXT:
             self.mpc += 1
-        elif (sel == Mux_Signal.SEL_MPC_FETCH):
+        elif sel == Mux_Signal.SEL_MPC_FETCH:
             self.mpc = 0
-        elif (sel == Mux_Signal.SEL_MPC_OPCODE):
+        elif sel == Mux_Signal.SEL_MPC_OPCODE:
+            assert self.ir.opcode in self.mpc_of_opcode, (
+                f"wrong instruction {self.ir}"
+            )
 
-            self.mpc = self.mpc_of_opcode.get(self.ir.opcode)
-            assert self.mpc != None, f"wrong instruction {self.ir}"
+            self.mpc = self.mpc_of_opcode[self.ir.opcode]
 
-    def signal_latch_PC(self, sel: Mux_Signal):
+    def signal_latch_PC(self, sel: Mux_Signal) -> None:
 
         assert sel in {
             Mux_Signal.SEL_PC_NEXT,
             Mux_Signal.SEL_PC_RET,
             Mux_Signal.SEL_PC_ADDR,
             Mux_Signal.SEL_PC_JN,
-            Mux_Signal.SEL_PC_JZ
+            Mux_Signal.SEL_PC_JZ,
         }, f"internal error, latch_PC incorrect selector: {sel}"
 
-        if (sel == Mux_Signal.SEL_PC_NEXT):
+        if sel == Mux_Signal.SEL_PC_NEXT:
             self.pc += 1
 
-        elif (sel == Mux_Signal.SEL_PC_ADDR):
+        elif sel == Mux_Signal.SEL_PC_ADDR:
             self.pc = self.ir.arg
 
-        elif (sel == Mux_Signal.SEL_PC_JN):
+        elif sel == Mux_Signal.SEL_PC_JN:
             self.pc = self.ir.arg if self.dataPath.flag_N else self.pc + 1
 
-        elif (sel == Mux_Signal.SEL_PC_JZ):
+        elif sel == Mux_Signal.SEL_PC_JZ:
             self.pc = self.ir.arg if self.dataPath.flag_Z else self.pc + 1
 
-        elif (sel == Mux_Signal.SEL_PC_RET):
-            assert self.reg_R >= 0, f"return stack is empty"
+        elif sel == Mux_Signal.SEL_PC_RET:
+            assert self.reg_R >= 0, "return stack is empty"
             self.pc = self.return_stack[self.reg_R]
 
-    def signal_write_ret(self):
+    def signal_write_ret(self) -> None:
 
-        assert self.reg_R > -1, f"return stack is empty"
+        assert self.reg_R > -1, "return stack is empty"
 
         self.return_stack[self.reg_R] = self.pc + 1
 
-    def dispatch(self, microinstr: MicroInstr):
+    def dispatch(self, microinstr: MicroInstr) -> None:
+        assert microinstr.latch in Signal, (
+            f"wrong latch: {microinstr.latch}"
+        )
 
-        assert microinstr.latch in Signal, f"wrong latch: {microinstr.latch}"
+        sel = microinstr.sel
+        latch = microinstr.latch
 
-        sel: Mux_Signal = microinstr.sel
-        latch: Signal = microinstr.latch
-
-        if (latch == Signal.LATCH_PC):
+        if latch == Signal.LATCH_PC:
+            assert isinstance(sel, Mux_Signal)
             self.signal_latch_PC(sel)
 
-        elif (latch == Signal.LATCH_R):
+        elif latch == Signal.LATCH_R:
+            assert isinstance(sel, Mux_Signal)
             self.signal_latch_R(sel)
 
-        elif (latch == Signal.LATCH_MPC):
+        elif latch == Signal.LATCH_MPC:
+            assert isinstance(sel, Mux_Signal)
             self.signal_latch_mPC(sel)
 
-        elif (latch == Signal.LATCH_IR):
+        elif latch == Signal.LATCH_IR:
             self.signal_latch_IR()
 
-        elif (latch == Signal.WRITE_RET):
+        elif latch == Signal.WRITE_RET:
             self.signal_write_ret()
 
-        elif (latch == Signal.LATCH_AR):
+        elif latch == Signal.LATCH_AR:
+            assert isinstance(sel, Mux_Signal)
             self.dataPath.signal_latch_AR(sel)
 
-        elif (latch == Signal.LATCH_SP):
+        elif latch == Signal.LATCH_SP:
+            assert isinstance(sel, Mux_Signal)
             self.dataPath.signal_latch_SP(sel)
 
-        elif (latch == Signal.LATCH_S):
+        elif latch == Signal.LATCH_S:
+            assert isinstance(sel, Mux_Signal)
             self.dataPath.signal_latch_S(sel)
 
-        elif (latch == Signal.LATCH_T):
+        elif latch == Signal.LATCH_T:
+            assert isinstance(sel, Mux_Signal)
             self.dataPath.signal_latch_T(sel)
 
-        elif (latch == Signal.WRITE_ST):
+        elif latch == Signal.WRITE_ST:
             self.dataPath.signal_write_st()
-            
-        elif (latch == Signal.LATCH_A):
+
+        elif latch == Signal.LATCH_A:
+            assert isinstance(sel, Mux_Signal)
             self.dataPath.signal_latch_A(sel)
 
-        elif (latch == Signal.WRITE_MEM):
+        elif latch == Signal.WRITE_MEM:
             self.dataPath.signal_write_dm()
 
-        elif (latch == Signal.ALU):
+        elif latch == Signal.ALU:
+            assert isinstance(sel, ALU_Signal)
             self.dataPath.alu(sel)
 
-        elif (latch == Signal.WRITE_IO):
+        elif latch == Signal.WRITE_IO:
             self.dataPath.signal_write_io()
 
         else:
-            assert False, f"unknown latch: {microinstr.latch}"
+            raise AssertionError(f"unknown latch: {microinstr.latch}")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         instr = self.ir
         instr_str = f"{instr.opcode.name} {instr.arg}" if instr else "None"
 
@@ -843,23 +845,27 @@ class ControlUnit:
             f"Z:{self.dataPath.flag_Z} "
             f"V:{self.dataPath.flag_V} "
             f"C:{self.dataPath.flag_C}\n"
-
             f"STACK: {self.dataPath.stack}\n"
             f"RETURN_STACK:   {self.return_stack}\n"
-
             f"IO: {self.dataPath.io_ports}"
         )
 
-def simulation(instructions, data_memory, io_ports, start_addr, limit=1000000000, debug=True):
+
+def simulation(
+    instructions: list[Instruction],
+    data_memory: list[int],
+    io_ports: dict[int, list[int]],
+    start_addr: int,
+    limit: int = 1000000000,
+    debug: bool = True,
+) -> None:
 
     data_path = DataPath(10, data_memory, io_ports)
     controlUnit = ControlUnit(data_path, instructions, start_addr)
     data_path.controlUnit = controlUnit
 
     with open("machine.log", "w") as log_file:
-
         while controlUnit._tick < limit:
-
             controlUnit.tick()
 
             curr_tick = controlUnit._microprogram[controlUnit.mpc]
@@ -867,7 +873,7 @@ def simulation(instructions, data_memory, io_ports, start_addr, limit=1000000000
             controlUnit.dataPath.start_cycle()
             if debug:
                 log_file.write(f"\n=== TICK {controlUnit._tick} ===\n")
-                log_file.write(f"\n--- MICROINSTRUCTIONS ---\n")
+                log_file.write("\n--- MICROINSTRUCTIONS ---\n")
 
             for m in curr_tick:
                 if debug:
@@ -893,24 +899,25 @@ def simulation(instructions, data_memory, io_ports, start_addr, limit=1000000000
 
         log_file.write(f"\nTOTAL TICK : {controlUnit._tick}\n")
         log_file.write(f"\nFINAL io-ports {controlUnit.dataPath.io_ports}\n")
-    return io_ports, controlUnit._tick
 
-def main(code_file, data_file, input_file, debug = False):
 
-    with open(code_file, 'rb') as f:
-        binary_instruction = f.read()
+def main(code_file: str, data_file: str, input_file: str, debug: bool=False) -> None:
+
+    with open(code_file, "rb") as f:
+        binary_instruction = bytearray(f.read())
 
     start_addr = int.from_bytes(binary_instruction[:4], "big")
     binary_instruction = binary_instruction[4:]
 
-    with open(data_file, 'rb') as f:
-        binary_memory = f.read()
+    with open(data_file, "rb") as f:
+        binary_memory = bytearray(f.read())
 
     io_ports = parse_input(input_file)
 
     instructions = from_bytes_instruction(binary_instruction)
     data = from_bytes_data(binary_memory)
-    simulation(instructions, data, io_ports, start_addr, debug= debug)
+    simulation(instructions, data, io_ports, start_addr, debug=debug)
+
 
 if __name__ == "__main__":
     assert len(sys.argv) == 4, "Wrong arguments: machine.py <code_file> data_file> <input_file>"

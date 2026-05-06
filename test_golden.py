@@ -1,15 +1,16 @@
 import os
 import tempfile
+from typing import Any
 
 import pytest
 
 import machine
 import translator
 
-@pytest.mark.golden_test("golden/*.yml")
-def test_translator_and_machine(golden):
-    with tempfile.TemporaryDirectory() as tmpdirname:
 
+@pytest.mark.golden_test("golden/*.yml")
+def test_translator_and_machine(golden: Any) -> None:
+    with tempfile.TemporaryDirectory() as tmpdirname:
         test_name = os.path.basename(str(golden.path))
 
         source = os.path.join(tmpdirname, "source.s")
