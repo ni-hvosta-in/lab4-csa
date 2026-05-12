@@ -1,8 +1,16 @@
 import re
 import sys
 
-from isa import Instruction, Opcode, Variable, VarType
-from utils import is_number, is_valid_number, is_valid_number_param, is_valid_string
+from isa import (
+    Instruction,
+    Opcode,
+    Variable,
+    VarType,
+    is_number,
+    is_valid_number,
+    is_valid_number_param,
+    is_valid_string,
+)
 
 name_to_opcode_dict: dict[str, Opcode] = {
     "push": Opcode.PUSH,
@@ -306,7 +314,7 @@ def arrange_instructions(
 
 
 def arrange_variables(segments_data: list[tuple[int, list[Variable]]]) -> dict[str, Variable]:
-    """присвоение каждой переменной своего адресса"""
+    """присвоение каждой переменной своего адреса"""
     variables_addr: dict[str, Variable] = dict()
     variable_addr = 0
 

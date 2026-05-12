@@ -21,4 +21,7 @@ loop:
     jump loop
 
 ret:
+    pushi 0
+    output 1
+
     halt

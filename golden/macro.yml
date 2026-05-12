@@ -1,0 +1,175 @@
+in_source: |-
+  macro print_char value
+      pushi value
+      output 1
+  endmacro
+
+  .text
+  _start:
+      print_char 72
+      print_char 105
+      halt
+
+in_stdin: |-
+  []
+out_machine_log: |2
+
+  === TICK 1 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.LATCH_IR, sel: None
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+  PC:    0 | MPC:   3 | IR: PUSHI 72     | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: []}
+  ------------------------------------------------------------
+  === TICK 2 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
+  PC:    0 | MPC:   4 | IR: PUSHI 72     | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: []}
+  ------------------------------------------------------------
+  === TICK 3 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
+     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+  PC:    1 | MPC:   0 | IR: PUSHI 72     | R:  -1 | SP:   0 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: []}
+  ------------------------------------------------------------
+  === TICK 4 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.LATCH_IR, sel: None
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+  PC:    1 | MPC:  35 | IR: OUTPUT 1     | R:  -1 | SP:   0 | T:    72 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: []}
+  ------------------------------------------------------------
+  === TICK 5 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.WRITE_IO, sel: None
+     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_SECOND
+     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+  OUTPUT[1] <- 72
+  PC:    2 | MPC:   0 | IR: OUTPUT 1     | R:  -1 | SP:   0 | T:    72 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [72]}
+  ------------------------------------------------------------
+  === TICK 6 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.LATCH_IR, sel: None
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+  PC:    2 | MPC:   3 | IR: PUSHI 105    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [72]}
+  ------------------------------------------------------------
+  === TICK 7 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
+  PC:    2 | MPC:   4 | IR: PUSHI 105    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [72]}
+  ------------------------------------------------------------
+  === TICK 8 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
+     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+  PC:    3 | MPC:   0 | IR: PUSHI 105    | R:  -1 | SP:   0 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [72]}
+  ------------------------------------------------------------
+  === TICK 9 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.LATCH_IR, sel: None
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+  PC:    3 | MPC:  35 | IR: OUTPUT 1     | R:  -1 | SP:   0 | T:   105 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [72]}
+  ------------------------------------------------------------
+  === TICK 10 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.WRITE_IO, sel: None
+     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_SECOND
+     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+  OUTPUT[1] <- 105
+  PC:    4 | MPC:   0 | IR: OUTPUT 1     | R:  -1 | SP:   0 | T:   105 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [72, 105]}
+  ------------------------------------------------------------
+  === TICK 11 ===
+
+  --- MICROINSTRUCTIONS ---
+     latch: Signal.LATCH_IR, sel: None
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+  PC:    4 | MPC:   0 | IR: HALT None    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [72, 105]}
+  ------------------------------------------------------------
+  HALT
+
+  TOTAL TICK : 11
+
+  FINAL io-ports {1: [72, 105]}
+out_variable_log: ''
+out_instruction_log: |
+  0 - 02000048 - PUSHI 72 
+  1 - 51000001 - OUTPUT 1 
+  2 - 02000069 - PUSHI 105 
+  3 - 51000001 - OUTPUT 1 
+  4 - ff000000 - HALT  
+out_data: !!binary |
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+out_code: !!binary |
+  AAAAAAIAAEhRAAABAgAAaVEAAAH/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  AAAAAAAA
