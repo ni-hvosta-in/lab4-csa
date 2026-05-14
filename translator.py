@@ -200,7 +200,7 @@ def parse_instruction_and_variables(lines: list[str])\
     segments_data: list[tuple[int, list[Variable]]] = []
 
     global_variables = set()
-    curr_text_org = 0
+    curr_text_org = 1
     curr_data_org = 0
     curr_section = None
     curr_instruction_labels: list[str] = []
@@ -226,6 +226,7 @@ def parse_instruction_and_variables(lines: list[str])\
                         instructions = []
 
                     curr_text_org = int(tokens[1])
+                    assert curr_text_org > 0, "Incorrect address"
 
                 else:
                     if len(variables) > 0:
@@ -233,6 +234,7 @@ def parse_instruction_and_variables(lines: list[str])\
                         variables = []
 
                     curr_data_org = int(tokens[1])
+                    assert curr_text_org >= 0, "Incorrect address"
 
             else:
                 assert len(tokens) == 1, f"Invalid {key} directive at line {idx + 1}"
@@ -382,7 +384,7 @@ def instruction_to_bin(
 
             else:
                 assert is_valid_number_param(arg), f"Invalid argument {arg}"
-                int_val = int(arg)
+                int_val = int(arg, 0)
 
         opcode_byte = bytes([opcode])
         byte_val = int_val.to_bytes(3, byteorder="big", signed=True)
@@ -446,13 +448,13 @@ def main(source: str, target_instruction_file: str, target_data_file: str) -> No
     segments_text, segments_data = parse_instruction_and_variables(lines)
 
     instructions_with_addr, instruction_labels_addr, start_addr = arrange_instructions(segments_text)
+    instructions_with_addr.insert(0, Instruction(opcode=Opcode.JUMP, arg = str(start_addr), addr = 0))
     variables_addr = arrange_variables(segments_data)
 
     instruction_mem = instruction_to_bin(instructions_with_addr, instruction_labels_addr, variables_addr)
     data_mem = data_to_bin(variables_addr)
 
     with open(target_instruction_file, "wb") as f:
-        f.write(start_addr.to_bytes(4, "big"))
         f.write(instruction_mem)
 
     with open(target_data_file, "wb") as f:

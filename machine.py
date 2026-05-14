@@ -175,9 +175,9 @@ class DataPath:
 
         elif sel == Mux_Signal.SEL_T_ALU:
             self.top_buff = self.alu_res
-            return
 
         elif sel == Mux_Signal.SEL_T_IMM:
+            assert self.controlUnit.ir
             self.top_buff = self.controlUnit.ir.arg
 
         elif sel == Mux_Signal.SEL_T_A:
@@ -187,6 +187,8 @@ class DataPath:
             self.top_buff = self.data_memory[self.ar]
 
         elif sel == Mux_Signal.SEL_T_INPUT:
+            assert self.controlUnit.ir
+
             port = self.controlUnit.ir.arg
             assert port in self.io_ports, f"wrong io port {port}"
             assert len(self.io_ports[port]) > 0, "io buffer is empty"
@@ -207,6 +209,8 @@ class DataPath:
             self.ar_buff = self.reg_A
 
         elif sel == Mux_Signal.SEL_AR_CU:
+            assert self.controlUnit.ir
+
             self.ar_buff = self.controlUnit.ir.arg
             assert self.ar_buff is not None, f"wrong selector latch_AR {sel}"
 
@@ -233,6 +237,8 @@ class DataPath:
         self.data_memory[self.ar] = self.top
 
     def signal_write_io(self) -> None:
+
+        assert self.controlUnit.ir
 
         port = int(self.controlUnit.ir.arg)
         assert port in self.io_ports, f"wrong io port {port}"
@@ -310,11 +316,6 @@ class DataPath:
 
             self.flag_V = int((sign_a == sign_b) and (sign_a != sign_r))
 
-        value = self.alu_res
-
-        self.flag_Z = int(value == 0)
-        self.flag_N = int((value & SIGN32) != 0)
-
     def __str__(self) -> str:
         return (
             f"stack: {self.stack}, "
@@ -325,7 +326,7 @@ class DataPath:
             f"reg_A: {self.reg_A}"
         )
 
-class MicroInstr:
+class ControlSignal:
     latch = None
     sel = None
 
@@ -338,50 +339,38 @@ class MicroInstr:
 
 
 class ControlUnit:
-    program: list[Instruction]
-    pc: int
-    dataPath: DataPath
 
-    mpc: int
-    reg_R: int
-    return_stack: list[int]
 
-    ir: Instruction
+    mpc_next = ControlSignal(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_NEXT)
+    fetch = ControlSignal(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_FETCH)
 
-    _tick: int
+    sp_next = ControlSignal(Signal.LATCH_SP, Mux_Signal.SEL_SP_NEXT)
+    sp_prev = ControlSignal(Signal.LATCH_SP, Mux_Signal.SEL_SP_PREV)
 
-    last_io: str | None = None
+    s_from_top = ControlSignal(Signal.LATCH_S, Mux_Signal.SEL_S_TOP)
+    s_from_stack = ControlSignal(Signal.LATCH_S, Mux_Signal.SEL_S_STACK)
 
-    mpc_next = MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_NEXT)
-    fetch = MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_FETCH)
+    t_from_second = ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_SECOND)
 
-    sp_next = MicroInstr(Signal.LATCH_SP, Mux_Signal.SEL_SP_NEXT)
-    sp_prev = MicroInstr(Signal.LATCH_SP, Mux_Signal.SEL_SP_PREV)
+    write_st = ControlSignal(Signal.WRITE_ST)
+    write_dm = ControlSignal(Signal.WRITE_DM)
 
-    s_from_top = MicroInstr(Signal.LATCH_S, Mux_Signal.SEL_S_TOP)
-    s_from_stack = MicroInstr(Signal.LATCH_S, Mux_Signal.SEL_S_STACK)
-
-    t_from_second = MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_SECOND)
-
-    write_st = MicroInstr(Signal.WRITE_ST)
-    write_dm = MicroInstr(Signal.WRITE_DM)
-
-    pc_next = MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_NEXT)
+    pc_next = ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_NEXT)
 
     _microprogram = [
 
         #(Instructin Fetch)
         #(0)
-        [MicroInstr(Signal.LATCH_IR), MicroInstr(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_OPCODE)],
+        [ControlSignal(Signal.LATCH_IR), ControlSignal(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_OPCODE)],
 
         #(push addr)
         #(1)
-        [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), sp_next, mpc_next],
+        [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), sp_next, mpc_next],
         #(2)
         [
             write_st,
             s_from_top,
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
             pc_next,
             fetch
         ],
@@ -393,36 +382,36 @@ class ControlUnit:
         [
             write_st,
             s_from_top,
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_IMM),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_IMM),
             pc_next,
             fetch
         ],
 
         #(store addr)
         #(5)
-        [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), mpc_next],
+        [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), mpc_next],
         #(6)
         [write_dm, t_from_second, s_from_stack, sp_prev, pc_next, fetch],
 
         #(fetchA)
         #(7)
-        [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), sp_next, mpc_next],
+        [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), sp_next, mpc_next],
         #(8)
         [
             write_st,
             s_from_top,
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
             pc_next,
             fetch
         ],
 
         #(incA)
         #(9)
-        [MicroInstr(Signal.LATCH_A, Mux_Signal.SEL_A_INC), pc_next, fetch],
+        [ControlSignal(Signal.LATCH_A, Mux_Signal.SEL_A_INC), pc_next, fetch],
 
         #(storeA)
         #(10)
-        [MicroInstr(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), mpc_next],
+        [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), mpc_next],
         #(11)
         [
             write_dm,
@@ -436,7 +425,7 @@ class ControlUnit:
         #(setA)
         #(12)
         [
-            MicroInstr(Signal.LATCH_A, Mux_Signal.SEL_A_T),
+            ControlSignal(Signal.LATCH_A, Mux_Signal.SEL_A_T),
             t_from_second,
             s_from_stack,
             sp_prev,
@@ -451,7 +440,7 @@ class ControlUnit:
         [
             write_st,
             s_from_top,
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_A),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_A),
             pc_next,
             fetch
         ],
@@ -498,8 +487,8 @@ class ControlUnit:
         [
             s_from_stack,
             sp_prev,
-            MicroInstr(Signal.ALU, ALU_Signal.ADD),
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            ControlSignal(Signal.ALU, ALU_Signal.ADD),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
             fetch,
         ],
@@ -509,8 +498,8 @@ class ControlUnit:
         [
             s_from_stack,
             sp_prev,
-            MicroInstr(Signal.ALU, ALU_Signal.SUB),
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            ControlSignal(Signal.ALU, ALU_Signal.SUB),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
             fetch,
         ],
@@ -520,8 +509,8 @@ class ControlUnit:
         [
             s_from_stack,
             sp_prev,
-            MicroInstr(Signal.ALU, ALU_Signal.MUL),
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            ControlSignal(Signal.ALU, ALU_Signal.MUL),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
             fetch,
         ],
@@ -531,8 +520,8 @@ class ControlUnit:
         [
             s_from_stack,
             sp_prev,
-            MicroInstr(Signal.ALU, ALU_Signal.DIV),
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            ControlSignal(Signal.ALU, ALU_Signal.DIV),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
             fetch,
         ],
@@ -542,8 +531,8 @@ class ControlUnit:
         [
             s_from_stack,
             sp_prev,
-            MicroInstr(Signal.ALU, ALU_Signal.AND),
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            ControlSignal(Signal.ALU, ALU_Signal.AND),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
             fetch
         ],
@@ -553,20 +542,20 @@ class ControlUnit:
         [
             s_from_stack,
             sp_prev,
-            MicroInstr(Signal.ALU, ALU_Signal.OR),
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            ControlSignal(Signal.ALU, ALU_Signal.OR),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
             fetch
         ],
 
         # (jump)
         # (27)
-        [MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR), fetch],
+        [ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR), fetch],
 
         # (jz)
         # (28)
         [
-            MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JZ),
+            ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_JZ),
             s_from_stack,
             t_from_second,
             sp_prev,
@@ -576,7 +565,7 @@ class ControlUnit:
         # (jn)
         # (29)
         [
-            MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_JN),
+            ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_JN),
             s_from_stack,
             t_from_second,
             sp_prev,
@@ -585,19 +574,19 @@ class ControlUnit:
 
         # (call)
         # (30)
-        [MicroInstr(Signal.LATCH_R, Mux_Signal.SEL_R_NEXT), mpc_next],
+        [ControlSignal(Signal.LATCH_R, Mux_Signal.SEL_R_NEXT), mpc_next],
         # (31)
         [
-            MicroInstr(Signal.WRITE_RET),
-            MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR),
+            ControlSignal(Signal.WRITE_RET),
+            ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR),
             fetch
         ],
 
         # (ret)
         # (32)
         [
-            MicroInstr(Signal.LATCH_PC, Mux_Signal.SEL_PC_RET),
-            MicroInstr(Signal.LATCH_R, Mux_Signal.SEL_R_PREV),
+            ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_RET),
+            ControlSignal(Signal.LATCH_R, Mux_Signal.SEL_R_PREV),
             fetch
         ],
 
@@ -608,7 +597,7 @@ class ControlUnit:
         [
             write_st,
             s_from_top,
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_INPUT),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_INPUT),
             pc_next,
             fetch
         ],
@@ -616,7 +605,7 @@ class ControlUnit:
         # (output n)
         # (35)
         [
-            MicroInstr(Signal.WRITE_IO),
+            ControlSignal(Signal.WRITE_IO),
             t_from_second,
             s_from_stack,
             sp_prev,
@@ -629,8 +618,8 @@ class ControlUnit:
         [
             s_from_stack,
             sp_prev,
-            MicroInstr(Signal.ALU, ALU_Signal.ADDC),
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            ControlSignal(Signal.ALU, ALU_Signal.ADDC),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
             fetch
         ],
@@ -638,8 +627,8 @@ class ControlUnit:
         # (not)
         # (37)
         [
-            MicroInstr(Signal.ALU, ALU_Signal.NOT),
-            MicroInstr(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
+            ControlSignal(Signal.ALU, ALU_Signal.NOT),
+            ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
             pc_next,
             fetch
         ],
@@ -675,6 +664,20 @@ class ControlUnit:
         Opcode.ADDC: 36,
         Opcode.NOT: 37,
     }
+
+    program: list[Instruction]
+    pc: int
+    dataPath: DataPath
+
+    mpc: int
+    reg_R: int
+    return_stack: list[int]
+
+    ir: Instruction | None = None
+
+    _tick: int
+
+    last_io: str | None = None
 
     def __init__(self, dataPath: DataPath, program: list[Instruction], start: int) -> None:
         self.dataPath = dataPath
@@ -743,12 +746,15 @@ class ControlUnit:
             self.pc += 1
 
         elif sel == Mux_Signal.SEL_PC_ADDR:
+            assert self.ir
             self.pc = self.ir.arg
 
         elif sel == Mux_Signal.SEL_PC_JN:
+            assert self.ir
             self.pc = self.ir.arg if self.dataPath.flag_N else self.pc + 1
 
         elif sel == Mux_Signal.SEL_PC_JZ:
+            assert self.ir
             self.pc = self.ir.arg if self.dataPath.flag_Z else self.pc + 1
 
         elif sel == Mux_Signal.SEL_PC_RET:
@@ -761,7 +767,7 @@ class ControlUnit:
 
         self.return_stack[self.reg_R] = self.pc + 1
 
-    def dispatch(self, microinstr: MicroInstr) -> None:
+    def dispatch(self, microinstr: ControlSignal) -> None:
         assert microinstr.latch in Signal, (
             f"wrong latch: {microinstr.latch}"
         )
@@ -841,7 +847,7 @@ class ControlUnit:
             f"Z:{self.dataPath.flag_Z} "
             f"V:{self.dataPath.flag_V} "
             f"C:{self.dataPath.flag_C}\n"
-            f"STACK: {self.dataPath.stack}\n"
+            f"STACK:   {self.dataPath.stack}   |   "
             f"RETURN_STACK:   {self.return_stack}\n"
             f"IO: {self.dataPath.io_ports}"
         )
@@ -851,59 +857,65 @@ def simulation(
     instructions: list[Instruction],
     data_memory: list[int],
     io_ports: dict[int, list[int]],
-    start_addr: int,
     limit: int = 1000000000,
     debug: bool = True,
 ) -> None:
 
     data_path = DataPath(10, data_memory, io_ports)
-    controlUnit = ControlUnit(data_path, instructions, start_addr)
+    controlUnit = ControlUnit(data_path, instructions, 0)
     data_path.controlUnit = controlUnit
+
+    micro_code_logs: list[str] = []
 
     with open("machine.log", "w") as log_file:
         while controlUnit._tick < limit:
             controlUnit.tick()
 
-            curr_tick = controlUnit._microprogram[controlUnit.mpc]
-
+            curr_mpc = controlUnit.mpc
+            curr_tick = controlUnit._microprogram[curr_mpc]
+            curr_instr = controlUnit.ir.opcode.name if controlUnit.ir else None
             controlUnit.dataPath.start_cycle()
-            if debug:
-                log_file.write(f"\n=== TICK {controlUnit._tick} ===\n")
-                log_file.write("\n--- MICROINSTRUCTIONS ---\n")
+
+            micro_code_logs.append(
+                f"\n==== TICK {controlUnit._tick:4} | MPC {curr_mpc:4} | {curr_instr} "
+            )
 
             for m in curr_tick:
-                if debug:
-                    log_file.write(f"   {m}\n")
+                micro_code_logs.append(f"   {m}")
                 controlUnit.dispatch(m)
 
-            if controlUnit.last_io:
-                if debug:
+            if debug:
+                log_file.write(f"\n=== TICK {controlUnit._tick} ===\n")
+                log_file.write(repr(controlUnit) + "\n")
+                if controlUnit.last_io:
                     log_file.write(controlUnit.last_io + "\n")
                 controlUnit.last_io = None
-
-            if debug:
-                log_file.write(repr(controlUnit) + "\n")
                 log_file.write("-" * 60)
 
             controlUnit.dataPath.update()
 
+            assert controlUnit.ir
             if controlUnit.ir.opcode == Opcode.HALT:
                 log_file.write("\nHALT\n")
                 break
+
         else:
             log_file.write("\nLIMIT REACHED\n")
 
         log_file.write(f"\nTOTAL TICK : {controlUnit._tick}\n")
         log_file.write(f"\nFINAL io-ports {controlUnit.dataPath.io_ports}\n")
 
+        if debug:
+            log_file.write("\n\n===== MICROCODE TRACE =====\n")
 
-def main(code_file: str, data_file: str, input_file: str, debug: bool=False) -> None:
+            for line in micro_code_logs:
+                log_file.write(line + "\n")
+
+
+def main(code_file: str, data_file: str, input_file: str, debug: bool=True) -> None:
 
     with open(code_file, "rb") as f:
         binary_instruction = bytearray(f.read())
-
-    start_addr = int.from_bytes(binary_instruction[:4], "big")
-    binary_instruction = binary_instruction[4:]
 
     with open(data_file, "rb") as f:
         binary_memory = bytearray(f.read())
@@ -912,7 +924,7 @@ def main(code_file: str, data_file: str, input_file: str, debug: bool=False) -> 
 
     instructions = from_bytes_instruction(binary_instruction)
     data = from_bytes_data(binary_memory)
-    simulation(instructions, data, io_ports, start_addr, debug=debug)
+    simulation(instructions, data, io_ports, debug=debug)
 
 
 if __name__ == "__main__":

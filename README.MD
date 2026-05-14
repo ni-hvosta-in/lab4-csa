@@ -13,7 +13,7 @@
 <section_data> ::= ".data\n" <section_modifier>? <declaration>*
 <section_text> ::= ".text\n" <section_modifier>? (<label> | <instruction>)*
 
-<section_modifier> ::= ".org" (" ")+ <number>
+<section_modifier> ::= ".org" (" ")+ <org_addr>
 
 <declaration> ::= <label> (<array> | <string>)
 <instruction> ::= <label_arg_command> | <number_arg_command> | <without_arg_command>
@@ -34,6 +34,7 @@
                           | "ret" 
                           | "fetchA" | "incA" | "storeA" | "setA" | "getA")
 
+<org_addr> :: = [0, mem.size]
 <number> ::= [-2^32; 2^32 - 1]
 <char> ::= any ASCII character except '"'
 <label_name> ::= (<letter_or_>)+
@@ -200,8 +201,8 @@ foo:
 ### Память инструкций
 
 Память инструкций содержит:
+- команду `jump _start` для перехода на нужную команду;
 - машинный код программы;
-- адрес точки входа (`_start`);
 - процедуры и переходы.
 
 Каждая инструкция занимает одно машинное слово размером 32 бита.
@@ -209,7 +210,7 @@ foo:
 ```text
 Instruction memory
 +----------------------+
-| start address        |
+| jump start           |
 +----------------------+
 | instruction 0        |
 | instruction 1        |
@@ -482,6 +483,7 @@ _start:
 - Лейбл в секции `.data` задается на той же строке, что и данные. Данные задаются на одной строке;
 - Лейбл в секции `.text` задается перед инструкцией, на которую он указывает;
 - `.org` если задается, то сразу после обозначения секции (`.data/ .text`);
+- адрес, указанный в `.org` должен быть больше 0, так как 0 ячейку занимает инструкция `jump _start` 
 - На одной строке до одной инструкции;
 - Обязательна метка _start;
 

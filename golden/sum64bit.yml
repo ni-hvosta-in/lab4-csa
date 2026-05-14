@@ -25,272 +25,273 @@ in_stdin: |-
 out_machine_log: |2
 
   === TICK 1 ===
-
-  --- MICROINSTRUCTIONS ---
-     latch: Signal.LATCH_IR, sel: None
-     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    0 | MPC:  33 | IR: INPUT 1      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  PC:    0 | MPC:  27 | IR: JUMP 1       | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [5, 4294967295, 1, 5], 2: []}
   ------------------------------------------------------------
   === TICK 2 ===
-
-  --- MICROINSTRUCTIONS ---
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
-     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
-  PC:    0 | MPC:  34 | IR: INPUT 1      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  PC:    1 | MPC:   0 | IR: JUMP 1       | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [5, 4294967295, 1, 5], 2: []}
   ------------------------------------------------------------
   === TICK 3 ===
-
-  --- MICROINSTRUCTIONS ---
-     latch: Signal.WRITE_ST, sel: None
-     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
-     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
-     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
-     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-  INPUT[1] -> 5
-  PC:    1 | MPC:   0 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [4294967295, 1, 5], 2: []}
+  PC:    1 | MPC:  33 | IR: INPUT 1      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [5, 4294967295, 1, 5], 2: []}
   ------------------------------------------------------------
   === TICK 4 ===
-
-  --- MICROINSTRUCTIONS ---
-     latch: Signal.LATCH_IR, sel: None
-     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    1 | MPC:  33 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     5 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [4294967295, 1, 5], 2: []}
+  PC:    1 | MPC:  34 | IR: INPUT 1      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [5, 4294967295, 1, 5], 2: []}
   ------------------------------------------------------------
   === TICK 5 ===
-
-  --- MICROINSTRUCTIONS ---
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
-     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
-  PC:    1 | MPC:  34 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     5 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  PC:    2 | MPC:   0 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [4294967295, 1, 5], 2: []}
+  INPUT[1] -> 5
   ------------------------------------------------------------
   === TICK 6 ===
+  PC:    2 | MPC:  33 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     5 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [4294967295, 1, 5], 2: []}
+  ------------------------------------------------------------
+  === TICK 7 ===
+  PC:    2 | MPC:  34 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     5 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [4294967295, 1, 5], 2: []}
+  ------------------------------------------------------------
+  === TICK 8 ===
+  PC:    3 | MPC:   0 | IR: INPUT 1      | R:  -1 | SP:   1 | T:     5 | S:     0 | A:     0 | AR:     0 | N:1 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [1, 5], 2: []}
+  INPUT[1] -> 4294967295
+  ------------------------------------------------------------
+  === TICK 9 ===
+  PC:    3 | MPC:  21 | IR: ADD None     | R:  -1 | SP:   1 | T: 4294967295 | S:     5 | A:     0 | AR:     0 | N:1 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [1, 5], 2: []}
+  ------------------------------------------------------------
+  === TICK 10 ===
+  PC:    4 | MPC:   0 | IR: ADD None     | R:  -1 | SP:   1 | T: 4294967295 | S:     5 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [1, 5], 2: []}
+  ------------------------------------------------------------
+  === TICK 11 ===
+  PC:    4 | MPC:  35 | IR: OUTPUT 2     | R:  -1 | SP:   0 | T:     4 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [1, 5], 2: []}
+  ------------------------------------------------------------
+  === TICK 12 ===
+  PC:    5 | MPC:   0 | IR: OUTPUT 2     | R:  -1 | SP:   0 | T:     4 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [1, 5], 2: [4]}
+  OUTPUT[2] <- 4
+  ------------------------------------------------------------
+  === TICK 13 ===
+  PC:    5 | MPC:  33 | IR: INPUT 1      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [1, 5], 2: [4]}
+  ------------------------------------------------------------
+  === TICK 14 ===
+  PC:    5 | MPC:  34 | IR: INPUT 1      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [1, 5], 2: [4]}
+  ------------------------------------------------------------
+  === TICK 15 ===
+  PC:    6 | MPC:   0 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [5], 2: [4]}
+  INPUT[1] -> 1
+  ------------------------------------------------------------
+  === TICK 16 ===
+  PC:    6 | MPC:  33 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     1 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [5], 2: [4]}
+  ------------------------------------------------------------
+  === TICK 17 ===
+  PC:    6 | MPC:  34 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     1 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [5], 2: [4]}
+  ------------------------------------------------------------
+  === TICK 18 ===
+  PC:    7 | MPC:   0 | IR: INPUT 1      | R:  -1 | SP:   1 | T:     1 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [], 2: [4]}
+  INPUT[1] -> 5
+  ------------------------------------------------------------
+  === TICK 19 ===
+  PC:    7 | MPC:  36 | IR: ADDC None    | R:  -1 | SP:   1 | T:     5 | S:     1 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [], 2: [4]}
+  ------------------------------------------------------------
+  === TICK 20 ===
+  PC:    8 | MPC:   0 | IR: ADDC None    | R:  -1 | SP:   1 | T:     5 | S:     1 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [], 2: [4]}
+  ------------------------------------------------------------
+  === TICK 21 ===
+  PC:    8 | MPC:  35 | IR: OUTPUT 2     | R:  -1 | SP:   0 | T:     7 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [], 2: [4]}
+  ------------------------------------------------------------
+  === TICK 22 ===
+  PC:    9 | MPC:   0 | IR: OUTPUT 2     | R:  -1 | SP:   0 | T:     7 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [], 2: [4, 7]}
+  OUTPUT[2] <- 7
+  ------------------------------------------------------------
+  === TICK 23 ===
+  PC:    9 | MPC:   0 | IR: HALT None    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [], 2: [4, 7]}
+  ------------------------------------------------------------
+  HALT
 
-  --- MICROINSTRUCTIONS ---
+  TOTAL TICK : 23
+
+  FINAL io-ports {1: [], 2: [4, 7]}
+
+
+  ===== MICROCODE TRACE =====
+
+  ==== TICK    1 | MPC    0 | None 
+     latch: Signal.LATCH_IR, sel: None
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+
+  ==== TICK    2 | MPC   27 | JUMP 
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_ADDR
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+
+  ==== TICK    3 | MPC    0 | JUMP 
+     latch: Signal.LATCH_IR, sel: None
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+
+  ==== TICK    4 | MPC   33 | INPUT 
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
+
+  ==== TICK    5 | MPC   34 | INPUT 
      latch: Signal.WRITE_ST, sel: None
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-  INPUT[1] -> 4294967295
-  PC:    2 | MPC:   0 | IR: INPUT 1      | R:  -1 | SP:   1 | T:     5 | S:     0 | A:     0 | AR:     0 | N:1 Z:0 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [1, 5], 2: []}
-  ------------------------------------------------------------
-  === TICK 7 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK    6 | MPC    0 | INPUT 
      latch: Signal.LATCH_IR, sel: None
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    2 | MPC:  21 | IR: ADD None     | R:  -1 | SP:   1 | T: 4294967295 | S:     5 | A:     0 | AR:     0 | N:1 Z:0 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [1, 5], 2: []}
-  ------------------------------------------------------------
-  === TICK 8 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK    7 | MPC   33 | INPUT 
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
+
+  ==== TICK    8 | MPC   34 | INPUT 
+     latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
+     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+
+  ==== TICK    9 | MPC    0 | INPUT 
+     latch: Signal.LATCH_IR, sel: None
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+
+  ==== TICK   10 | MPC   21 | ADD 
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
      latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
      latch: Signal.ALU, sel: ALU_Signal.ADD
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_ALU
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-  PC:    3 | MPC:   0 | IR: ADD None     | R:  -1 | SP:   1 | T: 4294967295 | S:     5 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [1, 5], 2: []}
-  ------------------------------------------------------------
-  === TICK 9 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   11 | MPC    0 | ADD 
      latch: Signal.LATCH_IR, sel: None
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    3 | MPC:  35 | IR: OUTPUT 2     | R:  -1 | SP:   0 | T:     4 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [1, 5], 2: []}
-  ------------------------------------------------------------
-  === TICK 10 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   12 | MPC   35 | OUTPUT 
      latch: Signal.WRITE_IO, sel: None
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_SECOND
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
      latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-  OUTPUT[2] <- 4
-  PC:    4 | MPC:   0 | IR: OUTPUT 2     | R:  -1 | SP:   0 | T:     4 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [1, 5], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 11 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   13 | MPC    0 | OUTPUT 
      latch: Signal.LATCH_IR, sel: None
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    4 | MPC:  33 | IR: INPUT 1      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [1, 5], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 12 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   14 | MPC   33 | INPUT 
      latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
-  PC:    4 | MPC:  34 | IR: INPUT 1      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [1, 5], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 13 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   15 | MPC   34 | INPUT 
      latch: Signal.WRITE_ST, sel: None
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-  INPUT[1] -> 1
-  PC:    5 | MPC:   0 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [5], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 14 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   16 | MPC    0 | INPUT 
      latch: Signal.LATCH_IR, sel: None
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    5 | MPC:  33 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     1 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [5], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 15 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   17 | MPC   33 | INPUT 
      latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
-  PC:    5 | MPC:  34 | IR: INPUT 1      | R:  -1 | SP:   0 | T:     1 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [5], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 16 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   18 | MPC   34 | INPUT 
      latch: Signal.WRITE_ST, sel: None
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-  INPUT[1] -> 5
-  PC:    6 | MPC:   0 | IR: INPUT 1      | R:  -1 | SP:   1 | T:     1 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 17 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   19 | MPC    0 | INPUT 
      latch: Signal.LATCH_IR, sel: None
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    6 | MPC:  36 | IR: ADDC None    | R:  -1 | SP:   1 | T:     5 | S:     1 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:1
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 18 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   20 | MPC   36 | ADDC 
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
      latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
      latch: Signal.ALU, sel: ALU_Signal.ADDC
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_ALU
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-  PC:    7 | MPC:   0 | IR: ADDC None    | R:  -1 | SP:   1 | T:     5 | S:     1 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 19 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   21 | MPC    0 | ADDC 
      latch: Signal.LATCH_IR, sel: None
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    7 | MPC:  35 | IR: OUTPUT 2     | R:  -1 | SP:   0 | T:     7 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [], 2: [4]}
-  ------------------------------------------------------------
-  === TICK 20 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   22 | MPC   35 | OUTPUT 
      latch: Signal.WRITE_IO, sel: None
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_SECOND
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
      latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-  OUTPUT[2] <- 7
-  PC:    8 | MPC:   0 | IR: OUTPUT 2     | R:  -1 | SP:   0 | T:     7 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [], 2: [4, 7]}
-  ------------------------------------------------------------
-  === TICK 21 ===
 
-  --- MICROINSTRUCTIONS ---
+  ==== TICK   23 | MPC    0 | OUTPUT 
      latch: Signal.LATCH_IR, sel: None
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-  PC:    8 | MPC:   0 | IR: HALT None    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
-  STACK: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [], 2: [4, 7]}
-  ------------------------------------------------------------
-  HALT
-
-  TOTAL TICK : 21
-
-  FINAL io-ports {1: [], 2: [4, 7]}
 out_variable_log: ''
 out_instruction_log: |
-  0 - 50000001 - INPUT 1 
+  0 - 40000001 - JUMP 1 
   1 - 50000001 - INPUT 1 
-  2 - 20000000 - ADD  
-  3 - 51000002 - OUTPUT 2 
-  4 - 50000001 - INPUT 1 
+  2 - 50000001 - INPUT 1 
+  3 - 20000000 - ADD  
+  4 - 51000002 - OUTPUT 2 
   5 - 50000001 - INPUT 1 
-  6 - 24000000 - ADDC  
-  7 - 51000002 - OUTPUT 2 
-  8 - ff000000 - HALT  
+  6 - 50000001 - INPUT 1 
+  7 - 24000000 - ADDC  
+  8 - 51000002 - OUTPUT 2 
+  9 - ff000000 - HALT  
 out_data: !!binary |
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 out_code: !!binary |
-  AAAAAFAAAAFQAAABIAAAAFEAAAJQAAABUAAAASQAAABRAAAC/wAAAAAAAAAAAAAAAAAAAAAAAAAA
+  QAAAAVAAAAFQAAABIAAAAFEAAAJQAAABUAAAASQAAABRAAAC/wAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -304,4 +305,4 @@ out_code: !!binary |
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-  AAAAAAAA
+  AAA=
