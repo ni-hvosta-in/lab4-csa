@@ -136,7 +136,7 @@ out_machine_log: |2
 
   HALT
 
-  TOTAL TICK : 24346313
+  TOTAL TICK : 20216333
 
   FINAL io-ports {1: [906609]}
 out_variable_log: |

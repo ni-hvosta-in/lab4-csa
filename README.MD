@@ -177,9 +177,7 @@ foo:
 +----------------------------------+
 | mPC                              |
 +----------------------------------+
-| IR                               |
-+----------------------------------+
-| Flags: N Z V C                  |
+| Flags: N Z V C                   |
 +----------------------------------+
 ```
 
@@ -193,7 +191,6 @@ foo:
 - `AR` - регистр адреса памяти данных;
 - `PC` - счётчик инструкций;
 - `mPC` - счётчик микроинструкций;
-- `IR` - регистр текущей инструкции;
 - `N`, `Z`, `V`, `C` - флаги процессора.
 
 Регистры `T` и `S` используются как кэш верхушки стека, что уменьшает количество обращений к памяти стека.
@@ -274,77 +271,74 @@ Data stack
 
 ### Набор инструкций
 
-| Инструкция      | Такты | Описание                                                           |
-|:----------------|:--|:-------------------------------------------------------------------|
-| `push <addr>`   | 2 | `dataStack.push(memory[addr])`                                     |
-| `pushi <value>` | 2 | `dataStack.push(value)`                                            |
-| `store <addr>`  | 2 | `memory[addr] = dataStack.pop()`                                   |
-| `fetchA`        | 2 | `dataStack.push(memory[A])`                                        |
-| `incA`          | 1 | `A += 1`                                                           |
-| `storeA`        | 2 | `memory[A] = dataStack.pop()`                                      |
-| `setA`          | 1 | `A = dataStack.pop()`                                              |
-| `getA`          | 2 | `dataStack.push(A)`                                                |
-| `drop`          | 1 | `dataStack.pop()`                                                  |
-| `dup`           | 2 | `dataStack.push(dataStack.top())`                                  |
-| `swap`          | 1 | `swap(dataStack[-1], dataStack[-2])`                               |
-| `over`          | 2 | `dataStack.push(dataStack[-2])`                                    |
-| `add`           | 1 | `dataStack.push(dataStack.pop() + dataStack.pop())`                |
-| `sub`           | 1 | `a = dataStack.pop(); b = dataStack.pop(); dataStack.push(b - a)`  |
-| `addc`          | 1 | `dataStack.push(dataStack.pop() + dataStack.pop()) + C`            |
-| `mul`           | 1 | `dataStack.push(dataStack.pop() * dataStack.pop())`                |
-| `div`           | 1 | `a = dataStack.pop(); b = dataStack.pop(); dataStack.push(b // a)` |
-| `and`           | 1 | `dataStack.push(dataStack.pop() & dataStack.pop())`                |
-| `or`            | 1 | `dataStack.push(dataStack.pop() \| dataStack.pop())`               |
-| `jump <addr>`   | 1 | `PC = addr`                                                        |
-| `jz <addr>`     | 1 | `dataStack.pop() == 0 ? PC = addr : PC += 1`                       |
-| `jn <addr>`     | 1 | `dataStack.pop() < 0 ? PC = addr : PC += 1`                        |
-| `call <addr>`   | 2 | `returnStack.push(PC + 1); PC = addr`                              |
-| `ret`           | 1 | `PC = returnStack.pop()`                                           |
-| `input <port>`  | 2 | `dataStack.push(inputPorts[port].pop(0))`                          |
-| `output <port>` | 1 | `outputPorts[port].append(dataStack.pop())`                        |
+| Инструкция      | Такты | После оптимизации | Описание                                                              |
+|:----------------|:--|:------------------|:----------------------------------------------------------------------|
+| `push <addr>`   | 3 | 3                 | `dataStack.push(memory[addr])`                                        |
+| `pushi <value>` | 3 | `2`               | `dataStack.push(value)`                                               |
+| `store <addr>`  | 3 | 3                 | `memory[addr] = dataStack.pop()`                                      |
+| `fetchA`        | 3 | 3                 | `dataStack.push(memory[A])`                                           |
+| `incA`          | 2 | 2                 | `A += 1`                                                              |
+| `storeA`        | 3 | 3                 | `memory[A] = dataStack.pop()`                                         |
+| `setA`          | 2 | 2                 | `A = dataStack.pop()`                                                 |
+| `getA`          | 3 | `2`               | `dataStack.push(A)`                                                   |
+| `drop`          | 2 | 2                 | `dataStack.pop()`                                                     |
+| `dup`           | 3 | `2`               | `dataStack.push(dataStack.top())`                                     |
+| `swap`          | 2 | 2                 | `swap(dataStack[-1], dataStack[-2])`                                  |
+| `over`          | 3 | `2`               | `dataStack.push(dataStack[-2])`                                       |
+| `add`           | 2 | 2                 | `dataStack.push(dataStack.pop() + dataStack.pop())`                   |
+| `sub`           | 2 | 2                 | `a = dataStack.pop(); b = dataStack.pop(); dataStack.push(b - a)`     |
+| `addc`          | 2 | 2                 | `dataStack.push(dataStack.pop() + dataStack.pop()) + C`               |
+| `mul`           | 2 | 2                 | `dataStack.push(dataStack.pop() * dataStack.pop())`                   |
+| `div`           | 2 | 2                 | `a = dataStack.pop(); b = dataStack.pop(); dataStack.push(b // a)`    |
+| `and`           | 2 | 2                 | `dataStack.push(dataStack.pop() & dataStack.pop())`                   |
+| `or`            | 2 | 2                 | `dataStack.push(dataStack.pop() \| dataStack.pop())`                  |
+| `jump <addr>`   | 2 | 2                 | `PC = addr`                                                           |
+| `jz <addr>`     | 2 | 2                 | `dataStack.pop() == 0 ? PC = addr : PC += 1`                          |
+| `jn <addr>`     | 2 | 2                 | `dataStack.pop() < 0 ? PC = addr : PC += 1`                           |
+| `call <addr>`   | 3 | `2`               | `returnStack.push(PC + 1); PC = addr`                                 |
+| `ret`           | 2 | 2                 | `PC = returnStack.pop()`                                              |
+| `input <port>`  | 3 | `2`               | `dataStack.push(inputPorts[port].pop(0))`                             |
+| `output <port>` | 2 | 2                 | `outputPorts[port].append(dataStack.pop())`                           |
 
+Итого: на `prob1` производительность выросла на 20%
+Было `24346313` тактов, стало `20216333`
 
+### Уровень микроинструкций
 ### Уровень микроинструкций
 | Номер   | Название команды  | Сигналы                                                                                                                                |
 |---------|-------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| 0       | Instruction Fetch | sel_mpc_opcode, latch_mPC, latch_IR                                                                                                    |
-| 1       | push addr         | sel_AR_CU, latch_AR, sel_SP_next, latch_SP, sel_mpc_next, latch_mpc                                                                    |
-| 2       |                   | write_st, sel_S_top, sel_T_mem, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                      | 
-| 3       | pushi val         | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc                                                                                         | 
-| 4       |                   | write_st, sel_S_top, sel_T_imm, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                      | 
-| 5       | store addr        | sel_AR_CU, latch_AR, sel_mpc_next, latch_mpc                                                                                           |
-| 6       |                   | write_dm, sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC          |
-| 7       | fetchA            | sel_AR_A, latch_AR, sel_SP_next, latch_SP,sel_mpc_next, latch_mpc                                                                      |
-| 8       |                   | write_st,  sel_S_top, sel_T_mem, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                     | 
-| 9       | incA              | sel_A_inc, latch_A, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                                                    |
-| 10      | storeA            | sel_AR_A, latch_AR, sel_mpc_next, latch_mpc                                                                                            |
-| 11      |                   | write_dm, sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC          |
-| 12      | setA              | sel_A_T, sel_T_second, sel_S_stack, sel_SP_prev, latch_A, latch_S, latch_T, latch_SP, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC  |
-| 13      | getA              | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc                                                                                         |
-| 14      |                   | write_st, sel_S_top, sel_T_A, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                        | 
-| 15      | drop              | sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                    |
-| 16      | dup               | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc                                                                                         |
-| 17      |                   | write_st, sel_S_top, latch_S, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                                          |
-| 18      | swap              | sel_T_second, sel_S_top, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                             |
-| 19      | over              | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc                                                                                         |
-| 20      |                   | write_st, sel_T_second, sel_S_top, latch_T, latch_S, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                   |
-| 21      | add               | sel_S_stack, sel_SP_prev, alu_add, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC              |
-| 22      | sub               | sel_S_stack, sel_SP_prev, alu_sub, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC              |
-| 23      | mul               | sel_S_stack, sel_SP_prev, alu_mul, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC              |
-| 24      | div               | sel_S_stack, sel_SP_prev, alu_div, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC              |
-| 25      | and               | sel_S_stack, sel_SP_prev, alu_and, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC              |
-| 26      | or                | sel_S_stack, sel_SP_prev, alu_or, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC               |
-| 27      | jump   label      | sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc                                                                                        |
-| 28      | jz   label        | jump_type_Z, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc                                                                           |
-| 29      | jn   label        | jump_type_N, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc                                                                           |
-| 30      | call   label      | sel_R_next, latch_R, sel_mpc_next, latch_mpc                                                                                           |
-| 31      |                   | write_ret, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc                                                                             |
-| 32      | ret               | sel_PC_ret, sel_R_prev, latch_R, latch_PC, sel_mpc_fetch, latch_mpc                                                                    |
-| 33      | input n           | sel_SP_next, latch_SP, sel_mpc_next, latch_mpc                                                                                         |
-| 34      |                   | write_st, sel_S_top, sel_T_input, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                    | 
-| 35      | output n          | write_io, sel_T_second, sel_S_stack, sel_SP_prev, latch_A, latch_S, latch_T, latch_SP, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
-| 36      | addc              | sel_S_stack, sel_SP_prev, alu_addc, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC             |
-| 37      | not               | alu_not, sel_T_alu, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                                           |
+| 0       | Instruction Fetch | sel_mpc_opcode, latch_mPC                                                                                                              |
+| 1       | push addr         | sel_AR_CU, latch_AR, sel_mpc_next, latch_mpc                                                                                           |
+| 2       |                   | sel_SP_next, latch_SP, write_st, sel_S_top, sel_T_mem, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC            | 
+| 3       | pushi val         | sel_SP_next, latch_SP, write_st, sel_S_top, sel_T_imm, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC            | 
+| 4       | store addr        | sel_AR_CU, latch_AR, sel_mpc_next, latch_mpc                                                                                           |
+| 5       |                   | write_dm, sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC       |
+| 6       | fetchA            | sel_AR_A, latch_AR, sel_SP_next, latch_SP, sel_mpc_next, latch_mpc                                                                    |
+| 7       |                   | write_st, sel_S_top, sel_T_mem, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                   | 
+| 8       | incA              | sel_A_inc, latch_A, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                                                   |
+| 9       | storeA            | sel_AR_A, latch_AR, sel_mpc_next, latch_mpc                                                                                            |
+| 10      |                   | write_dm, sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC       |
+| 11      | setA              | sel_A_T, sel_T_second, sel_S_stack, sel_SP_prev, latch_A, latch_S, latch_T, latch_SP, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC |
+| 12      | getA              | sel_SP_next, latch_SP, write_st, sel_S_top, sel_T_A, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC              | 
+| 13      | drop              | sel_T_second, sel_S_stack, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                 |
+| 14      | dup               | sel_SP_next, latch_SP, write_st, sel_S_top, latch_S, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                |
+| 15      | swap              | sel_T_second, sel_S_top, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                           |
+| 16      | over              | sel_SP_next, latch_SP, write_st, sel_T_second, sel_S_top, latch_T, latch_S, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC         |
+| 17      | add               | sel_S_stack, sel_SP_prev, alu_add, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC           |
+| 18      | sub               | sel_S_stack, sel_SP_prev, alu_sub, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC           |
+| 19      | mul               | sel_S_stack, sel_SP_prev, alu_mul, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC           |
+| 20      | div               | sel_S_stack, sel_SP_prev, alu_div, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC           |
+| 21      | and               | sel_S_stack, sel_SP_prev, alu_and, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC           |
+| 22      | or                | sel_S_stack, sel_SP_prev, alu_or, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC            |
+| 23      | jump label        | sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc                                                                                        |
+| 24      | jz label          | sel_PC_JZ, latch_PC, sel_S_stack, sel_T_second, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc                   |
+| 25      | jn label          | sel_PC_JN, latch_PC, sel_S_stack, sel_T_second, sel_SP_prev, latch_SP, latch_S, latch_T, sel_mpc_fetch, latch_mpc                   |
+| 26      | call label        | sel_R_next, latch_R, write_ret, sel_PC_addr, latch_PC, sel_mpc_fetch, latch_mpc                                                      |
+| 27      | ret               | sel_PC_ret, sel_R_prev, latch_R, latch_PC, sel_mpc_fetch, latch_mpc                                                                   |
+| 28      | input n           | sel_SP_next, latch_SP, write_st, sel_S_top, sel_T_input, latch_S, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC          | 
+| 29      | output n          | write_io, sel_T_second, sel_S_stack, sel_SP_prev, latch_S, latch_T, latch_SP, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC       |
+| 30      | addc              | sel_S_stack, sel_SP_prev, alu_addc, sel_T_alu, latch_S, latch_SP, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC          |
+| 31      | not               | alu_not, sel_T_alu, latch_T, sel_mpc_fetch, latch_mpc, sel_PC_next, latch_PC                                                         |
 
 ### Кодирование инструкций
 
@@ -585,7 +579,6 @@ ControlUnit отвечает за выполнение микропрограм�
 
 Регистры:
 - `PC` - счётчик команд;
-- `IR` - регистр текущей инструкции;
 - `mPC` - счётчик микрокоманд;
 - `R` - указатель стека возвратов.
 
@@ -594,7 +587,6 @@ ControlUnit отвечает за выполнение микропрограм�
 Сигналы:
 - Защелки:
   - `latch_PC` - защёлкнуть выбранное значение в `PC`;
-  - `latch_IR` - загрузка текущей инструкции в `IR`;
   - `latch_mPC` - защёлкнуть выбранное значение в `mPC`;
   - `latch_R` - защёлкнуть выбранное значение в `R`.
 
@@ -625,7 +617,6 @@ ControlUnit отвечает за выполнение микропрограм�
 Микрокоманда состоит из набора управляющих сигналов, выполняемых за один такт.
 
 Выполнение инструкции начинается со стадии выборки:
-- загрузка инструкции по адресу `PC` в `IR`;
 - переход к микропрограмме соответствующего opcode.
 
 Инструкция `halt` завершает выполнение программы.
@@ -653,6 +644,9 @@ ControlUnit отвечает за выполнение микропрограм�
 - `sort` - сортировка массива чисел;
 - `64-bit_operations` - демонстрация арифметики двойной точности;
 - `prob1` -  Euler problem 4;
+- `macro_test` - тестирование макросов
+- `conditional_comp` - условная компиляция, условие выполняется
+- `disabled_block_cond_comp` - условная компиляция, условие не выполняется
 
 Каждый golden-тест включает:
 - бинарный код программы;

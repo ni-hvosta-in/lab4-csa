@@ -12,6 +12,7 @@ SIGN32 = 0x80000000
 class Mux_Signal(Enum):
     SEL_SP_NEXT = auto()
     SEL_SP_PREV = auto()
+    SEL_SP_CUR = auto()
 
     SEL_S_STACK = auto()
     SEL_S_TOP = auto()
@@ -63,7 +64,6 @@ class Signal(Enum):
     LATCH_R = auto()
     LATCH_PC = auto()
     LATCH_MPC = auto()
-    LATCH_IR = auto()
 
     WRITE_DM = auto()
     WRITE_ST = auto()
@@ -134,7 +134,7 @@ class DataPath:
 
     def signal_latch_SP(self, sel: Mux_Signal) -> None:
 
-        assert sel in {Mux_Signal.SEL_SP_NEXT, Mux_Signal.SEL_SP_PREV}, (
+        assert sel in {Mux_Signal.SEL_SP_NEXT, Mux_Signal.SEL_SP_PREV, Mux_Signal.SEL_SP_CUR}, (
             f"internal error, latch_SP incorrect selector: {sel}"
         )
 
@@ -143,6 +143,8 @@ class DataPath:
         elif sel == Mux_Signal.SEL_SP_PREV:
             self.stack[self.sp] = 0
             self.sp_buff = self.sp - 1
+        elif sel == Mux_Signal.SEL_SP_CUR:
+            self.sp_buff = self.sp
 
         assert -1 <= self.sp_buff < len(self.stack), f"index out of range stack: {self.sp_buff}"
 
@@ -157,7 +159,7 @@ class DataPath:
         elif sel == Mux_Signal.SEL_S_STACK:
             assert self.sp > -1, "stack is empty"
 
-            self.second_buff = self.stack[self.sp]
+            self.second_buff = self.stack[self.sp_buff]
 
     def signal_latch_T(self, sel: Mux_Signal) -> None:
 
@@ -177,8 +179,7 @@ class DataPath:
             self.top_buff = self.alu_res
 
         elif sel == Mux_Signal.SEL_T_IMM:
-            assert self.controlUnit.ir
-            self.top_buff = self.controlUnit.ir.arg
+            self.top_buff = self.controlUnit.program[self.controlUnit.pc].arg
 
         elif sel == Mux_Signal.SEL_T_A:
             self.top_buff = self.reg_A
@@ -187,9 +188,8 @@ class DataPath:
             self.top_buff = self.data_memory[self.ar]
 
         elif sel == Mux_Signal.SEL_T_INPUT:
-            assert self.controlUnit.ir
+            port = self.controlUnit.program[self.controlUnit.pc].arg
 
-            port = self.controlUnit.ir.arg
             assert port in self.io_ports, f"wrong io port {port}"
             assert len(self.io_ports[port]) > 0, "io buffer is empty"
 
@@ -209,9 +209,8 @@ class DataPath:
             self.ar_buff = self.reg_A
 
         elif sel == Mux_Signal.SEL_AR_CU:
-            assert self.controlUnit.ir
+            self.ar_buff = self.controlUnit.program[self.controlUnit.pc].arg
 
-            self.ar_buff = self.controlUnit.ir.arg
             assert self.ar_buff is not None, f"wrong selector latch_AR {sel}"
 
     def signal_latch_A(self, sel: Mux_Signal) -> None:
@@ -226,9 +225,9 @@ class DataPath:
 
     def signal_write_st(self) -> None:
 
-        assert self.sp > -1, "stack is empty"
+        assert self.sp_buff > -1, "stack is empty"
 
-        self.stack[self.sp] = self.second
+        self.stack[self.sp_buff] = self.second
 
     def signal_write_dm(self) -> None:
 
@@ -238,9 +237,7 @@ class DataPath:
 
     def signal_write_io(self) -> None:
 
-        assert self.controlUnit.ir
-
-        port = int(self.controlUnit.ir.arg)
+        port = int(self.controlUnit.program[self.controlUnit.pc].arg)
         assert port in self.io_ports, f"wrong io port {port}"
 
         self.io_ports[port].append(self.top)
@@ -361,13 +358,14 @@ class ControlUnit:
 
         #(Instructin Fetch)
         #(0)
-        [ControlSignal(Signal.LATCH_IR), ControlSignal(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_OPCODE)],
+        [ControlSignal(Signal.LATCH_MPC, Mux_Signal.SEL_MPC_OPCODE)],
 
         #(push addr)
         #(1)
-        [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), sp_next, mpc_next],
+        [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), mpc_next],
         #(2)
         [
+            sp_next,
             write_st,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
@@ -377,9 +375,8 @@ class ControlUnit:
 
         #(pushi val)
         #(3)
-        [sp_next, mpc_next],
-        #(4)
         [
+            sp_next,
             write_st,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_IMM),
@@ -388,15 +385,15 @@ class ControlUnit:
         ],
 
         #(store addr)
-        #(5)
+        #(4)
         [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), mpc_next],
-        #(6)
+        #(5)
         [write_dm, t_from_second, s_from_stack, sp_prev, pc_next, fetch],
 
         #(fetchA)
-        #(7)
+        #(6)
         [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), sp_next, mpc_next],
-        #(8)
+        #(7)
         [
             write_st,
             s_from_top,
@@ -406,13 +403,13 @@ class ControlUnit:
         ],
 
         #(incA)
-        #(9)
+        #(8)
         [ControlSignal(Signal.LATCH_A, Mux_Signal.SEL_A_INC), pc_next, fetch],
 
         #(storeA)
-        #(10)
+        #(9)
         [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), mpc_next],
-        #(11)
+        #(10)
         [
             write_dm,
             t_from_second,
@@ -423,7 +420,7 @@ class ControlUnit:
         ],
 
         #(setA)
-        #(12)
+        #(11)
         [
             ControlSignal(Signal.LATCH_A, Mux_Signal.SEL_A_T),
             t_from_second,
@@ -434,10 +431,9 @@ class ControlUnit:
         ],
 
         #(getA)
-        #(13)
-        [sp_next, mpc_next],
-        #(14)
+        #(12)
         [
+            sp_next,
             write_st,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_A),
@@ -446,7 +442,7 @@ class ControlUnit:
         ],
 
         #(drop)
-        #(15)
+        #(13)
         [
             t_from_second,
             s_from_stack,
@@ -456,10 +452,9 @@ class ControlUnit:
         ],
 
         #(dup)
-        #(16)
-        [sp_next, mpc_next],
-        #(17)
+        #(14)
         [
+            sp_next,
             write_st,
             s_from_top,
             pc_next,
@@ -467,14 +462,13 @@ class ControlUnit:
         ],
 
         #(swap)
-        #(18)
+        #(15)
         [s_from_top, t_from_second, pc_next, fetch],
 
         #(over)
-        #(19)
-        [sp_next, mpc_next],
-        #(20)
+        #(16)
         [
+            sp_next,
             write_st,
             t_from_second,
             s_from_top,
@@ -483,7 +477,7 @@ class ControlUnit:
         ],
 
         #(add)
-        #(21)
+        #(17)
         [
             s_from_stack,
             sp_prev,
@@ -494,7 +488,7 @@ class ControlUnit:
         ],
 
         # (sub)
-        # (22)
+        # (18)
         [
             s_from_stack,
             sp_prev,
@@ -505,7 +499,7 @@ class ControlUnit:
         ],
 
         # (mul)
-        # (23)
+        # (19)
         [
             s_from_stack,
             sp_prev,
@@ -516,7 +510,7 @@ class ControlUnit:
         ],
 
         # (div)
-        # (24)
+        # (20)
         [
             s_from_stack,
             sp_prev,
@@ -527,7 +521,7 @@ class ControlUnit:
         ],
 
         # (and)
-        # (25)
+        # (21)
         [
             s_from_stack,
             sp_prev,
@@ -538,7 +532,7 @@ class ControlUnit:
         ],
 
         # (or)
-        # (26)
+        # (22)
         [
             s_from_stack,
             sp_prev,
@@ -549,11 +543,11 @@ class ControlUnit:
         ],
 
         # (jump)
-        # (27)
+        # (23)
         [ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR), fetch],
 
         # (jz)
-        # (28)
+        # (24)
         [
             ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_JZ),
             s_from_stack,
@@ -563,7 +557,7 @@ class ControlUnit:
         ],
 
         # (jn)
-        # (29)
+        # (25)
         [
             ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_JN),
             s_from_stack,
@@ -573,17 +567,16 @@ class ControlUnit:
         ],
 
         # (call)
-        # (30)
-        [ControlSignal(Signal.LATCH_R, Mux_Signal.SEL_R_NEXT), mpc_next],
-        # (31)
+        # (26)
         [
+            ControlSignal(Signal.LATCH_R, Mux_Signal.SEL_R_NEXT),
             ControlSignal(Signal.WRITE_RET),
             ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR),
             fetch
         ],
 
         # (ret)
-        # (32)
+        # (27)
         [
             ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_RET),
             ControlSignal(Signal.LATCH_R, Mux_Signal.SEL_R_PREV),
@@ -591,10 +584,9 @@ class ControlUnit:
         ],
 
         # (input n)
-        # (33)
-        [sp_next, mpc_next],
-        # (34)
+        # (28)
         [
+            sp_next,
             write_st,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_INPUT),
@@ -603,7 +595,7 @@ class ControlUnit:
         ],
 
         # (output n)
-        # (35)
+        # (29)
         [
             ControlSignal(Signal.WRITE_IO),
             t_from_second,
@@ -614,7 +606,7 @@ class ControlUnit:
         ],
 
         # (addc)
-        # (36)
+        # (30)
         [
             s_from_stack,
             sp_prev,
@@ -625,7 +617,7 @@ class ControlUnit:
         ],
 
         # (not)
-        # (37)
+        # (31)
         [
             ControlSignal(Signal.ALU, ALU_Signal.NOT),
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_ALU),
@@ -638,31 +630,31 @@ class ControlUnit:
     mpc_of_opcode = {
         Opcode.PUSH: 1,
         Opcode.PUSHI: 3,
-        Opcode.STORE: 5,
-        Opcode.FETCH_A: 7,
-        Opcode.INCA: 9,
-        Opcode.STORE_A: 10,
-        Opcode.SET_A: 12,
-        Opcode.GET_A: 13,
-        Opcode.DROP: 15,
-        Opcode.DUP: 16,
-        Opcode.SWAP: 18,
-        Opcode.OVER: 19,
-        Opcode.ADD: 21,
-        Opcode.SUB: 22,
-        Opcode.MUL: 23,
-        Opcode.DIV: 24,
-        Opcode.AND: 25,
-        Opcode.OR: 26,
-        Opcode.JUMP: 27,
-        Opcode.JZ: 28,
-        Opcode.JN: 29,
-        Opcode.CALL: 30,
-        Opcode.RET: 32,
-        Opcode.INPUT: 33,
-        Opcode.OUTPUT: 35,
-        Opcode.ADDC: 36,
-        Opcode.NOT: 37,
+        Opcode.STORE: 4,
+        Opcode.FETCH_A: 6,
+        Opcode.INCA: 8,
+        Opcode.STORE_A: 9,
+        Opcode.SET_A: 11,
+        Opcode.GET_A: 12,
+        Opcode.DROP: 13,
+        Opcode.DUP: 14,
+        Opcode.SWAP: 15,
+        Opcode.OVER: 16,
+        Opcode.ADD: 17,
+        Opcode.SUB: 18,
+        Opcode.MUL: 19,
+        Opcode.DIV: 20,
+        Opcode.AND: 21,
+        Opcode.OR: 22,
+        Opcode.JUMP: 23,
+        Opcode.JZ: 24,
+        Opcode.JN: 25,
+        Opcode.CALL: 26,
+        Opcode.RET: 27,
+        Opcode.INPUT: 28,
+        Opcode.OUTPUT: 29,
+        Opcode.ADDC: 30,
+        Opcode.NOT: 31,
     }
 
     program: list[Instruction]
@@ -672,8 +664,6 @@ class ControlUnit:
     mpc: int
     reg_R: int
     return_stack: list[int]
-
-    ir: Instruction | None = None
 
     _tick: int
 
@@ -690,12 +680,6 @@ class ControlUnit:
 
     def tick(self) -> None:
         self._tick += 1
-
-    def signal_latch_IR(self) -> None:
-        assert self.pc < len(self.program), f"pc = {self.pc} out of range"
-
-        self.ir = self.program[self.pc]
-        assert self.ir is not None, "instruction equals NONE"
 
     def signal_latch_R(self, sel: Mux_Signal) -> None:
 
@@ -746,16 +730,13 @@ class ControlUnit:
             self.pc += 1
 
         elif sel == Mux_Signal.SEL_PC_ADDR:
-            assert self.ir
-            self.pc = self.ir.arg
+            self.pc = self.program[self.pc].arg
 
         elif sel == Mux_Signal.SEL_PC_JN:
-            assert self.ir
-            self.pc = self.ir.arg if self.dataPath.flag_N else self.pc + 1
+            self.pc = self.program[self.pc].arg if self.dataPath.flag_N else self.pc + 1
 
         elif sel == Mux_Signal.SEL_PC_JZ:
-            assert self.ir
-            self.pc = self.ir.arg if self.dataPath.flag_Z else self.pc + 1
+            self.pc = self.program[self.pc].arg if self.dataPath.flag_Z else self.pc + 1
 
         elif sel == Mux_Signal.SEL_PC_RET:
             assert self.reg_R >= 0, "return stack is empty"
@@ -786,9 +767,6 @@ class ControlUnit:
         elif latch == Signal.LATCH_MPC:
             assert isinstance(sel, Mux_Signal)
             self.signal_latch_mPC(sel)
-
-        elif latch == Signal.LATCH_IR:
-            self.signal_latch_IR()
 
         elif latch == Signal.WRITE_RET:
             self.signal_write_ret()
@@ -830,13 +808,13 @@ class ControlUnit:
             raise AssertionError(f"unknown latch: {microinstr.latch}")
 
     def __repr__(self) -> str:
-        instr = self.ir
+        instr = self.program[self.pc]
         instr_str = f"{instr.opcode.name} {instr.arg}" if instr else "None"
 
         return (
             f"PC: {self.pc:4} | "
             f"MPC: {self.mpc:3} | "
-            f"IR: {instr_str:12} | "
+            f"Insr: {instr_str:12} | "
             f"R: {self.reg_R:3} | "
             f"SP: {self.dataPath.sp:3} | "
             f"T: {self.dataPath.top:5} | "
@@ -873,7 +851,8 @@ def simulation(
 
             curr_mpc = controlUnit.mpc
             curr_tick = controlUnit._microprogram[curr_mpc]
-            curr_instr = controlUnit.ir.opcode.name if controlUnit.ir else None
+            instr = controlUnit.program[controlUnit.pc]
+            curr_instr = instr.opcode.name
             controlUnit.dataPath.start_cycle()
 
             micro_code_logs.append(
@@ -894,8 +873,7 @@ def simulation(
 
             controlUnit.dataPath.update()
 
-            assert controlUnit.ir
-            if controlUnit.ir.opcode == Opcode.HALT:
+            if instr.opcode == Opcode.HALT:
                 log_file.write("\nHALT\n")
                 break
 

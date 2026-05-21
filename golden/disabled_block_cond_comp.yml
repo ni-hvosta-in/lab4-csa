@@ -1,13 +1,33 @@
 in_source: |-
-  macro print_char value
-      pushi value
-      output 1
-  endmacro
+  #define PORT 1
+  #define ENABLE_IO 1
 
   .text
+
+  macro PUSH2 a b
+      pushi a
+      pushi b
+  endmacro
+
+  macro OUTPUT_NUM x
+      pushi x
+      output PORT
+  endmacro
+
   _start:
-      print_char 72
-      print_char 105
+
+      PUSH2 5 7
+      add
+      output PORT
+
+  if ENABLE_IO
+      OUTPUT_NUM 123
+  endif
+
+  if DISABLED
+      OUTPUT_NUM 999
+  endif
+
       halt
 
 in_stdin: |-
@@ -20,62 +40,82 @@ out_machine_log: |2
   IO: {1: []}
   ------------------------------------------------------------
   === TICK 2 ===
-  PC:    1 | MPC:   0 | Insr: PUSHI 72     | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  PC:    1 | MPC:   0 | Insr: PUSHI 5      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: []}
   ------------------------------------------------------------
   === TICK 3 ===
-  PC:    1 | MPC:   3 | Insr: PUSHI 72     | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  PC:    1 | MPC:   3 | Insr: PUSHI 5      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: []}
   ------------------------------------------------------------
   === TICK 4 ===
-  PC:    2 | MPC:   0 | Insr: OUTPUT 1     | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  PC:    2 | MPC:   0 | Insr: PUSHI 7      | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: []}
   ------------------------------------------------------------
   === TICK 5 ===
-  PC:    2 | MPC:  29 | Insr: OUTPUT 1     | R:  -1 | SP:   0 | T:    72 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  PC:    2 | MPC:   3 | Insr: PUSHI 7      | R:  -1 | SP:   0 | T:     5 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: []}
   ------------------------------------------------------------
   === TICK 6 ===
-  PC:    3 | MPC:   0 | Insr: PUSHI 105    | R:  -1 | SP:   0 | T:    72 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  PC:    3 | MPC:   0 | Insr: ADD None     | R:  -1 | SP:   0 | T:     5 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [72]}
-  OUTPUT[1] <- 72
+  IO: {1: []}
   ------------------------------------------------------------
   === TICK 7 ===
-  PC:    3 | MPC:   3 | Insr: PUSHI 105    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  PC:    3 | MPC:  17 | Insr: ADD None     | R:  -1 | SP:   1 | T:     7 | S:     5 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [72]}
+  IO: {1: []}
   ------------------------------------------------------------
   === TICK 8 ===
-  PC:    4 | MPC:   0 | Insr: OUTPUT 1     | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  PC:    4 | MPC:   0 | Insr: OUTPUT 1     | R:  -1 | SP:   1 | T:     7 | S:     5 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [72]}
+  IO: {1: []}
   ------------------------------------------------------------
   === TICK 9 ===
-  PC:    4 | MPC:  29 | Insr: OUTPUT 1     | R:  -1 | SP:   0 | T:   105 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  PC:    4 | MPC:  29 | Insr: OUTPUT 1     | R:  -1 | SP:   0 | T:    12 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [72]}
+  IO: {1: []}
   ------------------------------------------------------------
   === TICK 10 ===
-  PC:    5 | MPC:   0 | Insr: HALT None    | R:  -1 | SP:   0 | T:   105 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  PC:    5 | MPC:   0 | Insr: PUSHI 123    | R:  -1 | SP:   0 | T:    12 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [72, 105]}
-  OUTPUT[1] <- 105
+  IO: {1: [12]}
+  OUTPUT[1] <- 12
   ------------------------------------------------------------
   === TICK 11 ===
-  PC:    5 | MPC:   0 | Insr: HALT None    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  PC:    5 | MPC:   3 | Insr: PUSHI 123    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  IO: {1: [72, 105]}
+  IO: {1: [12]}
+  ------------------------------------------------------------
+  === TICK 12 ===
+  PC:    6 | MPC:   0 | Insr: OUTPUT 1     | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [12]}
+  ------------------------------------------------------------
+  === TICK 13 ===
+  PC:    6 | MPC:  29 | Insr: OUTPUT 1     | R:  -1 | SP:   0 | T:   123 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [12]}
+  ------------------------------------------------------------
+  === TICK 14 ===
+  PC:    7 | MPC:   0 | Insr: HALT None    | R:  -1 | SP:   0 | T:   123 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [12, 123]}
+  OUTPUT[1] <- 123
+  ------------------------------------------------------------
+  === TICK 15 ===
+  PC:    7 | MPC:   0 | Insr: HALT None    | R:  -1 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:1 V:0 C:0
+  STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  IO: {1: [12, 123]}
   ------------------------------------------------------------
   HALT
 
-  TOTAL TICK : 11
+  TOTAL TICK : 15
 
-  FINAL io-ports {1: [72, 105]}
+  FINAL io-ports {1: [12, 123]}
 
 
   ===== MICROCODE TRACE =====
@@ -98,25 +138,25 @@ out_machine_log: |2
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
 
-  ==== TICK    5 | MPC    0 | OUTPUT 
+  ==== TICK    5 | MPC    0 | PUSHI 
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
-  ==== TICK    6 | MPC   29 | OUTPUT 
-     latch: Signal.WRITE_IO, sel: None
-     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_SECOND
-     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
-     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
-     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
-
-  ==== TICK    7 | MPC    0 | PUSHI 
-     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
-
-  ==== TICK    8 | MPC    3 | PUSHI 
+  ==== TICK    6 | MPC    3 | PUSHI 
      latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.WRITE_ST, sel: None
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+
+  ==== TICK    7 | MPC    0 | ADD 
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+
+  ==== TICK    8 | MPC   17 | ADD 
+     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
+     latch: Signal.ALU, sel: ALU_Signal.ADD
+     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_ALU
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
 
@@ -131,23 +171,47 @@ out_machine_log: |2
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
 
-  ==== TICK   11 | MPC    0 | HALT 
+  ==== TICK   11 | MPC    0 | PUSHI 
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+
+  ==== TICK   12 | MPC    3 | PUSHI 
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
+     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+
+  ==== TICK   13 | MPC    0 | OUTPUT 
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
+
+  ==== TICK   14 | MPC   29 | OUTPUT 
+     latch: Signal.WRITE_IO, sel: None
+     latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_SECOND
+     latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_STACK
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_PREV
+     latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
+     latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
+
+  ==== TICK   15 | MPC    0 | HALT 
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 out_variable_log: ''
 out_instruction_log: |
   0 - 40000001 - JUMP 1 
-  1 - 02000048 - PUSHI 72 
-  2 - 51000001 - OUTPUT 1 
-  3 - 02000069 - PUSHI 105 
+  1 - 02000005 - PUSHI 5 
+  2 - 02000007 - PUSHI 7 
+  3 - 20000000 - ADD  
   4 - 51000001 - OUTPUT 1 
-  5 - ff000000 - HALT  
+  5 - 0200007b - PUSHI 123 
+  6 - 51000001 - OUTPUT 1 
+  7 - ff000000 - HALT  
 out_data: !!binary |
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 out_code: !!binary |
-  QAAAAQIAAEhRAAABAgAAaVEAAAH/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  QAAAAQIAAAUCAAAHIAAAAFEAAAECAAB7UQAAAf8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
