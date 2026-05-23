@@ -12,7 +12,6 @@ SIGN32 = 0x80000000
 class Mux_Signal(Enum):
     SEL_SP_NEXT = auto()
     SEL_SP_PREV = auto()
-    SEL_SP_CUR = auto()
 
     SEL_S_STACK = auto()
     SEL_S_TOP = auto()
@@ -43,6 +42,8 @@ class Mux_Signal(Enum):
     SEL_R_NEXT = auto()
     SEL_R_PREV = auto()
 
+    SEL_SP_READ_WRITE_SP = auto()
+    SEL_SP_READ_WRITE_NEXT = auto()
 
 class ALU_Signal(Enum):
     ADD = auto()
@@ -71,6 +72,8 @@ class Signal(Enum):
 
     WRITE_IO = auto()
 
+    SELECT_CURR_SP = auto()
+
     ALU = auto()
 
 
@@ -94,6 +97,7 @@ class DataPath:
     ar_buff: int
     reg_A_buff: int
 
+    sp_read_write: int
     controlUnit: ControlUnit
 
     io_ports: dict[int, list[int]]
@@ -134,7 +138,7 @@ class DataPath:
 
     def signal_latch_SP(self, sel: Mux_Signal) -> None:
 
-        assert sel in {Mux_Signal.SEL_SP_NEXT, Mux_Signal.SEL_SP_PREV, Mux_Signal.SEL_SP_CUR}, (
+        assert sel in {Mux_Signal.SEL_SP_NEXT, Mux_Signal.SEL_SP_PREV}, (
             f"internal error, latch_SP incorrect selector: {sel}"
         )
 
@@ -143,8 +147,6 @@ class DataPath:
         elif sel == Mux_Signal.SEL_SP_PREV:
             self.stack[self.sp] = 0
             self.sp_buff = self.sp - 1
-        elif sel == Mux_Signal.SEL_SP_CUR:
-            self.sp_buff = self.sp
 
         assert -1 <= self.sp_buff < len(self.stack), f"index out of range stack: {self.sp_buff}"
 
@@ -158,8 +160,8 @@ class DataPath:
             self.second_buff = self.top
         elif sel == Mux_Signal.SEL_S_STACK:
             assert self.sp > -1, "stack is empty"
-
-            self.second_buff = self.stack[self.sp_buff]
+            self.sp_read_write = self.sp
+            self.second_buff = self.stack[self.sp_read_write]
 
     def signal_latch_T(self, sel: Mux_Signal) -> None:
 
@@ -225,9 +227,20 @@ class DataPath:
 
     def signal_write_st(self) -> None:
 
-        assert self.sp_buff > -1, "stack is empty"
+        assert self.sp_read_write > -1, "stack is empty"
 
-        self.stack[self.sp_buff] = self.second
+        self.stack[self.sp_read_write] = self.second
+
+    def signal_select_sp_read_write(self, sel: Mux_Signal) -> None:
+
+        assert sel in {Mux_Signal.SEL_SP_READ_WRITE_SP, Mux_Signal.SEL_SP_READ_WRITE_NEXT},\
+            f"internal error, select_sp_read_write incorrect selector: {sel}"
+
+        if sel == Mux_Signal.SEL_SP_READ_WRITE_SP:
+            self.sp_read_write = self.sp
+        elif sel == Mux_Signal.SEL_SP_READ_WRITE_NEXT:
+            self.sp_read_write = self.sp + 1
+
 
     def signal_write_dm(self) -> None:
 
@@ -349,6 +362,9 @@ class ControlUnit:
 
     t_from_second = ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_SECOND)
 
+    select_sp_read_write_next = ControlSignal(Signal.SELECT_CURR_SP, Mux_Signal.SEL_SP_READ_WRITE_NEXT)
+    select_sp_read_write_sp = ControlSignal(Signal.SELECT_CURR_SP, Mux_Signal.SEL_SP_READ_WRITE_SP)
+
     write_st = ControlSignal(Signal.WRITE_ST)
     write_dm = ControlSignal(Signal.WRITE_DM)
 
@@ -365,8 +381,9 @@ class ControlUnit:
         [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_CU), mpc_next],
         #(2)
         [
-            sp_next,
+            select_sp_read_write_next,
             write_st,
+            sp_next,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
             pc_next,
@@ -376,8 +393,9 @@ class ControlUnit:
         #(pushi val)
         #(3)
         [
-            sp_next,
+            select_sp_read_write_next,
             write_st,
+            sp_next,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_IMM),
             pc_next,
@@ -392,10 +410,12 @@ class ControlUnit:
 
         #(fetchA)
         #(6)
-        [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), sp_next, mpc_next],
+        [ControlSignal(Signal.LATCH_AR, Mux_Signal.SEL_AR_A), mpc_next],
         #(7)
         [
+            select_sp_read_write_next,
             write_st,
+            sp_next,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_MEM),
             pc_next,
@@ -433,8 +453,9 @@ class ControlUnit:
         #(getA)
         #(12)
         [
-            sp_next,
+            select_sp_read_write_next,
             write_st,
+            sp_next,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_A),
             pc_next,
@@ -454,8 +475,9 @@ class ControlUnit:
         #(dup)
         #(14)
         [
-            sp_next,
+            select_sp_read_write_next,
             write_st,
+            sp_next,
             s_from_top,
             pc_next,
             fetch
@@ -468,8 +490,9 @@ class ControlUnit:
         #(over)
         #(16)
         [
-            sp_next,
+            select_sp_read_write_next,
             write_st,
+            sp_next,
             t_from_second,
             s_from_top,
             pc_next,
@@ -586,8 +609,9 @@ class ControlUnit:
         # (input n)
         # (28)
         [
-            sp_next,
+            select_sp_read_write_next,
             write_st,
+            sp_next,
             s_from_top,
             ControlSignal(Signal.LATCH_T, Mux_Signal.SEL_T_INPUT),
             pc_next,
@@ -789,6 +813,10 @@ class ControlUnit:
 
         elif latch == Signal.WRITE_ST:
             self.dataPath.signal_write_st()
+
+        elif latch == Signal.SELECT_CURR_SP:
+            assert isinstance(sel, Mux_Signal)
+            self.dataPath.signal_select_sp_read_write(sel)
 
         elif latch == Signal.LATCH_A:
             assert isinstance(sel, Mux_Signal)
