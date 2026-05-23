@@ -45,6 +45,9 @@ class Mux_Signal(Enum):
     SEL_SP_READ_WRITE_SP = auto()
     SEL_SP_READ_WRITE_NEXT = auto()
 
+    SEL_R_READ_WRITE_R = auto()
+    SEL_R_READ_WRITE_NEXT = auto()
+
 class ALU_Signal(Enum):
     ADD = auto()
     SUB = auto()
@@ -73,6 +76,7 @@ class Signal(Enum):
     WRITE_IO = auto()
 
     SELECT_CURR_SP = auto()
+    SELECT_CURR_R = auto()
 
     ALU = auto()
 
@@ -592,8 +596,9 @@ class ControlUnit:
         # (call)
         # (26)
         [
-            ControlSignal(Signal.LATCH_R, Mux_Signal.SEL_R_NEXT),
+            ControlSignal(Signal.SELECT_CURR_R, Mux_Signal.SEL_R_READ_WRITE_NEXT),
             ControlSignal(Signal.WRITE_RET),
+            ControlSignal(Signal.LATCH_R, Mux_Signal.SEL_R_NEXT),
             ControlSignal(Signal.LATCH_PC, Mux_Signal.SEL_PC_ADDR),
             fetch
         ],
@@ -687,6 +692,7 @@ class ControlUnit:
 
     mpc: int
     reg_R: int
+    reg_R_read_write: int
     return_stack: list[int]
 
     _tick: int
@@ -763,14 +769,25 @@ class ControlUnit:
             self.pc = self.program[self.pc].arg if self.dataPath.flag_Z else self.pc + 1
 
         elif sel == Mux_Signal.SEL_PC_RET:
-            assert self.reg_R >= 0, "return stack is empty"
-            self.pc = self.return_stack[self.reg_R]
+            assert self.reg_R_read_write >= 0, "return stack is empty"
+            self.reg_R_read_write = self.reg_R
+            self.pc = self.return_stack[self.reg_R_read_write]
 
     def signal_write_ret(self) -> None:
 
-        assert self.reg_R > -1, "return stack is empty"
+        assert self.reg_R_read_write > -1, "return stack is empty"
 
-        self.return_stack[self.reg_R] = self.pc + 1
+        self.return_stack[self.reg_R_read_write] = self.pc + 1
+
+    def signal_select_R_read_write(self, sel: Mux_Signal) -> None:
+
+        assert sel in {Mux_Signal.SEL_R_READ_WRITE_R, Mux_Signal.SEL_R_READ_WRITE_NEXT}
+
+        if sel == Mux_Signal.SEL_R_READ_WRITE_NEXT:
+            self.reg_R_read_write = self.reg_R + 1
+        elif sel == Mux_Signal.SEL_R_READ_WRITE_R:
+            self.reg_R_read_write = self.reg_R
+
 
     def dispatch(self, microinstr: ControlSignal) -> None:
         assert microinstr.latch in Signal, (
@@ -794,6 +811,10 @@ class ControlUnit:
 
         elif latch == Signal.WRITE_RET:
             self.signal_write_ret()
+
+        elif latch == Signal.SELECT_CURR_R:
+            assert isinstance(sel, Mux_Signal)
+            self.signal_select_R_read_write(sel)
 
         elif latch == Signal.LATCH_AR:
             assert isinstance(sel, Mux_Signal)

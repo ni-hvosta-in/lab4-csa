@@ -118,7 +118,7 @@ out_machine_log: |2
   IO: {1: [], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 11 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     0 | AR:     0 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -184,7 +184,7 @@ out_machine_log: |2
   IO: {1: [87], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 24 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     1 | AR:     1 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     1 | AR:     1 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -250,7 +250,7 @@ out_machine_log: |2
   IO: {1: [87, 104], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 37 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     2 | AR:     2 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     2 | AR:     2 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -316,7 +316,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 50 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     3 | AR:     3 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     3 | AR:     3 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -382,7 +382,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 63 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     4 | AR:     4 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     4 | AR:     4 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -448,7 +448,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 76 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     5 | AR:     5 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     5 | AR:     5 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -514,7 +514,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 89 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     6 | AR:     6 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     6 | AR:     6 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -580,7 +580,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 102 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     7 | AR:     7 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     7 | AR:     7 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -646,7 +646,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 115 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     8 | AR:     8 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     8 | AR:     8 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -712,7 +712,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 128 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:     9 | AR:     9 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:     9 | AR:     9 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -778,7 +778,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 141 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    10 | AR:    10 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    10 | AR:    10 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -844,7 +844,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 154 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    11 | AR:    11 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    11 | AR:    11 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -910,7 +910,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 167 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    12 | AR:    12 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    12 | AR:    12 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -976,7 +976,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 180 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    13 | AR:    13 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    13 | AR:    13 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -1042,7 +1042,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 193 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    14 | AR:    14 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    14 | AR:    14 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -1108,7 +1108,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 206 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    15 | AR:    15 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    15 | AR:    15 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -1174,7 +1174,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 219 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    16 | AR:    16 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    16 | AR:    16 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -1240,7 +1240,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 232 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    17 | AR:    17 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    17 | AR:    17 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -1306,7 +1306,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
   === TICK 245 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    18 | AR:    18 | N:0 Z:1 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    18 | AR:    18 | N:0 Z:1 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63], 2: [65, 108, 101, 120, 10]}
   ------------------------------------------------------------
@@ -1861,7 +1861,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63], 2: []}
   ------------------------------------------------------------
   === TICK 355 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    19 | AR:    19 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    19 | AR:    19 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63], 2: []}
   ------------------------------------------------------------
@@ -1927,7 +1927,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72], 2: []}
   ------------------------------------------------------------
   === TICK 368 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    20 | AR:    20 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    20 | AR:    20 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72], 2: []}
   ------------------------------------------------------------
@@ -1993,7 +1993,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101], 2: []}
   ------------------------------------------------------------
   === TICK 381 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    21 | AR:    21 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    21 | AR:    21 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101], 2: []}
   ------------------------------------------------------------
@@ -2059,7 +2059,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108], 2: []}
   ------------------------------------------------------------
   === TICK 394 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    22 | AR:    22 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    22 | AR:    22 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108], 2: []}
   ------------------------------------------------------------
@@ -2125,7 +2125,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108], 2: []}
   ------------------------------------------------------------
   === TICK 407 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    23 | AR:    23 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    23 | AR:    23 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108], 2: []}
   ------------------------------------------------------------
@@ -2191,7 +2191,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111], 2: []}
   ------------------------------------------------------------
   === TICK 420 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    24 | AR:    24 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    24 | AR:    24 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111], 2: []}
   ------------------------------------------------------------
@@ -2257,7 +2257,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44], 2: []}
   ------------------------------------------------------------
   === TICK 433 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    25 | AR:    25 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    25 | AR:    25 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44], 2: []}
   ------------------------------------------------------------
@@ -2323,7 +2323,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32], 2: []}
   ------------------------------------------------------------
   === TICK 446 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    26 | AR:    26 | N:0 Z:1 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    26 | AR:    26 | N:0 Z:1 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32], 2: []}
   ------------------------------------------------------------
@@ -2408,7 +2408,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32], 2: []}
   ------------------------------------------------------------
   === TICK 463 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    27 | AR:    27 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    27 | AR:    27 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [8, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32], 2: []}
   ------------------------------------------------------------
@@ -2474,7 +2474,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32, 65], 2: []}
   ------------------------------------------------------------
   === TICK 476 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    28 | AR:    28 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    28 | AR:    28 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [8, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32, 65], 2: []}
   ------------------------------------------------------------
@@ -2540,7 +2540,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32, 65, 108], 2: []}
   ------------------------------------------------------------
   === TICK 489 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    29 | AR:    29 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    29 | AR:    29 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [8, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32, 65, 108], 2: []}
   ------------------------------------------------------------
@@ -2606,7 +2606,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32, 65, 108, 101], 2: []}
   ------------------------------------------------------------
   === TICK 502 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    30 | AR:    30 | N:0 Z:0 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    30 | AR:    30 | N:0 Z:0 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [8, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32, 65, 108, 101], 2: []}
   ------------------------------------------------------------
@@ -2672,7 +2672,7 @@ out_machine_log: |2
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32, 65, 108, 101, 120], 2: []}
   ------------------------------------------------------------
   === TICK 515 ===
-  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:   0 | T:     0 | S:     0 | A:    31 | AR:    31 | N:0 Z:1 V:0 C:0
+  PC:   11 | MPC:   0 | Insr: DUP None     | R:   0 | SP:  -1 | T:     0 | S:     0 | A:    31 | AR:    31 | N:0 Z:1 V:0 C:0
   STACK:   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]   |   RETURN_STACK:   [8, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   IO: {1: [87, 104, 97, 116, 32, 105, 115, 32, 121, 111, 117, 114, 32, 110, 97, 109, 101, 63, 72, 101, 108, 108, 111, 44, 32, 65, 108, 101, 120], 2: []}
   ------------------------------------------------------------
@@ -2741,8 +2741,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK    4 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -2752,8 +2753,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK    6 | MPC   26 | CALL 
-     latch: Signal.LATCH_R, sel: Mux_Signal.SEL_R_NEXT
+     latch: Signal.SELECT_CURR_R, sel: Mux_Signal.SEL_R_READ_WRITE_NEXT
      latch: Signal.WRITE_RET, sel: None
+     latch: Signal.LATCH_R, sel: Mux_Signal.SEL_R_NEXT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_ADDR
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
 
@@ -2773,11 +2775,12 @@ out_machine_log: |2
 
   ==== TICK   10 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK   11 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -2787,8 +2790,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK   13 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -2834,11 +2838,12 @@ out_machine_log: |2
 
   ==== TICK   23 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK   24 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -2848,8 +2853,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK   26 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -2895,11 +2901,12 @@ out_machine_log: |2
 
   ==== TICK   36 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK   37 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -2909,8 +2916,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK   39 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -2956,11 +2964,12 @@ out_machine_log: |2
 
   ==== TICK   49 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK   50 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -2970,8 +2979,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK   52 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3017,11 +3027,12 @@ out_machine_log: |2
 
   ==== TICK   62 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK   63 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3031,8 +3042,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK   65 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3078,11 +3090,12 @@ out_machine_log: |2
 
   ==== TICK   75 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK   76 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3092,8 +3105,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK   78 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3139,11 +3153,12 @@ out_machine_log: |2
 
   ==== TICK   88 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK   89 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3153,8 +3168,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK   91 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3200,11 +3216,12 @@ out_machine_log: |2
 
   ==== TICK  101 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  102 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3214,8 +3231,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  104 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3261,11 +3279,12 @@ out_machine_log: |2
 
   ==== TICK  114 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  115 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3275,8 +3294,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  117 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3322,11 +3342,12 @@ out_machine_log: |2
 
   ==== TICK  127 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  128 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3336,8 +3357,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  130 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3383,11 +3405,12 @@ out_machine_log: |2
 
   ==== TICK  140 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  141 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3397,8 +3420,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  143 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3444,11 +3468,12 @@ out_machine_log: |2
 
   ==== TICK  153 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  154 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3458,8 +3483,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  156 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3505,11 +3531,12 @@ out_machine_log: |2
 
   ==== TICK  166 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  167 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3519,8 +3546,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  169 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3566,11 +3594,12 @@ out_machine_log: |2
 
   ==== TICK  179 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  180 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3580,8 +3609,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  182 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3627,11 +3657,12 @@ out_machine_log: |2
 
   ==== TICK  192 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  193 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3641,8 +3672,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  195 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3688,11 +3720,12 @@ out_machine_log: |2
 
   ==== TICK  205 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  206 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3702,8 +3735,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  208 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3749,11 +3783,12 @@ out_machine_log: |2
 
   ==== TICK  218 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  219 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3763,8 +3798,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  221 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3810,11 +3846,12 @@ out_machine_log: |2
 
   ==== TICK  231 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  232 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3824,8 +3861,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  234 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3871,11 +3909,12 @@ out_machine_log: |2
 
   ==== TICK  244 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  245 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3885,8 +3924,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  247 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3923,8 +3963,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  255 | MPC   26 | CALL 
-     latch: Signal.LATCH_R, sel: Mux_Signal.SEL_R_NEXT
+     latch: Signal.SELECT_CURR_R, sel: Mux_Signal.SEL_R_READ_WRITE_NEXT
      latch: Signal.WRITE_RET, sel: None
+     latch: Signal.LATCH_R, sel: Mux_Signal.SEL_R_NEXT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_ADDR
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
 
@@ -3932,8 +3973,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  257 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3954,8 +3996,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  261 | MPC   28 | INPUT 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -3965,8 +4008,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  263 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -3975,8 +4019,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  265 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4037,8 +4082,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  278 | MPC   28 | INPUT 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4048,8 +4094,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  280 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4058,8 +4105,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  282 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4120,8 +4168,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  295 | MPC   28 | INPUT 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4131,8 +4180,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  297 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4141,8 +4191,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  299 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4203,8 +4254,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  312 | MPC   28 | INPUT 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4214,8 +4266,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  314 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4224,8 +4277,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  316 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4286,8 +4340,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  329 | MPC   28 | INPUT 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_INPUT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4297,8 +4352,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  331 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4307,8 +4363,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  333 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4349,8 +4406,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  341 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4383,8 +4441,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  348 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4394,8 +4453,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  350 | MPC   26 | CALL 
-     latch: Signal.LATCH_R, sel: Mux_Signal.SEL_R_NEXT
+     latch: Signal.SELECT_CURR_R, sel: Mux_Signal.SEL_R_READ_WRITE_NEXT
      latch: Signal.WRITE_RET, sel: None
+     latch: Signal.LATCH_R, sel: Mux_Signal.SEL_R_NEXT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_ADDR
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
 
@@ -4415,11 +4475,12 @@ out_machine_log: |2
 
   ==== TICK  354 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  355 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4429,8 +4490,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  357 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4476,11 +4538,12 @@ out_machine_log: |2
 
   ==== TICK  367 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  368 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4490,8 +4553,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  370 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4537,11 +4601,12 @@ out_machine_log: |2
 
   ==== TICK  380 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  381 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4551,8 +4616,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  383 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4598,11 +4664,12 @@ out_machine_log: |2
 
   ==== TICK  393 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  394 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4612,8 +4679,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  396 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4659,11 +4727,12 @@ out_machine_log: |2
 
   ==== TICK  406 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  407 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4673,8 +4742,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  409 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4720,11 +4790,12 @@ out_machine_log: |2
 
   ==== TICK  419 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  420 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4734,8 +4805,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  422 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4781,11 +4853,12 @@ out_machine_log: |2
 
   ==== TICK  432 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  433 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4795,8 +4868,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  435 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4842,11 +4916,12 @@ out_machine_log: |2
 
   ==== TICK  445 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  446 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4856,8 +4931,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  448 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4894,8 +4970,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  456 | MPC    3 | PUSHI 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_IMM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4905,8 +4982,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  458 | MPC   26 | CALL 
-     latch: Signal.LATCH_R, sel: Mux_Signal.SEL_R_NEXT
+     latch: Signal.SELECT_CURR_R, sel: Mux_Signal.SEL_R_READ_WRITE_NEXT
      latch: Signal.WRITE_RET, sel: None
+     latch: Signal.LATCH_R, sel: Mux_Signal.SEL_R_NEXT
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_ADDR
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
 
@@ -4926,11 +5004,12 @@ out_machine_log: |2
 
   ==== TICK  462 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  463 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -4940,8 +5019,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  465 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -4987,11 +5067,12 @@ out_machine_log: |2
 
   ==== TICK  475 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  476 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -5001,8 +5082,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  478 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -5048,11 +5130,12 @@ out_machine_log: |2
 
   ==== TICK  488 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  489 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -5062,8 +5145,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  491 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -5109,11 +5193,12 @@ out_machine_log: |2
 
   ==== TICK  501 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  502 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -5123,8 +5208,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  504 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
@@ -5170,11 +5256,12 @@ out_machine_log: |2
 
   ==== TICK  514 | MPC    6 | FETCH_A 
      latch: Signal.LATCH_AR, sel: Mux_Signal.SEL_AR_A
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_NEXT
 
   ==== TICK  515 | MPC    7 | FETCH_A 
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_T, sel: Mux_Signal.SEL_T_MEM
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
@@ -5184,8 +5271,9 @@ out_machine_log: |2
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_OPCODE
 
   ==== TICK  517 | MPC   14 | DUP 
-     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
+     latch: Signal.SELECT_CURR_SP, sel: Mux_Signal.SEL_SP_READ_WRITE_NEXT
      latch: Signal.WRITE_ST, sel: None
+     latch: Signal.LATCH_SP, sel: Mux_Signal.SEL_SP_NEXT
      latch: Signal.LATCH_S, sel: Mux_Signal.SEL_S_TOP
      latch: Signal.LATCH_PC, sel: Mux_Signal.SEL_PC_NEXT
      latch: Signal.LATCH_MPC, sel: Mux_Signal.SEL_MPC_FETCH
